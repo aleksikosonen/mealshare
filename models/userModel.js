@@ -12,6 +12,16 @@ const getUser = async(id) => {
     }
 }
 
+const getAllUsers = async () => {
+    try {
+        const [rows] = await promisePool.execute('SELECT * FROM ms_user');
+        return rows;
+    } catch (e) {
+        console.error('userModel:', e.message);
+    }
+};
+
 module.exports = {
     getUser,
+    getAllUsers,
 };
