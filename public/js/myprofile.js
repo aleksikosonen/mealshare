@@ -5,9 +5,10 @@ const url = 'http://localhost:3000';
 const username = document.querySelector('#username');
 const bio = document.querySelector('#bio');
 
-const loggedId = 3; // at this point this info is hardcoded
+const loggedId = 4; // at this point this info is hardcoded
 
 const getUserInfo = (users) => {
+    //done with foreach if in some case would need to handle multiple users
     users.forEach((user) => {
         username.innerHTML = user.username;
         bio.innerHTML = user.bio;
@@ -15,6 +16,7 @@ const getUserInfo = (users) => {
 }
 
 const getUsers = async () => {
+    //If is needed to handle multiple users
     try {
         const response = await fetch(url + '/user/');
         const users = await response.json();
