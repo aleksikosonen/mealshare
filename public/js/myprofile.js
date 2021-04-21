@@ -15,7 +15,7 @@ const getUserInfo = (users) => {
     });
 }
 
-const getUsers = async () => {
+const getAllUsers = async () => {
     //If is needed to handle multiple users
     try {
         const response = await fetch(url + '/user/');
@@ -56,6 +56,6 @@ const getUsers = async () => {
     }
 };
 
-//getUsers();
-//getLoggedUser();
+//getAllUsers();
+getLoggedUser();
 //getUsers(); //should work when logged in successfully
