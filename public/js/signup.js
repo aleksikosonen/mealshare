@@ -24,15 +24,14 @@ addUserForm.addEventListener('submit', async (evt) =>{
     },
     body: JSON.stringify(data),
   };
-  console.log(data);
   const response = await fetch(url + '/auth/register', fetchOptions);
   const json = await response.json();
+  console.log('sign-up response ', json);
   
   if(!json.user) {
     alert(json.message);
   } else {
     sessionStorage.setItem('token', json.token);
-    
   }
 });
 

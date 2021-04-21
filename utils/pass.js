@@ -1,5 +1,6 @@
 'use strict';
 const passport = require('passport');
+const bcrypt = require('bcryptjs');
 const Strategy = require('passport-local').Strategy;
 const userModel = require('../models/userModel');
 const passportJWT = require('passport-jwt');
@@ -15,10 +16,10 @@ passport.use(new Strategy(
         if (user === undefined) {
           return done(null, false, {message: 'Incorrect credentials.'});
         }
-        if (user.password !== password) {
+        if (!bcrypt.compare(password, user.password)) {
           return done(null, false, {message: 'Incorrect credentials.'});
         }
-        delete user.password; // delete password
+        delete user.password;
         return done(null, {...user}, {message: 'Logged In Successfully'}); 
       } catch (err) {
         return done(err);
