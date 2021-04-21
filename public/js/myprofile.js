@@ -40,5 +40,22 @@ const getLoggedUser = async () => {
     }
 };
 
+const getUsers = async () => {
+    try {
+        const options = {
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+            },
+        };
+        const response = await fetch(url + '/user', options);
+        const users = await response.json();
+        getUserInfo(users);
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+};
+
 //getUsers();
-getLoggedUser();
+//getLoggedUser();
+//getUsers(); //should work when logged in successfully
