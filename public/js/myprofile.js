@@ -20,11 +20,10 @@ const getAllUsers = async () => {
     try {
         const response = await fetch(url + '/user/');
         const users = await response.json();
-        console.log(users);
         getUserInfo(users);
     }
     catch (e) {
-        console.log(e.message);
+        console.log('error at getAllUsers', e.message);
     }
 };
 
@@ -47,14 +46,12 @@ const getUsers = async () => {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
             },
         };
-        console.log(options);
         const response = await fetch(url + '/user', options);
-        const users = await response.json();
-        console.log(options);
+        const users = await response.json();;
         getUserInfo(users);
     }
     catch (e) {
-        console.log(e.message);
+        console.log('error at getUsers',  e.message);
     }
 };
 

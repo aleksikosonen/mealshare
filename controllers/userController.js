@@ -2,7 +2,7 @@
 
 const userModel = require('../models/userModel');
 const {validationResult} = require('express-validator');
-const users = userModel.users;
+const bcrypt = require('bcryptjs');
 
 const get_user = async(req, res) => {
     console.log('get a user from controller', req.user);
@@ -22,13 +22,13 @@ const create_user = async(req, res, next) => {
     if (!errors.isEmpty()){
         return res.status(400).json({errors: errors.array()});
     }
-    
     const user = {};
     user.username = req.body.username;
-    user.password = req.body.password;
     user.email = req.body.email;
     user.fname = req.body.fname;
     user.lname = req.body.lname;
+    const salt = bcrypt.genSaltSync(12);
+    user.password = bcrypt.hashSync(req.body.password, salt);
     
     const id = await userModel.insertUser(user);
     if(id>0){
