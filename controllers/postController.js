@@ -3,8 +3,6 @@
 const postModel = require('../models/postModel');
 const {validationResult} = require('express-validator');
 
-const posts = postModel.posts;
-
 const post_list_get = async (req, res) => {
   const posts = await postModel.getAllPosts();
   return res.json(posts);
@@ -31,6 +29,7 @@ const post_create_image = async (req, res) => {
     return res.status(400).json({errors: errors.array()});
   }
   try {
+    console.log('get a user from controller', req.user);
     const id = await postModel.uploadPostImage(req);
     const post = await postModel.getPost(id);
     res.send(post);
