@@ -24,11 +24,9 @@ const getUser = async(id) => {
 
 const insertUser = async (req) => {
     try{
-        console.log('usermodel insert', req.username)
         const [rows] = await promisePool.execute(
             'INSERT INTO ms_user (username, lname, email, fname, password, avatar, bio, admin, vst, vet) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
         [req.username, req.lname, req.email, req.fname, req.password, null, null, false, date ,null]);
-        console.log('usermodel inserts:',rows)
         return rows.insertId;
     } catch(e){
         console.error('userModel from insertUser: ', e);
@@ -38,9 +36,9 @@ const insertUser = async (req) => {
 
 const getUserLogin = async (params) => {
     try {
-        console.log(params);
+        console.log("getUserLogin: ",params);
         const [rows] = await promisePool.execute(
-            'SELECT * FROM ms_user WHERE email = ?;',
+            'SELECT * FROM ms_user WHERE username = ?;',
             params);
         return rows;
     } catch (e) {

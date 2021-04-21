@@ -27,7 +27,13 @@ addUserForm.addEventListener('submit', async (evt) =>{
   console.log(data);
   const response = await fetch(url + '/auth/register', fetchOptions);
   const json = await response.json();
-  console.log('user add response', json);
+  
+  if(!json.user) {
+    alert(json.message);
+  } else {
+    sessionStorage.setItem('token', json.token);
+    
+  }
 });
 
 password.onchange = validatePassword;

@@ -16,6 +16,7 @@ router.post('/register',
     body('fname').isLength({min: 2}).escape().blacklist(';'),
     body('lname').isLength({min: 2}).escape().blacklist(';'),
     userController.create_user,
+    authController.login
 );
 
 module.exports = router;
