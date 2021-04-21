@@ -34,6 +34,6 @@ logOut.addEventListener('click', async (evt) => {
     logOut.style.display = 'none';
   }
   catch (e) {
-    console.log(e.message);
+    console.log('logout error' + e.message);
   }
 });
