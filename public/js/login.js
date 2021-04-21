@@ -23,6 +23,8 @@ loginForm.addEventListener('submit', async (evt) => {
     sessionStorage.setItem('token', json.token);
     loginWrapper.style.display = 'none';
     console.log(`Hello ${json.user.fname}`);
+    window.location.href = 'http://localhost:3000/index.html'
   }
 });
+
 
