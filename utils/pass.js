@@ -32,9 +32,7 @@ passport.use(new JWTStrategy({
     async (jwtPayload, done) => {
 
       try {
-        console.log('jwt: ' + jwtPayload);
-        const user = await userModel.getUser(jwtPayload.userId);
-        console.log('passport.use : ' + user);
+        const [user] = await userModel.getUser(jwtPayload.userId);
         return done(null, user);
       } catch (err) {
         console.log('not success passport.use')

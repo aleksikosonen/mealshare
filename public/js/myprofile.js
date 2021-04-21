@@ -41,13 +41,13 @@ const getLoggedUser = async () => {
 };
 
 const getUsers = async () => {
-    console.log('getusers');
     try {
         const options = {
             headers: {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
             },
         };
+        console.log(options);
         const response = await fetch(url + '/user', options);
         const users = await response.json();
         console.log(options);

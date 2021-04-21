@@ -6,7 +6,7 @@ const date = (new Date().toLocaleString());
 
 const getUser = async(id) => {
     try{
-        const [rows] = await promisePool.query(`SELECT * FROM ms_user WHERE userId = ${id}`);
+        const [rows] = await promisePool.execute(`SELECT * FROM ms_user WHERE userId = ?`, [id]);
         return rows;
     }catch(e) {
         console.error('userModel getUser', e.message);

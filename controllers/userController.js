@@ -5,8 +5,8 @@ const {validationResult} = require('express-validator');
 const users = userModel.users;
 
 const get_user = async(req, res) => {
-    console.log('get a user from controller');
-    const id = req.params.id;
+    console.log('get a user from controller', req.user);
+    const id = req.user.userId;
     const user = await userModel.getUser(id);
     return res.status(200).json(user);
 }
