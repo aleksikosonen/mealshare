@@ -2,6 +2,7 @@
 
 const userModel = require('../models/userModel');
 const {validationResult} = require('express-validator');
+const users = userModel.users;
 
 const get_user = async(req, res) => {
     console.log('get a user from controller');
@@ -10,6 +11,9 @@ const get_user = async(req, res) => {
     return res.status(200).json(user);
 }
 
+const user_list_get = async (req, res) => {
+    const users = await userModel.getAllUsers();
+    res.json(users);
 const create_user = async(req, res, next) => {
     //checking if the request has any validation errors
     const errors = validationResult(req);
@@ -34,5 +38,6 @@ const create_user = async(req, res, next) => {
 
 module.exports = {
     get_user,
+    user_list_get,
     create_user,
 };

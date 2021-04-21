@@ -1,0 +1,54 @@
+* {
+    font-family: Verdana;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#profileInfo {
+    width: 100%;
+    height: 40%;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow:0 0 5px black;
+    background: #F7F7F7;
+
+}
+
+#username {
+    font-family: Futura;
+    font-size: 20px;
+}
+
+#avatar {
+    height: 10em;
+    width: 10em;
+    border-radius: 50%;
+}
+
+#photoContainer {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.profilePhotoGrid {
+    box-sizing: border-box;
+    padding: 5px;
+    overflow: auto;
+    width: 33.33%;
+    transition: transform .5s ease;
+}
+
+.profilePhotoGrid:hover {
+    transform: scale(1.05);
+}
