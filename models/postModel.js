@@ -29,6 +29,7 @@ const uploadPostImage = async (req) => {
 
 const getPost = async (id) => {
   try {
+    console.log('right sql');
     const [rows] = await promisePool.execute('SELECT * FROM ms_post WHERE postId = ?', [id]);
     return rows[0];
   } catch (e) {
