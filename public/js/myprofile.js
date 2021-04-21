@@ -41,6 +41,7 @@ const getLoggedUser = async () => {
 };
 
 const getUsers = async () => {
+    console.log('getusers');
     try {
         const options = {
             headers: {
@@ -49,6 +50,7 @@ const getUsers = async () => {
         };
         const response = await fetch(url + '/user', options);
         const users = await response.json();
+        console.log(options);
         getUserInfo(users);
     }
     catch (e) {
@@ -57,5 +59,5 @@ const getUsers = async () => {
 };
 
 //getAllUsers();
-getLoggedUser();
-//getUsers(); //should work when logged in successfully
+//getLoggedUser();
+getUsers(); //should work when logged in successfully

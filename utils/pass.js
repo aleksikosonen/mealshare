@@ -10,10 +10,8 @@ const ExtractJWT = passportJWT.ExtractJwt;
 passport.use(new Strategy(
     async (username, password, done) => {
       const params = [username];
-      console.log('passport.use, ',params);
       try {
         const [user] = await userModel.getUserLogin(params);
-        console.log('Local strategy', user); 
         if (user === undefined) {
           return done(null, false, {message: 'Incorrect credentials.'});
         }
@@ -34,9 +32,12 @@ passport.use(new JWTStrategy({
     async (jwtPayload, done) => {
 
       try {
+        console.log('jwt: ' + jwtPayload);
         const user = await userModel.getUser(jwtPayload.userId);
+        console.log('passport.use : ' + user);
         return done(null, user);
       } catch (err) {
+        console.log('not success passport.use')
         return done(err);
       }
     },

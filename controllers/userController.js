@@ -14,6 +14,8 @@ const get_user = async(req, res) => {
 const user_list_get = async (req, res) => {
     const users = await userModel.getAllUsers();
     res.json(users);
+}
+
 const create_user = async(req, res, next) => {
     //checking if the request has any validation errors
     const errors = validationResult(req);

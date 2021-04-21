@@ -15,7 +15,7 @@ app.use('/login', passport.authenticate('jwt', {session:false}),  authRoute);
 app.use(express.static('public')); //Defining the public folder
 
 
-const port = 3000
+const port = 3000;
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });

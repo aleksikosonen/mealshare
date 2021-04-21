@@ -4,15 +4,6 @@ const pool = require('../database/db');
 const promisePool = pool.promise();
 const date = (new Date().toLocaleString());
 
-const getAllUsers = async () => {
-    try {
-        const [rows] = await promisePool.execute('SELECT * FROM ms_user');
-        return rows;
-    } catch (e) {
-        console.error('userModel getAllUsers:', e.message);
-    }
-};
-
 const getUser = async(id) => {
     try{
         const [rows] = await promisePool.query(`SELECT * FROM ms_user WHERE userId = ${id}`);
@@ -28,6 +19,9 @@ const getAllUsers = async () => {
         return rows;
     } catch (e) {
         console.error('userModel:', e.message);
+    }
+}
+
 const insertUser = async (req) => {
     try{
         const [rows] = await promisePool.execute(
@@ -42,7 +36,6 @@ const insertUser = async (req) => {
 
 const getUserLogin = async (params) => {
     try {
-        console.log("getUserLogin: ",params);
         const [rows] = await promisePool.execute(
             'SELECT * FROM ms_user WHERE username = ?;',
             params);
