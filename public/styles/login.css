@@ -58,6 +58,10 @@ button{
     box-shadow: 0 8px 6px -6px black;
 }
 
+button:hover {
+    opacity: 0.8;
+}
+
 .hide {
     display: none !important;
 }

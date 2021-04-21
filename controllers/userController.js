@@ -12,7 +12,6 @@ const get_user = async(req, res) => {
 
 const create_user = async(req, res, next) => {
     //checking if the request has any validation errors
-    console.log('creating user');
     const errors = validationResult(req);
     if (!errors.isEmpty()){
         return res.status(400).json({errors: errors.array()});
@@ -24,7 +23,6 @@ const create_user = async(req, res, next) => {
     user.email = req.body.email;
     user.fname = req.body.fname;
     user.lname = req.body.lname;
-    console.log('userController create_user', user);
     
     const id = await userModel.insertUser(user);
     if(id>0){
