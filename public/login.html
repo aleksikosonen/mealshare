@@ -8,25 +8,26 @@
 </head>
 <body>
 <div class="container">
-    <div class="form-wrapper">
-        <h3>Login</h3>
-        <form id="login-form" class="light-border">
-            <div>
-                <label>Email:</label>
-                <input class="light-border" type="text" name="username"/>
-            </div>
-            <div>
-                <label>Password:</label>
-                <input class="light-border" type="password" name="password"/>
-            </div>
-            <div>
-                <button class="light-border" type="submit">Log In</button>
-            </div>
-        </form>
+    <div class="forms" id="login-wrapper">
+        <div class="form-wrapper">
+            <h3>Login</h3>
+            <form id="login-form" class="light-border">
+                <div>
+                    <label>Email:</label>
+                    <input class="light-border" type="text" placeholder="Enter Username" name="username"/>
+                </div>
+                <div>
+                    <label>Password:</label>
+                    <input class="light-border" type="password" placeholder="Enter Password" name="password"/>
+                </div>
+                <div>
+                    <button class="light-border" type="submit">Log In</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
-<script src=""></script>
-
+<script src="js/serialize.js"></script>
+<script src="js/login.js"></script>
 </body>
 </html>

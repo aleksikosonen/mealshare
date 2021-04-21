@@ -3,20 +3,17 @@
 const express = require('express');
 const app = express();
 const userRoute = require('./routes/userRoute');
+const authRoute = require('./routes/authRoute');
+const passport = require('./utils/pass');
 
-app.get('/', (req, res) =>{
-    res.send('<h1>Hello world!</h1>')
-});
 
-app.post('/', (req, res) => {
-    res.send();
-});
-
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
-
-
-app.use('/user', userRoute);
+app.use('/auth', authRoute);
+app.use('/user', passport.authenticate('jwt', {session:false}),  userRoute);
+app.use('/login', passport.authenticate('jwt', {session:false}),  authRoute);
 app.use(express.static('public')); //Defining the public folder
+
 
 const port = 3000
 app.listen(port, () => {
