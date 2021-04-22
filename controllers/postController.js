@@ -8,6 +8,11 @@ const post_list_get = async (req, res) => {
   return res.json(posts);
 };
 
+const post_list_get_postedBy = async (req, res) => {
+  const posts = await postModel.getPostedBy();
+  return res.json(posts);
+};
+
 //Made for later adding more details to post
 const post_create = async (req, res) => {
   const errors = validationResult(req);
@@ -29,7 +34,6 @@ const post_create_image = async (req, res) => {
     return res.status(400).json({errors: errors.array()});
   }
   try {
-    console.log('get a user from controller', req.user);
     const id = await postModel.uploadPostImage(req);
     const post = await postModel.getPost(id);
     res.send(post);
@@ -42,4 +46,5 @@ module.exports = {
   post_create,
   post_list_get,
   post_create_image,
+  post_list_get_postedBy,
 };

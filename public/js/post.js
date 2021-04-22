@@ -19,6 +19,7 @@ addForm.addEventListener('submit', async (evt) => {
   };
   const response = await fetch(url + '/post', fetchOptions);
   const json = await response.json();
+  window.location.href = 'http://localhost:3000/post.html'
 });
 
 const updateImage = (posts) => {
@@ -45,10 +46,9 @@ const getLatestPost = async () => {
   }
 };
 
-const getUserInfo = (users) => {
-  users.forEach((user) => {
-    postedBy.innerHTML = user.username;
-  });
+const getPostInfo = (posts) => {
+    const index = posts.length - 1;
+    postedBy.innerHTML = posts[0].Poster;
 }
 
 const getUsers = async () => {
@@ -58,9 +58,9 @@ const getUsers = async () => {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
       },
     };
-    const response = await fetch(url + '/user', options);
-    const users = await response.json();
-    getUserInfo(users);
+    const responsePost = await fetch(url + '/post/postedBy', options);
+    const posts = await responsePost.json();
+    getPostInfo(posts);
   }
   catch (e) {
     console.log(e.message);

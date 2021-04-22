@@ -24,6 +24,7 @@ const testFile = (req, res, next) => {
 const upload = multer({dest: 'uploads/', fileFilter});
 
 router.get('/', postController.post_list_get);
+router.get('/postedBy', postController.post_list_get_postedBy);
 
 router.post('/',
     upload.single('post'),
