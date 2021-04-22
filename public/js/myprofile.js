@@ -4,8 +4,7 @@ const url = 'http://localhost:3000';
 
 const username = document.querySelector('#username');
 const bio = document.querySelector('#bio');
-
-const loggedId = 4; // at this point this info is hardcoded
+const photoContainer = document.querySelector('#photoContainer');
 
 const getUserInfo = (users) => {
     //done with foreach if in some case would need to handle multiple users
@@ -15,45 +14,37 @@ const getUserInfo = (users) => {
     });
 }
 
-const getAllUsers = async () => {
-    //If is needed to handle multiple users
-    try {
-        const response = await fetch(url + '/user/');
-        const users = await response.json();
-        getUserInfo(users);
-    }
-    catch (e) {
-        console.log('error at getAllUsers', e.message);
-    }
-};
+const getUserImages = (posts, loggedUser) => {
+    const userPhotos = posts.filter(user => user.userId === loggedUser[0].userId);
+    userPhotos.reverse();
+    userPhotos.forEach((post) => {
+        const photo = document.createElement("img");
+        photo.src = post.file;
+        photo.alt = post.caption;
+        photo.className = "profilePhotoGrid";
+        photoContainer.appendChild(photo);
+    });
+}
 
-const getLoggedUser = async () => {
-    try {
-        const response = await fetch(url + '/user/' + loggedId);
-        const users = await response.json();
-        getUserInfo(users);
-    }
-    catch (e) {
-        console.log(e.message);
-    }
-};
-
-const getUsers = async () => {
+const getMyProfile = async () => {
     try {
         const options = {
             headers: {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
             },
         };
-        const response = await fetch(url + '/user', options);
-        const users = await response.json();
+        const responsePost = await fetch(url + '/post', options);
+        const posts = await responsePost.json();
+
+        const responseUser = await fetch(url + '/user', options);
+        const users = await responseUser.json();
+
         getUserInfo(users);
+        getUserImages(posts, users);
     }
     catch (e) {
-        console.log('error at getUsers',  e.message);
+        console.log(e.message);
     }
 };
 
-//getAllUsers();
-//getLoggedUser();
-getUsers(); //should work when logged in successfully
+getMyProfile();
