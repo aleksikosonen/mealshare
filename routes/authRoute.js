@@ -9,6 +9,9 @@ const { body } = require('express-validator');
 // Login
 router.post('/login', authController.login);
 
+//Logout
+router.get('/logout', authController.logout);
+
 //Register
 router.post('/register',
     body('username').isLength({min: 3}).escape().blacklist(';'),

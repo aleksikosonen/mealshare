@@ -23,7 +23,7 @@ const getAllUsers = async () => {
         getUserInfo(users);
     }
     catch (e) {
-        console.log(e.message);
+        console.log('error at getAllUsers', e.message);
     }
 };
 
@@ -50,7 +50,7 @@ const getUsers = async () => {
         getUserInfo(users);
     }
     catch (e) {
-        console.log(e.message);
+        console.log('error at getUsers',  e.message);
     }
 };
 

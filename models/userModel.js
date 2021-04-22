@@ -2,7 +2,7 @@
 
 const pool = require('../database/db');
 const promisePool = pool.promise();
-const date = (new Date().toLocaleString());
+const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
 const getUser = async(id) => {
     try{
