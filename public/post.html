@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add post</title>
+    <link rel="stylesheet" href="styles/post.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<div class="form-wrapper">
+    <h3>Add post</h3>
+    <form class="light-border"
+          enctype="multipart/form-data"
+          id="add-post-form">
+        <input class="light-border" type="text" name="caption" placeholder="caption" required>
+        <input class="light-border" type="file" name="post" accept="image/*" placeholder="Choose file">
+        <button class="light-border" type="submit">Upload</button>
+    </form>
+</div>
+
+<div id="latestPost">
+    <p>Latest post in Mealshare</p>
+    <img src="" alt="" id="latestUpload">
+    <p id="captionText"></p>
+    <p id="postedBy"></p>
+</div>
+
+<script src="js/serialize.js"></script>
+<script src="js/post.js"></script>
+
+</body>
+</html>

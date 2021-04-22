@@ -31,7 +31,6 @@ const getLoggedUser = async () => {
     try {
         const response = await fetch(url + '/user/' + loggedId);
         const users = await response.json();
-        console.log(users);
         getUserInfo(users);
     }
     catch (e) {
@@ -47,7 +46,7 @@ const getUsers = async () => {
             },
         };
         const response = await fetch(url + '/user', options);
-        const users = await response.json();;
+        const users = await response.json();
         getUserInfo(users);
     }
     catch (e) {
