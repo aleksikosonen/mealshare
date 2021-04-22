@@ -38,7 +38,6 @@ const post_create_image = async (req, res) => {
   }
 };
 
-
 module.exports = {
   post_create,
   post_list_get,

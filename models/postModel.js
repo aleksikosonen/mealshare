@@ -1,9 +1,7 @@
 'use strict';
 const pool = require('../database/db');
 const promisePool = pool.promise();
-
 const date = (new Date()).toLocaleString();
-
 
 const uploadPost = async (req) => {
   try {
@@ -46,7 +44,6 @@ const getAllPosts = async () => {
     console.error('catModel:', e.message);
   }
 };
-
 
 module.exports = {
   uploadPost,

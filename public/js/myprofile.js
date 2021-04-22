@@ -20,7 +20,6 @@ const getAllUsers = async () => {
     try {
         const response = await fetch(url + '/user/');
         const users = await response.json();
-        console.log(users);
         getUserInfo(users);
     }
     catch (e) {
@@ -32,7 +31,6 @@ const getLoggedUser = async () => {
     try {
         const response = await fetch(url + '/user/' + loggedId);
         const users = await response.json();
-        console.log(users);
         getUserInfo(users);
     }
     catch (e) {
@@ -47,10 +45,8 @@ const getUsers = async () => {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
             },
         };
-        console.log(options);
         const response = await fetch(url + '/user', options);
         const users = await response.json();
-        console.log(options);
         getUserInfo(users);
     }
     catch (e) {

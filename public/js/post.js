@@ -19,27 +19,24 @@ addForm.addEventListener('submit', async (evt) => {
   };
   const response = await fetch(url + '/post', fetchOptions);
   const json = await response.json();
-  console.log('add response', json);
 });
 
-const updateImage = async (posts) => {
+const updateImage = (posts) => {
     const index = posts.length - 1;
     latestUpload.src = posts[index].file; //hardcoded to show latest upload
     captionText.innerHTML = posts[index].caption;
-    console.log('postindex', posts[index]);
     postedBy.innerHTML = posts[index].userId;
 }
 
 const getLatestPost = async () => {
-  try { const options = {
+  try {
+    const options = {
     headers: {
       'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
     },
   };
-    console.log(options);
     const response = await fetch(url + '/post', options);
     const posts = await response.json();
-    console.log('posts', posts);
     updateImage(posts);
     getUsers();
   }
@@ -61,10 +58,8 @@ const getUsers = async () => {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
       },
     };
-    console.log(options);
     const response = await fetch(url + '/user', options);
     const users = await response.json();
-    console.log(options);
     getUserInfo(users);
   }
   catch (e) {
@@ -72,5 +67,5 @@ const getUsers = async () => {
   }
 };
 
-getLatestPost()
+getLatestPost();
 
