@@ -52,10 +52,15 @@ const getPostedBy = async () => {
   }
 };
 
+const createTags = async (req) => {
+  
+}
+
 module.exports = {
   uploadPost,
   getPost,
   getAllPosts,
   uploadPostImage,
   getPostedBy,
+  createTags,
 };

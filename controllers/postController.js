@@ -28,11 +28,20 @@ const post_create = async (req, res) => {
   }
 };
 
-const post_create_image = async (req, res) => {
+const filterItems = (arr, query) => {
+  return arr.filter(el => el.toLowerCase().indexOf(query.toLowerCase()) !== -1)
+}
+
+const post_create_image =  async (req, res) => {
   const errors = validationResult(req);
+  const stringed = req.body.caption.split(/(\s+)/);
+  const hashtags = filterItems(stringed, '#');
+  if(!hashtags.isEmpty()){
+    
+  }
   if (!errors.isEmpty()) {
     return res.status(400).json({errors: errors.array()});
-  }
+  } 
   try {
     const id = await postModel.uploadPostImage(req);
     const post = await postModel.getPost(id);
