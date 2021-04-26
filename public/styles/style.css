@@ -156,6 +156,26 @@ li a {
     max-height: 300px;
 }
 
+.feedContainer h2{
+    width:100%;
+    height:50px;
+    display:flex;
+    text-align: center;
+}
+
+.feedContainer #avatar{
+    border-radius: 50%;
+    max-width: 40px;
+    max-height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+}
+
+.feedContainer a{
+    font-size:20px;
+    align-self: center;
+}
+
 #showMoreBtn{
     margin:0;
     width:150px;

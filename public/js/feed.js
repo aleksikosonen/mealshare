@@ -7,7 +7,10 @@ const loadData = (posts) => {
   posts.forEach((post) => {
     const html = `<div class="post">
                     <article>
-                    <h2>${post.userId}</h2>
+                    <h2>
+                        <img src="${post.avatar}" alt="" id="avatar">
+                        <a>${post.username}</a>
+                    </h2>
                     <figure>
                        <img src="${post.file}" alt="${post.caption}">
                     </figure>
@@ -19,7 +22,7 @@ const loadData = (posts) => {
   });
 };
 
-const getLatestPosts = async () => {
+const getPosts = async () => {
   console.log('feed.js ' + retrieved);
   try {
     const options = {
@@ -37,11 +40,11 @@ const getLatestPosts = async () => {
   }
 };
 
-getLatestPosts();
+getPosts();
 
 showMoreBtn.addEventListener('click',(evt)=>{
   retrieved += 6;
-  getLatestPosts();
+  getPosts();
 })
 
 
