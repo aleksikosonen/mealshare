@@ -8,6 +8,11 @@ const post_list_get = async (req, res) => {
   return res.json(posts);
 };
 
+const feed_list_get = async (req, res) => {
+  const posts = await postModel.getFeedPosts(req);
+  return res.json(posts);
+};
+
 const post_list_get_postedBy = async (req, res) => {
   const posts = await postModel.getPostedBy();
   return res.json(posts);
@@ -47,4 +52,5 @@ module.exports = {
   post_list_get,
   post_create_image,
   post_list_get_postedBy,
+  feed_list_get,
 };

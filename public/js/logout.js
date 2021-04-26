@@ -1,16 +1,11 @@
 const logIn = document.querySelector('#logIn');
 const logOut = document.querySelector('#logOut');
 const signUp = document.querySelector('#signUp');
+const landContainer = document.querySelector('#landContainer');
+const feedContainer = document.querySelector('#feedContainer')
+const body = document.querySelector('body');
+const layer = document.querySelector('#layer')
 const url = 'http://localhost:3000';
-
-//if logged in hide log in and signup
-if (sessionStorage.getItem('token')) {
-  logIn.style.display = 'none';
-  signUp.style.display = 'none';
-  logOut.style.display = 'block';
-}else{
-  logOut.style.display = 'none';
-}
 
 //logout
 logOut.addEventListener('click', async (evt) => {
@@ -32,8 +27,27 @@ logOut.addEventListener('click', async (evt) => {
     logIn.style.display = 'flex';
     signUp.style.display = 'flex';
     logOut.style.display = 'none';
+    landContainer.style.display = 'flex';
+    feedContainer.style.display = 'none';
+    layer.style.height = '100%';
   }
   catch (e) {
     console.log('logout error' + e.message);
   }
 });
+
+//if logged in hide log in and signup
+if (sessionStorage.getItem('token')) {
+  logIn.style.display = 'none';
+  signUp.style.display = 'none';
+  logOut.style.display = 'flex';
+  landContainer.style.display = 'none';
+  feedContainer.style.display = 'flex';
+  layer.style.height = 'auto';
+}else{
+  logOut.style.display = 'none';
+  feedContainer.style.display ='none';
+}
+
+
+

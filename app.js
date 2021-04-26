@@ -9,9 +9,11 @@ const passport = require('./utils/pass');
 
 app.use(express.static('public'));
 app.use(express.static('uploads'));
+app.use('/thumbnails', express.static('thumbnails')); // Define thumbnails folder
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
+
 
 app.use('/auth', authRoute);
 app.use('/user', passport.authenticate('jwt', {session:false}),  userRoute);

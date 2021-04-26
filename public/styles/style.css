@@ -4,10 +4,12 @@
     padding: 0;
 }
 
-
+html{
+    height: 100%;
+}
 
 body {
-    height: 100vh;
+    min-height: 100%;
     background-image: url('../images/food_background.jpeg ');
     background-position: center;
     background-repeat: no-repeat;
@@ -114,5 +116,59 @@ li a {
 
 .accent {
     color: #FF6965;
+}
+
+.feedContainer {
+    height: 100%;
+    width:65%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-self: center;
+    align-items: center;
+    text-align: center;
+    background-color:rgba(255,255,255, 0.5);
+}
+
+.feedContainer .post{
+    width:30%;
+    max-width:30%;
+    max-height:450px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-self: center;
+    align-items: center;
+    text-align: center;
+    background: #FF6965;
+}
+
+.feedContainer article{
+    width:75%;
+    margin: 20px;
+    background-color: #4E596A90;
+    border-radius: 17%;
+}
+
+.feedContainer img{
+    border: solid;
+    max-width: 300px;
+    max-height: 300px;
+}
+
+#showMoreBtn{
+    margin:0;
+    width:150px;
+    height:50px;
+    font-size:15px;
+    position:absolute;
+    left: 50%;
+    margin-left: -50px;
+    bottom:0;
+    background-color:rgba(0,0,0, 0.5);
+}
+
+#showMoreBtn:hover{
+    background-color:rgba(0,0,0, 0.65);
 }
 

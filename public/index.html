@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<div class="layer">
+<div class="layer" id="layer">
 
     <nav class="topNav">
         <li><a href="index.html"><img src="images/mealshare_logo_red.png" alt="PageId" style="width: 50px"></a></li>
@@ -18,7 +18,12 @@
         <li><a href="/index.html" id="logOut">LOG OUT</a></li>
     </nav>
 
-    <div class="landContainer">
+    <div class="feedContainer" id ='feedContainer'>
+
+    </div>
+    <button id="showMoreBtn">Show more...</button>
+
+    <div class="landContainer" id="landContainer">
         <div class="landContainerLeft">
             <div class="landContainerLeftTop">
                 <p class="landName">mealshare</p>
@@ -38,12 +43,12 @@
             <img src="images/food_hexa.png" alt="food" class="hexFood">
             <img src="images/homeofmedia.png" alt="foodCatchPhrase" class="hexHome">
         </div>
+
     </div>
-
-
 
 </div>
 <script src="js/serialize.js"></script>
 <script src="js/logout.js"></script>
+<script src="js/feed.js"></script>
 </body>
 </html>

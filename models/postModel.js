@@ -39,7 +39,16 @@ const getAllPosts = async () => {
     const [rows] = await promisePool.execute('SELECT * from ms_post ORDER BY postId');
     return rows;
   } catch (e) {
-    console.error('catModel:', e.message);
+    console.error('postModel:', e.message);
+  }
+};
+
+const getFeedPosts = async (req) => {
+  try {
+    const [rows] = await promisePool.execute('SELECT * from ms_post ORDER BY postId LIMIT 6 OFFSET ?', [req.params.retrieved]);
+    return rows;
+  } catch (e) {
+    console.error('postModel:', e.message);
   }
 };
 
@@ -48,7 +57,7 @@ const getPostedBy = async () => {
     const [rows] = await promisePool.execute('SELECT postId, ms_user.username AS Poster FROM ms_post LEFT JOIN ms_user ON ms_post.userId = ms_user.userId');
     return rows;
   } catch (e) {
-    console.error('catModel:', e.message);
+    console.error('postModel:', e.message);
   }
 };
 
@@ -58,4 +67,5 @@ module.exports = {
   getAllPosts,
   uploadPostImage,
   getPostedBy,
+  getFeedPosts,
 };
