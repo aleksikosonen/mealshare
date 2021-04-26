@@ -34,6 +34,8 @@ passport.use(new JWTStrategy({
 
       try {
         const [user] = await userModel.getUser(jwtPayload.userId);
+        delete user.password;
+        console.log('passjs', user);
         return done(null, user);
       } catch (err) {
         console.log('not success passport.use')
