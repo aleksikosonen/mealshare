@@ -2,6 +2,7 @@
 
 const postModel = require('../models/postModel');
 const {validationResult} = require('express-validator');
+const { hash } = require('bcryptjs');
 
 const post_list_get = async (req, res) => {
   const posts = await postModel.getAllPosts();
@@ -36,15 +37,16 @@ const post_create_image =  async (req, res) => {
   const errors = validationResult(req);
   const stringed = req.body.caption.split(/(\s+)/);
   const hashtags = filterItems(stringed, '#');
-  if(!hashtags.isEmpty()){
-    
-  }
   if (!errors.isEmpty()) {
     return res.status(400).json({errors: errors.array()});
   } 
   try {
     const id = await postModel.uploadPostImage(req);
     const post = await postModel.getPost(id);
+    if(!(Object.entries(hashtags).length === 0)){
+      console.log('sending hashtags ', id," ", hashtags);
+        const tags = await postModel.createTags(id, hashtags);
+    }
     res.send(post);
   } catch (e) {
     res.status(400).json({error: e.message});
