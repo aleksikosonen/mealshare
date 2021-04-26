@@ -151,7 +151,6 @@ module.exports = {
   getAllPosts,
   uploadPostImage,
   getPostedBy,
-  hashtags,
   createTags,
   uploadPostRecipe,
   getRecipe,
