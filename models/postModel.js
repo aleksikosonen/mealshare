@@ -45,7 +45,7 @@ const getRecipe = async (id) => {
 
 const getIngredient = async (id) => {
   try {
-    const [rows] = await promisePool.execute('SELECT * FROM ms_ingredient_object WHERE recipeId = ?', [id]);
+    const [rows] = await promisePool.execute('SELECT ingredient, amount, unit FROM ms_ingredient_object WHERE recipeId = ? ORDER BY ingredient_id DESC LIMIT 1', [id]);
     return rows[0];
   } catch (e) {
     console.error('postModel getIngredient :', e.message);
@@ -102,7 +102,7 @@ const getAllRecipes = async () => {
 
 const getPostedBy = async () => {
   try {
-    const [rows] = await promisePool.execute('SELECT postId, ms_user.username AS Poster FROM ms_post LEFT JOIN ms_user ON ms_post.userId = ms_user.userId');
+    const [rows] = await promisePool.execute('SELECT postId, ms_user.username AS Poster FROM ms_post LEFT JOIN ms_user ON ms_post.userId = ms_user.userId ORDER BY postId DESC LIMIT 1');
     return rows;
   } catch (e) {
     console.error('postmodel getPostedBy:', e.message);

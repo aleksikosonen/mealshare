@@ -38,6 +38,7 @@ router.post('/recipe/:id', postController.post_create_recipe);
 router.post('/ingredient/:id', postController.post_add_ingredient);
 
 router.get('/:id', postController.post_list_get);
-router.get('/ingredient/', postController.post_list_get_ingredient);
+router.get('/ingredient/', postController.post_list_get_ingredients);
+router.get('/recipe/ingredients/:id', postController.post_list_get_ingredients)
 
 module.exports = router;
