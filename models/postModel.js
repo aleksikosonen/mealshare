@@ -45,7 +45,7 @@ const getAllPosts = async () => {
 
 const getFeedPosts = async (req) => {
   try {
-    const [rows] = await promisePool.execute('SELECT postId, file, caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar FROM ms_post LEFT JOIN ms_user ON ms_post.userId = ms_user.userId ORDER BY postId LIMIT 6 OFFSET ?', [req.params.retrieved]);
+    const [rows] = await promisePool.execute('SELECT postId, file, caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar FROM ms_post LEFT JOIN ms_user ON ms_post.userId = ms_user.userId ORDER BY postId DESC LIMIT 6 OFFSET ?', [req.params.retrieved]);
     return rows;
   } catch (e) {
     console.error('postModel:', e.message);
