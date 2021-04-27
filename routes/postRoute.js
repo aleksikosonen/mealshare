@@ -28,11 +28,17 @@ router.get('/postedBy', postController.post_list_get_postedBy);
 router.post('/feed/:retrieved', postController.feed_list_get);
 router.get('/recipe', postController.post_list_get_all_recipes);
 
+router.post('/com/:postId/:commenter',
+  body('comment').isLength({min: 1}).escape().blacklist(';'),
+  postController.post_add_comment
+);
+
 router.post('/',
-    upload.single('post'),
-    testFile,
-    body('caption').isLength({min: 1}),
-    postController.post_create_image);
+  upload.single('post'),
+  testFile,
+  body('caption').isLength({min: 1}),
+  postController.post_create_image
+);
 
 router.post('/recipe/:id', postController.post_create_recipe);
 

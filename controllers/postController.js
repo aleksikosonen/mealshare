@@ -19,6 +19,12 @@ const post_list_get_postedBy = async (req, res) => {
   return res.json(posts);
 };
 
+const post_add_comment = async (req, res) => {
+  console.log('add comment ', req.body.comment);
+  const comments = await postModel.addComment(req.params.postId, req.params.commenter, req.body.comment);
+  return res.json(comments);
+};
+
 /*const post_list_get_ingredient = async (req, res) => {
   //const posts = await postModel.getIngredient(req.params.id);
   const ingredients = await postModel.getIngredient(req.params.id);
@@ -113,4 +119,5 @@ module.exports = {
   post_add_ingredient,
   post_list_get_all_recipes,
   post_list_get_ingredients,
+  post_add_comment,
 };
