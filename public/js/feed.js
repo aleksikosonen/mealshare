@@ -1,9 +1,10 @@
 'use strict';
 const showMoreBtn = document.getElementById('showMoreBtn');
 
-let retrieved =  1;
+let retrieved =  0;
 
 const loadData = (posts) => {
+
   posts.forEach((post) => {
     const html = `<div class="post">
                     <article>
@@ -14,7 +15,7 @@ const loadData = (posts) => {
                     <figure>
                        <img src="${post.file}" alt="${post.caption}">
                     </figure>
-                    <a>${post.caption} &emsp;&emsp;&emsp;&emsp;&emsp; ❤️:xxx</a><br>
+                    <a>${post.caption} &emsp;&emsp;&emsp;&emsp;&emsp; <button id="likeBtn">❤️</button></a><br>
                     <a>Comments:</a>
                     </article>
                  </div>`;
@@ -42,7 +43,7 @@ const getPosts = async () => {
 
 getPosts();
 
-showMoreBtn.addEventListener('click',(evt)=>{
+showMoreBtn.addEventListener('click',()=>{
   retrieved += 6;
   getPosts();
 })

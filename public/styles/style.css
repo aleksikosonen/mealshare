@@ -44,7 +44,39 @@ body {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    background-color:rgba(0,0,0, 0.5);
 }
+
+.topNav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.topNav input[type=search] {
+    padding: 10px;
+    font-size: 17px;
+    border: none;
+}
+
+/*To remove 'clear' button*/
+[type="search"]::-webkit-search-cancel-button,
+[type="search"]::-webkit-search-decoration{
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.topNav .search-container button {
+    background: transparent;
+    border: none;
+    outline: none;
+    margin-left: -33px;
+}.topNav .search-container button:hover {
+     background: #ccc;
+ }.topNav .search-container button img{
+       width: 20px;
+       height: 20px;
+       object-fit: cover;
+   }
 
 li a {
     display: block;
@@ -191,4 +223,18 @@ li a {
 #showMoreBtn:hover{
     background-color:rgba(0,0,0, 0.65);
 }
+
+#likeBtn{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    font-size: 20px;
+}#likeBtn:hover{
+     transform: scale(1.1);
+ }#likeBtn:active{
+    transform: scale(0.8);
+   }
+
 
