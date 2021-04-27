@@ -25,6 +25,7 @@ const upload = multer({dest: 'uploads/', fileFilter});
 
 router.get('/', postController.post_list_get);
 router.get('/postedBy', postController.post_list_get_postedBy);
+router.post('/feed/:retrieved', postController.feed_list_get);
 router.get('/recipe', postController.post_list_get_all_recipes);
 
 router.post('/',
