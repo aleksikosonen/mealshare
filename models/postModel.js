@@ -37,7 +37,7 @@ const getPost = async (id) => {
 
 const getRecipe = async (id) => {
   try {
-    const [rows] = await promisePool.execute('SELECT * FROM ms_recipe WHERE recipeId = ?', [id]);
+    const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId where ms_post_ingredients.postId = ? ORDER BY addOrder DESC LIMIT 1;', [id]);
     return rows[0];
   } catch (e) {
     console.error('postModel getPost :', e.message);
@@ -46,12 +46,21 @@ const getRecipe = async (id) => {
 
 const getIngredient = async (id) => {
   try {
-    const [rows] = await promisePool.execute('SELECT ingredient, amount, unit FROM ms_ingredient_object WHERE recipeId = ? ORDER BY ingredient_id DESC LIMIT 1', [id]);
+    const [rows] = await promisePool.execute('SELECT ingredientId, ingredient FROM ms_ingredient_object WHERE ingredientId = ?', [id]);
     return rows[0];
   } catch (e) {
     console.error('postModel getIngredient :', e.message);
   }
 };
+
+const getUnits = async (id) => {
+  try {
+    const [rows] = await promisePool.execute('select ingredientId from ms_post_ingredients where postId = ?', [id]);
+    return rows[0];
+  } catch (e) {
+    console.error('postModel getIngredient :', e.message);
+  }
+}
 
 const getIngredients = async () => {
   try {
@@ -62,20 +71,26 @@ const getIngredients = async () => {
   }
 };
 
-const uploadPostRecipe = async (req, id) => {
+const uploadIngredient = async (req) => {
   try {
-    const [rows] = await promisePool.execute('INSERT INTO ms_recipe (postId) VALUES (?);', [id]);
+    const [rows] = await promisePool.execute('INSERT IGNORE INTO ms_ingredient_object (ingredient) VALUES (?);',
+        [req.body.ingredient]);
+    if (rows.insertId === 0) {
+      console.log('ingredient already exists');
+      const [ingId] = await promisePool.execute('SELECT ingredientId from ms_ingredient_object where ingredient = ?',[req.body.ingredient])
+      return ingId[0].ingredientId;
+    }
     return rows.insertId;
   } catch (e) {
-    console.error('upload recipe :', e.message);
+    console.error('upload ingredient :', e.message);
     throw new Error('upload failed');
   }
 };
 
-const uploadIngredient = async (req, id) => {
+const uploadPostIngredients = async (req, id) => {
   try {
-    const [rows] = await promisePool.execute('INSERT INTO ms_ingredient_object (recipeId, ingredient, unit, amount) VALUES (?, ?, ?, ?);',
-        [id, req.body.ingredient, req.body.unit, req.body.amount]);
+    const [rows] = await promisePool.execute('INSERT INTO ms_post_ingredients (ingredientId, postId, unit, amount) VALUES (?, ?, ?, ?);',
+        [id, req.params.id, req.body.unit, req.body.amount]);
     return rows.insertId;
   } catch (e) {
     console.error('upload ingredient :', e.message);
@@ -102,14 +117,17 @@ const getFeedPosts = async (req) => {
   }
 };
 
-const getAllRecipes = async () => {
+const likePost = async (postId, user) => {
+  console.log('likepost ', user);
   try {
-    const [rows] = await promisePool.execute('SELECT * from ms_recipe ORDER BY recipeId');
-    return rows;
+    const [rows] = await promisePool.execute('INSERT INTO ms_likes (postId, userId, vst) VALUES (?, ?, ?);',
+        [postId, user, date]);
+    return rows.insertId;
   } catch (e) {
-    console.error('postModel getAllPosts:', e.message);
+    console.error('like :', e.message);
+    throw new Error('like failed');
   }
-};
+}
 
 const getPostedBy = async () => {
   try {
@@ -163,10 +181,11 @@ module.exports = {
   getPostedBy,
   getFeedPosts,
   createTags,
-  uploadPostRecipe,
   getRecipe,
   uploadIngredient,
-  getAllRecipes,
   getIngredient,
   getIngredients,
+  uploadPostIngredients,
+  getUnits,
+  likePost,
 };

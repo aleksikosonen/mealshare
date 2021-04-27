@@ -26,15 +26,13 @@ const upload = multer({dest: 'uploads/', fileFilter});
 router.get('/', postController.post_list_get);
 router.get('/postedBy', postController.post_list_get_postedBy);
 router.post('/feed/:retrieved', postController.feed_list_get);
-router.get('/recipe', postController.post_list_get_all_recipes);
+router.post('/feed/like/:id/:user', postController.feed_like);
 
 router.post('/',
     upload.single('post'),
     testFile,
     body('caption').isLength({min: 1}),
     postController.post_create_image);
-
-router.post('/recipe/:id', postController.post_create_recipe);
 
 router.post('/ingredient/:id', postController.post_add_ingredient);
 
