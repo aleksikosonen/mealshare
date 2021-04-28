@@ -45,9 +45,75 @@ const getUserLogin = async (params) => {
     }
 };
 
+const updateUser = async (id, req) => {
+    try {
+        const [rows] = await promisePool.execute(
+            'UPDATE ms_user SET fname = ?, lname = ?, bio = ? WHERE userId = ?;',
+            [req.body.fname, req.body.lname, req.body.bio, id]);
+        console.log('userModel update:', rows);
+        return rows.affectedRows === 1;
+    } catch (e) {
+        return false;
+    }
+};
+
+const updateUsername = async (req) => {
+    try {
+        const [rows] = await promisePool.execute(
+            'UPDATE ms_user SET username = ? WHERE userId = ?;',
+            [req.newUsername, req.loggedUser]);
+        console.log('userModel update username:', rows);
+        console.log('userModel affected rows:', rows.affectedRows);
+        return rows.affectedRows === 1;
+    } catch (e) {
+        return false;
+    }
+};
+
+const updateEmail = async (req) => {
+    try {
+        const [rows] = await promisePool.execute(
+            'UPDATE ms_user SET email = ? WHERE userId = ?;',
+            [req.newEmail, req.loggedUser]);
+        console.log('userModel update email:', rows);
+        console.log('userModel affected rows:', rows.affectedRows);
+        return rows.affectedRows === 1;
+    } catch (e) {
+        return false;
+    }
+};
+
+const updatePassword = async (req, id) => {
+    try {
+        const [rows] = await promisePool.execute(
+            'UPDATE ms_user SET password = ? WHERE userId = ?;',
+            [req.password, id]);
+        console.log('userModel update:', rows);
+        return rows.affectedRows === 1;
+    } catch (e) {
+        return false;
+    }
+}
+
+const uploadAvatar = async (req) => {
+    try {
+        const [rows] = await promisePool.execute('UPDATE ms_user set avatar = ? WHERE userId = ?;',
+            [req.file.filename, req.params.id]);
+        return rows.insertId;
+    } catch (e) {
+        console.error('upload post :', e.message);
+        throw new Error('upload failed');
+    }
+};
+
 module.exports = {
     getUser,
     insertUser,
     getUserLogin,
     getAllUsers,
+    updateUser,
+    updatePassword,
+    updateUsername,
+    updateEmail,
+    uploadAvatar,
 };
