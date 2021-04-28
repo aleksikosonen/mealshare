@@ -151,7 +151,7 @@ const createTags = async (postId, tag) => {
       if(tags[i].length === 0){
         const [rows] = await promisePool.execute('INSERT INTO ms_hashtags (tag) VALUES (?);',[tag[i]]);
           tags.push(rows);
-        }else if (!tag.includes(tags[i][i].tag)){
+        } else if (!tag.includes(tags[i][i].tag)){
           const [rows] = await promisePool.execute('INSERT INTO ms_hashtags (tag) VALUES (?);',[tag[i]]);
           tags.push(rows);
       } 
@@ -173,6 +173,29 @@ const createTags = async (postId, tag) => {
   }
 }
 
+const addComment = async (postId, userId, comment) => {
+ // console.log(postId, " ",userId, " ", comment)
+  try{
+    const [rows] = await promisePool.execute('INSERT INTO ms_postcomment (userId, postId, comment, vst) values (?, ?, ?, ?);', [userId, postId, comment, date]);
+    return rows;
+  }catch(e){
+    console.error('addcomment, error ', e.message);
+  }
+}
+
+const findComments = async(postId) => {
+  try {
+    const comments = [];
+    for(let i = 0; i < postId.length; i++){
+      const [rows] = await promisePool.execute('SELECT ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_user.username from ms_postcomment left join ms_user on ms_postcomment.userId = ms_user.userId where postId = ? ORDER BY commentId', [postId[i]]);
+      comments.push(rows);
+    }
+    return comments;
+  }catch(e){
+    console.error('findComments, error ', e.message);
+  }
+}
+ 
 module.exports = {
   uploadPost,
   getPost,
@@ -185,6 +208,8 @@ module.exports = {
   uploadIngredient,
   getIngredient,
   getIngredients,
+  addComment,
+  findComments,
   uploadPostIngredients,
   getUnits,
   likePost,

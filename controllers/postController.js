@@ -25,6 +25,18 @@ const post_list_get_postedBy = async (req, res) => {
   return res.json(posts);
 };
 
+
+const post_add_comment = async (req, res) => {
+  console.log('add comment ', req.body.comment);
+  const comments = await postModel.addComment(req.params.postId, req.params.commenter, req.body.comment);
+  return res.json(comments);
+};
+
+const post_find_comments = async(req, res) => {
+  const comments = await postModel.findComments(req.body);
+  return res.json(comments);
+}
+
 const post_list_get_ingredients = async (req, res) => {
   const ingredients = await postModel.getRecipe(req.params.id);
   return res.json(ingredients);
@@ -93,5 +105,7 @@ module.exports = {
   feed_list_get,
   post_add_ingredient,
   post_list_get_ingredients,
+  post_add_comment,
+  post_find_comments,
   feed_like,
 };
