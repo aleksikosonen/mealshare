@@ -3,10 +3,7 @@
 const showMoreBtn = document.getElementById('showMoreBtn');
 const likeButton = document.querySelectorAll('#likeBtn');
 
-
-
-const showMoreBtn = document.getElementById('showMoreBtn');
-let retrieved =  0;
+let retrieved = 0;
 
 const loggedUser = window.addEventListener('load', () => {
 
@@ -42,22 +39,6 @@ const loadData = (posts, comments) => {
         </article>
       </li>
       `;
-const loadData = (posts) => {
-
-  posts.forEach((post) => {
-    const html = `<div class="post">
-                    <article>
-                    <h2>
-                        <img src="${post.avatar}" alt="" id="avatar">
-                        <a>${post.username}</a>
-                    </h2>
-                    <figure>
-                       <img src="${post.file}" alt="${post.caption}">
-                    </figure>
-                    <a>${post.caption} &emsp;&emsp;&emsp;&emsp;&emsp; <button id="likeBtn" onclick="getLikeUser('${post.postId}')">❤️</button></a><br>
-                    <a>Comments:</a>
-                    </article>
-                 </div>`;
     feedContainer.innerHTML += html;
     console.log('i ', i);
     const elements = document.querySelectorAll('#commentList');
