@@ -33,6 +33,8 @@ router.post('/com/:postId/:commenter',
   postController.post_add_comment
 );
 
+router.post('/comm', postController.post_find_comments);
+
 router.post('/',
   upload.single('post'),
   testFile,

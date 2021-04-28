@@ -25,6 +25,11 @@ const post_add_comment = async (req, res) => {
   return res.json(comments);
 };
 
+const post_find_comments = async(req, res) => {
+  const comments = await postModel.findComments(req.body);
+  return res.json(comments);
+}
+
 /*const post_list_get_ingredient = async (req, res) => {
   //const posts = await postModel.getIngredient(req.params.id);
   const ingredients = await postModel.getIngredient(req.params.id);
@@ -120,4 +125,5 @@ module.exports = {
   post_list_get_all_recipes,
   post_list_get_ingredients,
   post_add_comment,
+  post_find_comments,
 };

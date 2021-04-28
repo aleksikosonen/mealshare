@@ -156,7 +156,7 @@ const createTags = async (postId, tag) => {
 }
 
 const addComment = async (postId, userId, comment) => {
-  console.log(postId, " ",userId, " ", comment)
+ // console.log(postId, " ",userId, " ", comment)
   try{
     const [rows] = await promisePool.execute('INSERT INTO ms_postcomment (userId, postId, comment, vst) values (?, ?, ?, ?);', [userId, postId, comment, date]);
     return rows;
@@ -165,6 +165,19 @@ const addComment = async (postId, userId, comment) => {
   }
 }
 
+const findComments = async(postId) => {
+  try {
+    const comments = [];
+    for(let i = 0; i < postId.length; i++){
+      const [rows] = await promisePool.execute('SELECT ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_user.username from ms_postcomment left join ms_user on ms_postcomment.userId = ms_user.userId where postId = ? ORDER BY commentId', [postId[i]]);
+      comments.push(rows);
+    }
+    return comments;
+  }catch(e){
+    console.error('findComments, error ', e.message);
+  }
+}
+ 
 module.exports = {
   uploadPost,
   getPost,
@@ -179,5 +192,6 @@ module.exports = {
   getAllRecipes,
   getIngredient,
   getIngredients,
-  addComment
+  addComment,
+  findComments,
 };

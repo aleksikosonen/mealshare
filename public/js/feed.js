@@ -1,40 +1,72 @@
 'use strict';
-const showMoreBtn = document.getElementById('showMoreBtn');
 
+
+const showMoreBtn = document.getElementById('showMoreBtn');
 let retrieved =  0;
 
 const loggedUser = window.addEventListener('load', () => {
 
 })
 
-const loadData = (posts) => {
-
-  posts.forEach((post) => {
-    const html = `<li class="post" data-postid=${post.postId}>
-                    <article>
-                      <h2>
-                        <img src="${post.avatar}" alt="" id="avatar">
-                        <a>${post.username}</a>
-                    </h2>
-                    <figure>
-                       <img src="${post.file}" alt="${post.caption}">
-                    </figure>
-                    <a>${post.caption} &emsp;&emsp;&emsp;&emsp;&emsp; <button id="likeBtn">❤️</button></a><br>
-                    <form id="commentForm">
-                      <div>
-                        <input class="light-border" type="text" placeholder="Comment" name="comment"/>
-                      </div>
-                      <div>
-                        <button class="light-border" type="submit">Comment</button>
-                      </div>
-                    </form>
-                    </article>
-                 </li`;
+const loadData = (posts, comments) => {
+  const merged = [].concat.apply([], comments)
+  console.log(merged)
+  posts.forEach((post, i) => {
+    const comment = merged.filter(e => e.postId === post.postId)
+    console.log('comment ids are ', comment)
+    const html = `
+      <li class="post" data-postid=${post.postId}>
+        <article>
+          <h2>
+            <img src="${post.avatar}" alt="" id="avatar">
+            <a>${post.username}</a>
+          </h2>
+          <figure>
+            <img src="${post.file}" alt="${post.caption}">
+          </figure>
+          <a>${post.caption} &emsp;&emsp;&emsp;&emsp;&emsp; <button id="likeBtn">❤️</button></a><br>
+          <ul id="commentList">
+          </ul>
+          <form id="commentForm">
+            <div>
+              <input class="light-border" type="text" placeholder="Comment" name="comment"/>
+            </div>
+            <div>
+              <button class="light-b<order" type="submit">Comment</button>
+            </div>
+          </form>
+        </article>
+      </li>
+      `;
     feedContainer.innerHTML += html;
+    console.log('i ', i);
+    const elements = document.querySelectorAll('#commentList');
+    const commentList = elements[i];
+
+    comment.forEach((e) => {
+      console.log('e ', e);
+      
+      const commentRender = document.createElement('div');
+      commentList.appendChild(commentRender);
+
+      const commenter = document.createElement('div');
+      commentRender.appendChild(commenter);
+
+      const commenterName = document.createElement('a');
+      commenterName.innerHTML = e.username;
+
+      const commenterAvatar = document.createElement('a');
+      commenter.appendChild(commenterAvatar);
+      commenter.appendChild(commenterName);
+
+      const commentCaption = document.createElement('p');
+      commentCaption.innerHTML= e.comment;
+      commentRender.appendChild(commentCaption)
+    });
   });
   
   feedContainer.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
 
     const id = e.target.closest('.post').dataset.postid;
     const data = serializeJson(e.target.closest('#commentForm'));
@@ -53,7 +85,6 @@ const loadData = (posts) => {
     } catch (e) {
         console.log(e.message);
     }
-    console.log(loggedUser[0][0])
     try{
       const options = {
         method: 'POST',
@@ -73,13 +104,8 @@ const loadData = (posts) => {
 
 };
 
-const getLoggedUser = async () => {
-  
-}
-
 
 const getPosts = async () => {
-  console.log('feed.js ' + retrieved);
   try {
     const options = {
       method:'POST',
@@ -89,10 +115,24 @@ const getPosts = async () => {
     };
     const response = await fetch(url + '/post/feed/' + retrieved, options);
     const posts = await response.json();
-    loadData(posts);
+
+    const postIds = []
+    posts.forEach(e => {postIds.push(e.postId)});
+    const fetchoptions = {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postIds),
+    };
+    const res = await fetch(url + `/post/comm`,fetchoptions);
+    const comments = await res.json(); 
+
+    loadData(posts, comments);      
   }
   catch (e) {
-    console.log(e.message);
+    console.error(e.message);
   }
 };
 
