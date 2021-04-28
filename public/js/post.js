@@ -43,8 +43,6 @@ addForm.addEventListener('submit', async (evt) => {
 
   addRecipe.addEventListener('click', (evt) => {
     evt.preventDefault();
-    getUsersAndPosts();
-
     addRecipe.remove();
     noRecipe.remove();
 
@@ -68,9 +66,9 @@ addForm.addEventListener('submit', async (evt) => {
     ingredientForm.addEventListener('submit', async (evt) => {
       evt.preventDefault();
       const data = serializeJson(ingredientForm);
-      addIngredient(data);
+      await addIngredient(data);
       clearInputs(ingredientForm);
-      getRecipeIngredients(recipeIngredients);
+      await getRecipeIngredients(recipeIngredients);
     });
 
     const doneButton = document.createElement('button');
@@ -119,8 +117,6 @@ const addIngredient = async (data) =>{
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
       },
     };
-    const responseRecipe = await fetch(url + '/post/recipe', options);
-    const recipes = await responseRecipe.json();
 
     const responseUser = await fetch(url + '/user', options);
     const users = await responseUser.json();
@@ -129,7 +125,6 @@ const addIngredient = async (data) =>{
     const posts = await responsePost.json();
 
     const latestPostByLoggedUser = posts.filter(user => user.userId === users[0].userId).pop().postId;
-    const latestRecipeByLoggedUser = recipes.filter(recipe => recipe.postId === latestPostByLoggedUser).pop().recipeId
 
     const fetchOptions = {
       method: 'POST',
@@ -139,24 +134,11 @@ const addIngredient = async (data) =>{
       },
       body: JSON.stringify(data),
     };
-    await fetch(url + '/post/ingredient/' + latestRecipeByLoggedUser, fetchOptions);
+    await fetch(url + '/post/ingredient/' + latestPostByLoggedUser, fetchOptions);
   }
   catch (e) {
     console.log(e.message);
   }
-};
-
-const setRecipeToPost = async (posts, logged) => {
-  const latestPost = posts.filter(user => user.userId === logged[0].userId).pop();
-  const fetchOptions = {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-    }
-  };
-  const response = await fetch(url + '/post/recipe/' + latestPost.postId, fetchOptions);
-  const json = await response.json();
-  console.log(json);
 };
 
 const updateImage = (posts) => {
@@ -176,7 +158,7 @@ const getLatestPost = async () => {
     const response = await fetch(url + '/post', options);
     const posts = await response.json();
     updateImage(posts);
-    getUsers();
+    await getUsers();
   }
   catch (e) {
     console.log(e.message);
@@ -205,26 +187,6 @@ const getUsers = async () => {
   }
 };
 
-const getUsersAndPosts = async () => {
-  try {
-    const options = {
-      headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-    };
-    const responsePost = await fetch(url + '/post', options);
-    const posts = await responsePost.json();
-
-    const responseUser = await fetch(url + '/user', options);
-    const users = await responseUser.json();
-
-    setRecipeToPost(posts, users);
-  }
-  catch (e) {
-    console.log(e.message);
-  }
-};
-
 const getRecipeIngredients = async (recipeText) => {
   try {
     const options = {
@@ -232,8 +194,6 @@ const getRecipeIngredients = async (recipeText) => {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
       },
     };
-    const responseRecipe = await fetch(url + '/post/recipe', options);
-    const recipes = await responseRecipe.json();
 
     const responseUser = await fetch(url + '/user', options);
     const users = await responseUser.json();
@@ -242,16 +202,15 @@ const getRecipeIngredients = async (recipeText) => {
     const posts = await responsePost.json();
 
     const latestPostByLoggedUser = posts.filter(user => user.userId === users[0].userId).pop().postId;
-    const latestRecipeByLoggedUser = recipes.filter(recipe => recipe.postId === latestPostByLoggedUser).pop().recipeId;
 
-    getRecipeById(latestRecipeByLoggedUser, recipeText);
+    await getRecipeIngredient(latestPostByLoggedUser, recipeText);
   }
   catch (e) {
     console.log(e.message);
   }
 };
 
-const getRecipeById = async (id, recipeText) => {
+const getRecipeIngredient = async (id, recipeText) => {
   const fetchOptions = {
     headers: {
       'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
@@ -259,8 +218,7 @@ const getRecipeById = async (id, recipeText) => {
   };
   const response = await fetch(url + '/post/recipe/ingredients/' + id, fetchOptions);
   const json = await response.json();
-  console.log('Tämä lisätään ', json);
-  recipeText.innerHTML += JSON.stringify(json) + '\n';
-}
+  recipeText.innerHTML += json.ingredient + '\n';
+};
 
 getLatestPost();
