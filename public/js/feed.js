@@ -5,27 +5,6 @@ const likeButton = document.querySelectorAll('#likeBtn');
 
 let retrieved = 0;
 
-const loggedUser = window.addEventListener('load', () => {
-
-let retrieved =  0;
-
-const loadData = (posts) => {
-  posts.forEach((post) => {
-    const html = `<div class="post">
-                    <article>
-                    <h2>
-                        <img src="${post.avatar}" alt="" id="avatar">
-                        <a>${post.username}</a>
-                    </h2>
-                    <figure>
-                       <img src="${post.file}" alt="${post.caption}">
-                    </figure>
-                    <a>${post.caption} &emsp;&emsp;&emsp;&emsp;&emsp; <button id="likeBtn">❤️</button></a><br>
-                    <a>Comments:</a>
-                    </article>
-                 </div>`;
-})
-
 const loadData = (posts, comments) => {
   const merged = [].concat.apply([], comments)
   console.log(merged)

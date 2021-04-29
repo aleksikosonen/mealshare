@@ -40,6 +40,7 @@ const create_user = async(req, res, next) => {
 const get_all_usernames = async(req, res) => {
     const usernames = await userModel.getAllUsernames();
     res.json(usernames);
+}
 
 const update_user = async (req, res) => {
     const errors = validationResult(req);
