@@ -25,11 +25,6 @@ const post_list_get_postedBy = async (req, res) => {
   return res.json(posts);
 };
 
-const post_list_get_all_recipes = async (req, res) => {
-  const recipes = await postModel.getAllRecipes();
-  return res.json(recipes);
-}
-
 const post_add_comment = async (req, res) => {
   console.log('add comment ', req.body.comment);
   const comments = await postModel.addComment(req.params.postId, req.params.commenter, req.body.comment);
@@ -88,21 +83,6 @@ const post_create_image =  async (req, res) => {
   }
 };
 
-const post_create_recipe = async (req, res) => {
-  console.log('controller req', req.params);
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({errors: errors.array()});
-  }
-  try {
-    const id = await postModel.uploadPostRecipe(req, req.params.id);
-    const post = await postModel.getRecipe(id);
-    res.send(post);
-  } catch (e) {
-    res.status(400).json({error: e.message});
-  }
-};
-
 const post_add_ingredient = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -150,9 +130,7 @@ module.exports = {
   post_create_image,
   post_list_get_postedBy,
   feed_list_get,
-  post_create_recipe,
   post_add_ingredient,
-  post_list_get_all_recipes,
   post_list_get_ingredients,
   post_get_all_tags,
   post_get_all_tagRelations,

@@ -87,6 +87,17 @@ const uploadIngredient = async (req) => {
   }
 };
 
+const uploadPostIngredients = async (req, id) => {
+  try {
+    const [rows] = await promisePool.execute('INSERT INTO ms_post_ingredients (ingredientId, postId, unit, amount) VALUES (?, ?, ?, ?);',
+        [id, req.params.id, req.body.unit, req.body.amount]);
+    return rows.insertId;
+  } catch (e) {
+    console.error('upload ingredient :', e.message);
+    throw new Error('upload failed');
+  }
+};
+
 const getAllPosts = async () => {
   try {
     const [rows] = await promisePool.execute('SELECT * from ms_post ORDER BY postId;');
@@ -261,4 +272,5 @@ module.exports = {
   deletePost,
   getLikes,
   updatePost,
+  uploadPostIngredients,
 };
