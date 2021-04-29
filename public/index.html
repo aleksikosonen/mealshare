@@ -14,19 +14,20 @@
         <li><a href="myprofile.html">MY PROFILE</a></li>
         <li><a href="post.html">SHARE</a></li>
         <div class="search-container">
-            <form action="/action_page.php">
-                <input type="search" placeholder="Search.." name="search">
-                <button type="submit"><i class="fa fa-search">
+<!--            <form action="/">-->
+                <input list ="matches" type="search" name="searchBar" id="searchBar" placeholder="Search for a user or #tag" autocomplete="off">
+                <button type="submit"><i class="fa fa-search" id="searchBtn">
                     <img src="images/search.png">
-                </i>
-            </form>
+                </i></button>
+<!--            </form>-->
+                <datalist id="matches"></datalist>
         </div>
+        <ul id="matchList"></ul>
         <li class="spacer"><a href="/signup.html" id="signUp">SIGN UP</a></li>
         <li><a href="/login.html" id="logIn">LOG IN</a></li>
         <li><a href="/index.html" id="logOut">LOG OUT</a></li>
 
     </nav>
-
     <div class="feedContainer" id ='feedContainer'>
     </div>
     <button id="showMoreBtn">Show more...</button>
@@ -58,5 +59,6 @@
 <script src="js/serialize.js"></script>
 <script src="js/logout.js"></script>
 <script src="js/feed.js"></script>
+<script src="js/search.js"></script>
 </body>
 </html>

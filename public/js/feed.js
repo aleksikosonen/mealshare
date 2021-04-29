@@ -4,7 +4,6 @@ const showMoreBtn = document.getElementById('showMoreBtn');
 let retrieved =  0;
 
 const loadData = (posts) => {
-
   posts.forEach((post) => {
     const html = `<div class="post">
                     <article>

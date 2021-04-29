@@ -22,6 +22,15 @@ const getAllUsers = async () => {
     }
 }
 
+const getAllUsernames = async () => {
+    try {
+        const [rows] = await promisePool.execute('SELECT username FROM ms_user');
+        return rows;
+    } catch (e) {
+        console.error('userModel:', e.message);
+    }
+}
+
 const insertUser = async (req) => {
     try{
         const [rows] = await promisePool.execute(
@@ -50,4 +59,5 @@ module.exports = {
     insertUser,
     getUserLogin,
     getAllUsers,
+    getAllUsernames,
 };

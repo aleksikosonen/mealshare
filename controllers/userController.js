@@ -5,7 +5,6 @@ const {validationResult} = require('express-validator');
 const bcrypt = require('bcryptjs');
 
 const get_user = async(req, res) => {
-    console.log('get a user from controller', req.user);
     const id = req.user.userId;
     const user = await userModel.getUser(id);
     return res.status(200).json(user);
@@ -38,8 +37,14 @@ const create_user = async(req, res, next) => {
     }
 };
 
+const get_all_usernames = async(req, res) => {
+    const usernames = await userModel.getAllUsernames();
+    res.json(usernames);
+}
+
 module.exports = {
     get_user,
     user_list_get,
     create_user,
+    get_all_usernames,
 };

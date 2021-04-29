@@ -237,4 +237,11 @@ li a {
     transform: scale(0.8);
    }
 
+datalist {
+    position: absolute;
+    background-color: lightgrey;
+    font-family: sans-serif;
+    font-size: 0.8rem;
+}
+
 
