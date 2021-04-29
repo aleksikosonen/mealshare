@@ -28,7 +28,7 @@ const create_user = async(req, res, next) => {
     user.lname = req.body.lname;
     const salt = bcrypt.genSaltSync(12);
     user.password = bcrypt.hashSync(req.body.password, salt);
-    
+
     const id = await userModel.insertUser(user);
     if(id>0){
         next();
@@ -40,6 +40,62 @@ const create_user = async(req, res, next) => {
 const get_all_usernames = async(req, res) => {
     const usernames = await userModel.getAllUsernames();
     res.json(usernames);
+
+const update_user = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+    const updateOk = await userModel.updateUser(req.params.id, req);
+    console.log(`updated... ${updateOk}`);
+    res.send(`updated... ${updateOk}`);
+};
+
+const update_username = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+    console.log('controller req', req.body);
+    const updateOk = await userModel.updateUsername(req.body);
+    console.log(`updated... ${updateOk}`);
+    if (!updateOk) {
+        res.status(400).json({error: 'Username already in use'}).end()
+    } else {
+        return res.status(200).json({message: 'Great success!'}); // VERY NICE!!!
+    }
+};
+
+const update_email = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+    console.log('controller req', req.body);
+    const updateOk = await userModel.updateEmail(req.body);
+    console.log(`updated... ${updateOk}`);
+    if (!updateOk) {
+        res.status(400).json({error: 'Email already in use'}).end()
+    } else {
+        return res.status(200).json({message: 'Great success!'}); // VERY NICE!!!
+    }
+};
+
+const update_password = async (req, res) => {
+    const user = {};
+    const salt = bcrypt.genSaltSync(12);
+    user.password = bcrypt.hashSync(req.body.password, salt);
+    console.log(user)
+    const updateOk = await userModel.updatePassword(user, req.params.id);
+    res.send(`updated... ${updateOk}`);
+};
+
+const add_avatar = async (req, res) => {
+    try {
+        await userModel.uploadAvatar(req);
+    } catch (e) {
+        res.status(400).json({error: e.message});
+    }
 }
 
 module.exports = {
@@ -47,4 +103,9 @@ module.exports = {
     user_list_get,
     create_user,
     get_all_usernames,
+    update_user,
+    update_password,
+    update_username,
+    update_email,
+    add_avatar,
 };

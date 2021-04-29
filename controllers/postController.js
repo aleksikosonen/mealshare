@@ -14,16 +14,16 @@ const feed_list_get = async (req, res) => {
   return res.json(posts);
 };
 
+const feed_like = async (req, res) => {
+  console.log('like', req.params.id, req.params.user);
+  const like = await postModel.likePost(req.params.id, req.params.user);
+  return res.json(like);
+}
+
 const post_list_get_postedBy = async (req, res) => {
   const posts = await postModel.getPostedBy();
   return res.json(posts);
 };
-
-/*const post_list_get_ingredient = async (req, res) => {
-  //const posts = await postModel.getIngredient(req.params.id);
-  const ingredients = await postModel.getIngredient(req.params.id);
-  return res.json(ingredients);
-};*/
 
 const post_list_get_ingredients = async (req, res) => {
   const ingredients = await postModel.getIngredient(req.params.id);
@@ -34,6 +34,22 @@ const post_list_get_all_recipes = async (req, res) => {
   const recipes = await postModel.getAllRecipes();
   return res.json(recipes);
 }
+
+const post_add_comment = async (req, res) => {
+  console.log('add comment ', req.body.comment);
+  const comments = await postModel.addComment(req.params.postId, req.params.commenter, req.body.comment);
+  return res.json(comments);
+};
+
+const post_find_comments = async(req, res) => {
+  const comments = await postModel.findComments(req.body);
+  return res.json(comments);
+}
+
+const post_list_get_ingredients = async (req, res) => {
+  const ingredients = await postModel.getRecipe(req.params.id);
+  return res.json(ingredients);
+};
 
 //Made for later adding more details to post
 const post_create = async (req, res) => {
@@ -64,6 +80,9 @@ const post_create_image =  async (req, res) => {
   try {
     const id = await postModel.uploadPostImage(req);
     const post = await postModel.getPost(id);
+    
+    console.log('image', post);
+
     if(!(Object.entries(hashtags).length === 0)){
       console.log('sending hashtags ', id," ", hashtags);
         const tags = await postModel.createTags(id, hashtags);
@@ -95,9 +114,16 @@ const post_add_ingredient = async (req, res) => {
     return res.status(400).json({errors: errors.array()});
   }
   try {
+
     const id = await postModel.uploadIngredient(req, req.params.id);
     const post = await postModel.getIngredient(id);
     res.send(post);
+
+    const id = await postModel.uploadIngredient(req);
+    await postModel.uploadPostIngredients(req, id);
+    const ingredient = await postModel.getIngredient(id);
+    res.send(ingredient);
+
   } catch (e) {
     res.status(400).json({error: e.message});
   }
@@ -113,7 +139,6 @@ const post_get_all_tagRelations = async (req,res) => {
   return res.json(tagRelations)
 }
 
-
 module.exports = {
   post_create,
   post_list_get,
@@ -126,4 +151,9 @@ module.exports = {
   post_list_get_ingredients,
   post_get_all_tags,
   post_get_all_tagRelations,
+  post_add_ingredient,
+  post_list_get_ingredients,
+  post_add_comment,
+  post_find_comments,
+  feed_like,
 };

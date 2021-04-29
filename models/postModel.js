@@ -38,6 +38,7 @@ const getPost = async (id) => {
 const getRecipe = async (id) => {
   try {
     const [rows] = await promisePool.execute('SELECT * FROM ms_recipe WHERE recipeId = ?', [id]);
+    const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId where ms_post_ingredients.postId = ? ORDER BY addOrder DESC LIMIT 1;', [id]);
     return rows[0];
   } catch (e) {
     console.error('postModel getPost :', e.message);
@@ -47,11 +48,21 @@ const getRecipe = async (id) => {
 const getIngredient = async (id) => {
   try {
     const [rows] = await promisePool.execute('SELECT ingredient, amount, unit FROM ms_ingredient_object WHERE recipeId = ? ORDER BY ingredient_id DESC LIMIT 1', [id]);
+    const [rows] = await promisePool.execute('SELECT ingredientId, ingredient FROM ms_ingredient_object WHERE ingredientId = ?', [id]);
     return rows[0];
   } catch (e) {
     console.error('postModel getIngredient :', e.message);
   }
 };
+
+const getUnits = async (id) => {
+  try {
+    const [rows] = await promisePool.execute('select ingredientId from ms_post_ingredients where postId = ?', [id]);
+    return rows[0];
+  } catch (e) {
+    console.error('postModel getIngredient :', e.message);
+  }
+}
 
 const getIngredients = async () => {
   try {
@@ -68,6 +79,19 @@ const uploadPostRecipe = async (req, id) => {
     return rows.insertId;
   } catch (e) {
     console.error('upload recipe :', e.message);
+
+const uploadIngredient = async (req) => {
+  try {
+    const [rows] = await promisePool.execute('INSERT IGNORE INTO ms_ingredient_object (ingredient) VALUES (?);',
+        [req.body.ingredient]);
+    if (rows.insertId === 0) {
+      console.log('ingredient already exists');
+      const [ingId] = await promisePool.execute('SELECT ingredientId from ms_ingredient_object where ingredient = ?',[req.body.ingredient])
+      return ingId[0].ingredientId;
+    }
+    return rows.insertId;
+  } catch (e) {
+    console.error('upload ingredient :', e.message);
     throw new Error('upload failed');
   }
 };
@@ -76,6 +100,10 @@ const uploadIngredient = async (req, id) => {
   try {
     const [rows] = await promisePool.execute('INSERT INTO ms_ingredient_object (recipeId, ingredient, unit, amount) VALUES (?, ?, ?, ?);',
         [id, req.body.ingredient, req.body.unit, req.body.amount]);
+const uploadPostIngredients = async (req, id) => {
+  try {
+    const [rows] = await promisePool.execute('INSERT INTO ms_post_ingredients (ingredientId, postId, unit, amount) VALUES (?, ?, ?, ?);',
+        [id, req.params.id, req.body.unit, req.body.amount]);
     return rows.insertId;
   } catch (e) {
     console.error('upload ingredient :', e.message);
@@ -106,9 +134,22 @@ const getAllRecipes = async () => {
     const [rows] = await promisePool.execute('SELECT * from ms_recipe ORDER BY recipeId');
     return rows;
   } catch (e) {
+    console.error('postModel:', e.message);
     console.error('postModel getAllPosts:', e.message);
   }
 };
+
+const likePost = async (postId, user) => {
+  console.log('likepost ', user);
+  try {
+    const [rows] = await promisePool.execute('INSERT INTO ms_likes (postId, userId, vst) VALUES (?, ?, ?);',
+        [postId, user, date]);
+    return rows.insertId;
+  } catch (e) {
+    console.error('like :', e.message);
+    throw new Error('like failed');
+  }
+}
 
 const getPostedBy = async () => {
   try {
@@ -172,6 +213,64 @@ const getTagRelatedPosts = async (input) => {
   }
 };
 
+
+const createTags = async (postId, tag) => {
+  try{
+    const tags = []; 
+    const ids = [];
+    const final = [];
+
+    for (let i = 0; i < tag.length; i++){
+      const [rows] = await promisePool.execute('SELECT tag from ms_hashtags where tag = ?;', [tag[i]]);
+      tags.push(rows)
+      if(tags[i].length === 0){
+        const [rows] = await promisePool.execute('INSERT INTO ms_hashtags (tag) VALUES (?);',[tag[i]]);
+          tags.push(rows);
+        } else if (!tag.includes(tags[i][i].tag)){
+          const [rows] = await promisePool.execute('INSERT INTO ms_hashtags (tag) VALUES (?);',[tag[i]]);
+          tags.push(rows);
+      } 
+    }
+    for(let i = 0; i < tag.length; i++){
+      const [rows] = await promisePool.execute('SELECT tagId from ms_hashtags where tag = ?', [tag[i]]);
+      ids.push(rows);
+    }
+
+    for(let i = 0; i < tag.length; i++){
+      console.log('insert id, ', ids)
+      const [rows] = await promisePool.execute('INSERT INTO ms_tag_post_relations (postId, tagId) values (?, ?)', [postId, ids[i][i].tagId]);
+      final.push(rows);
+      console.log('rows ', final[i])
+      return [final, tags];
+    }
+  }catch(e) {
+    console.error('postModel createtags', e.message);
+  }
+}
+
+const addComment = async (postId, userId, comment) => {
+ // console.log(postId, " ",userId, " ", comment)
+  try{
+    const [rows] = await promisePool.execute('INSERT INTO ms_postcomment (userId, postId, comment, vst) values (?, ?, ?, ?);', [userId, postId, comment, date]);
+    return rows;
+  }catch(e){
+    console.error('addcomment, error ', e.message);
+  }
+}
+
+const findComments = async(postId) => {
+  try {
+    const comments = [];
+    for(let i = 0; i < postId.length; i++){
+      const [rows] = await promisePool.execute('SELECT ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_user.username, ms_user.avatar from ms_postcomment left join ms_user on ms_postcomment.userId = ms_user.userId where postId = ? ORDER BY commentId', [postId[i]]);
+      comments.push(rows);
+    }
+    return comments;
+  }catch(e){
+    console.error('findComments, error ', e.message);
+  }
+}
+ 
 module.exports = {
   uploadPost,
   getPost,
@@ -188,4 +287,13 @@ module.exports = {
   getIngredients,
   getAllTags,
   getTagRelatedPosts,
+  getRecipe,
+  uploadIngredient,
+  getIngredient,
+  getIngredients,
+  addComment,
+  findComments,
+  uploadPostIngredients,
+  getUnits,
+  likePost,
 };
