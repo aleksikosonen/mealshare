@@ -12,8 +12,8 @@
 <nav class="topNav">
     <div class="topLeft">
         <li><a href="index.html"><img src="images/mealshare_logo_red.png" alt="PageId" style="width: 50px"></a></li>
-        <li><a href="myprofile.html">MY PROFILE</a></li>
-        <li><a href="post.html">SHARE</a></li>
+        <li id="myProfileHref"><a href="myprofile.html">MY PROFILE</a></li>
+        <li id="shareHref"><a href="post.html">SHARE</a></li>
     </div>
     <div class="search-container">
     </div>
@@ -27,8 +27,10 @@
     <img src="images/jari.png" alt="User Thumbnail" id="avatar">
     <div id="username"></div>
     <div id="bio"></div>
-    <button id="newPost"><a href="post.html">New post</a></button>
-    <button id="userSsettings">Settings</button>
+    <div id="buttonContainer">
+        <button id="newPost"><a href="post.html">New post</a></button>
+        <button id="userSsettings">Settings</button>
+    </div>
 </div>
 
 <div id="photoContainer"></div>

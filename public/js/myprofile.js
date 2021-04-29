@@ -201,15 +201,19 @@ settingsButton.addEventListener('click', async () => {
 
     const uploadAvatar = document.createElement('button');
     uploadAvatar.textContent = "Upload profileimage";
+    uploadAvatar.className = "settingButton";
 
     const changePassword = document.createElement('button');
     changePassword.textContent = "Change password";
+    changePassword.className = "settingButton";
 
     const changeUsername = document.createElement('button');
     changeUsername.textContent = "Change username";
+    changeUsername.className = "settingButton";
 
     const changeEmail = document.createElement('button');
     changeEmail.textContent = "Change email";
+    changeEmail.className = "settingButton";
 
     firstnameInput.type = "input";
     lastnameInput.type = "input";
@@ -222,18 +226,23 @@ settingsButton.addEventListener('click', async () => {
     getUserCredentials(firstnameInput, lastnameInput,
         bioInput);
 
+    const formContainer = document.createElement('div');
+    formContainer.id = "formContainer";
+
+    body.appendChild(formContainer);
+
     userUpdateForm.setAttribute("id", "userUpdateForm");
-    body.appendChild(userUpdateForm);
+    formContainer.appendChild(userUpdateForm);
 
     userUpdateForm.appendChild(firstnameInput);
     userUpdateForm.appendChild(lastnameInput);
     userUpdateForm.appendChild(bioInput);
     userUpdateForm.appendChild(updateUserCredentials);
 
-    body.appendChild(uploadAvatar)
-    body.appendChild(changeUsername);
-    body.appendChild(changeEmail);
-    body.appendChild(changePassword);
+    formContainer.appendChild(uploadAvatar)
+    formContainer.appendChild(changeUsername);
+    formContainer.appendChild(changeEmail);
+    formContainer.appendChild(changePassword);
 
     userUpdateForm.addEventListener('submit', async (evt) => {
         evt.preventDefault();
@@ -276,7 +285,7 @@ settingsButton.addEventListener('click', async () => {
         uploadAvatarButton.textContent = "Upload profilepicture";
         uploadAvatarButton.type = "submit";
 
-        body.appendChild(uploadAvatarForm);
+        formContainer.appendChild(uploadAvatarForm);
         uploadAvatarForm.appendChild(avatarInput);
         uploadAvatarForm.appendChild(uploadAvatarButton);
 
@@ -314,7 +323,7 @@ settingsButton.addEventListener('click', async () => {
         changeUsernameButton.textContent = "Change username";
         changeUsernameButton.type = "submit";
 
-        body.appendChild(changeUsernameForm);
+        formContainer.appendChild(changeUsernameForm);
         changeUsernameForm.appendChild(usernameInput);
         changeUsernameForm.appendChild(changeUsernameButton);
 
@@ -365,7 +374,7 @@ settingsButton.addEventListener('click', async () => {
         changeEmailButton.textContent = "Change email";
         changeEmailButton.type = "submit";
 
-        body.appendChild(changeEmailForm);
+        formContainer.appendChild(changeEmailForm);
         changeEmailForm.appendChild(emailInput);
         changeEmailForm.appendChild(changeEmailButton);
 
@@ -432,7 +441,7 @@ settingsButton.addEventListener('click', async () => {
         const changeNewPassword = document.createElement('button');
         changeNewPassword.textContent = "Change password";
 
-        body.appendChild(changePasswordForm);
+        formContainer.appendChild(changePasswordForm);
 
         changePasswordForm.appendChild(password);
         changePasswordForm.appendChild(verifyPassword);
