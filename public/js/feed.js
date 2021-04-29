@@ -5,10 +5,6 @@ const likeButton = document.querySelectorAll('#likeBtn');
 
 let retrieved = 0;
 
-const loggedUser = window.addEventListener('load', () => {
-
-})
-
 const loadData = (posts, comments) => {
   const merged = [].concat.apply([], comments)
   console.log(merged)
@@ -56,7 +52,9 @@ const loadData = (posts, comments) => {
       const commenterName = document.createElement('a');
       commenterName.innerHTML = e.username;
 
-      const commenterAvatar = document.createElement('a');
+      const commenterAvatar = document.createElement('img');
+      commenterAvatar.id = 'avatar';
+      commenterAvatar.src = e.avatar;
       commenter.appendChild(commenterAvatar);
       commenter.appendChild(commenterName);
 

@@ -87,17 +87,6 @@ const uploadIngredient = async (req) => {
   }
 };
 
-const uploadPostIngredients = async (req, id) => {
-  try {
-    const [rows] = await promisePool.execute('INSERT INTO ms_post_ingredients (ingredientId, postId, unit, amount) VALUES (?, ?, ?, ?);',
-        [id, req.params.id, req.body.unit, req.body.amount]);
-    return rows.insertId;
-  } catch (e) {
-    console.error('upload ingredient :', e.message);
-    throw new Error('upload failed');
-  }
-};
-
 const getAllPosts = async () => {
   try {
     const [rows] = await promisePool.execute('SELECT * from ms_post ORDER BY postId;');
@@ -110,6 +99,15 @@ const getAllPosts = async () => {
 const getFeedPosts = async (req) => {
   try {
     const [rows] = await promisePool.execute('SELECT postId, file, caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar FROM ms_post LEFT JOIN ms_user ON ms_post.userId = ms_user.userId ORDER BY postId DESC LIMIT 6 OFFSET ?', [req.params.retrieved]);
+    return rows;
+  } catch (e) {
+    console.error('postModel getAllPosts:', e.message);
+  }
+};
+
+const getAllRecipes = async () => {
+  try {
+    const [rows] = await promisePool.execute('SELECT * from ms_recipe ORDER BY recipeId');
     return rows;
   } catch (e) {
     console.error('postModel:', e.message);
@@ -139,9 +137,18 @@ const getPostedBy = async () => {
 };
 
 
+const getAllTags = async () => {
+  try{
+    const [rows] = await promisePool.execute('SELECT * from ms_hashtags');
+    return rows;
+  }catch (e) {
+    console.error('postModel getAllTags', e.message)
+  }
+}
+
 const createTags = async (postId, tag) => {
   try{
-    const tags = []; 
+    const tags = [];
     const ids = [];
     const final = [];
 
@@ -150,11 +157,11 @@ const createTags = async (postId, tag) => {
       tags.push(rows)
       if(tags[i].length === 0){
         const [rows] = await promisePool.execute('INSERT INTO ms_hashtags (tag) VALUES (?);',[tag[i]]);
-          tags.push(rows);
-        } else if (!tag.includes(tags[i][i].tag)){
-          const [rows] = await promisePool.execute('INSERT INTO ms_hashtags (tag) VALUES (?);',[tag[i]]);
-          tags.push(rows);
-      } 
+        tags.push(rows);
+      } else if (!tag.includes(tags[i][i].tag)){
+        const [rows] = await promisePool.execute('INSERT INTO ms_hashtags (tag) VALUES (?);',[tag[i]]);
+        tags.push(rows);
+      }
     }
     for(let i = 0; i < tag.length; i++){
       const [rows] = await promisePool.execute('SELECT tagId from ms_hashtags where tag = ?', [tag[i]]);
@@ -173,6 +180,15 @@ const createTags = async (postId, tag) => {
   }
 }
 
+const getTagRelatedPosts = async (input) => {
+  try {
+    const [rows] = await promisePool.execute('SELECT ms_post.postId, ms_post.file, ms_post.caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar, ms_tag_post_relations.postId, ms_tag_post_relations.tagId, ms_hashtags.tagId, ms_hashtags.tag FROM ms_post INNER JOIN ms_user ON ms_post.userId = ms_user.userId INNER JOIN ms_tag_post_relations on ms_post.postId = ms_tag_post_relations.postId INNER JOIN ms_hashtags on ms_tag_post_relations.tagId = ms_hashtags.tagId where ms_hashtags.tag = ? ORDER BY ms_post.postId', [input]);
+    return rows;
+  } catch (e) {
+    console.error('postModel getTagRelatedPosts:', e.message);
+  }
+};
+
 const addComment = async (postId, userId, comment) => {
  // console.log(postId, " ",userId, " ", comment)
   try{
@@ -187,7 +203,7 @@ const findComments = async(postId) => {
   try {
     const comments = [];
     for(let i = 0; i < postId.length; i++){
-      const [rows] = await promisePool.execute('SELECT ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_user.username from ms_postcomment left join ms_user on ms_postcomment.userId = ms_user.userId where postId = ? ORDER BY commentId', [postId[i]]);
+      const [rows] = await promisePool.execute('SELECT ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_user.username, ms_user.avatar from ms_postcomment left join ms_user on ms_postcomment.userId = ms_user.userId where postId = ? ORDER BY commentId', [postId[i]]);
       comments.push(rows);
     }
     return comments;
@@ -233,11 +249,13 @@ module.exports = {
   createTags,
   getRecipe,
   uploadIngredient,
+  getAllRecipes,
   getIngredient,
   getIngredients,
+  getAllTags,
+  getTagRelatedPosts,
   addComment,
   findComments,
-  uploadPostIngredients,
   getUnits,
   likePost,
   deletePost,

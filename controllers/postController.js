@@ -25,6 +25,10 @@ const post_list_get_postedBy = async (req, res) => {
   return res.json(posts);
 };
 
+const post_list_get_all_recipes = async (req, res) => {
+  const recipes = await postModel.getAllRecipes();
+  return res.json(recipes);
+}
 
 const post_add_comment = async (req, res) => {
   console.log('add comment ', req.body.comment);
@@ -71,11 +75,28 @@ const post_create_image =  async (req, res) => {
   try {
     const id = await postModel.uploadPostImage(req);
     const post = await postModel.getPost(id);
+    
     console.log('image', post);
+
     if(!(Object.entries(hashtags).length === 0)){
       console.log('sending hashtags ', id," ", hashtags);
         const tags = await postModel.createTags(id, hashtags);
     }
+    res.send(post);
+  } catch (e) {
+    res.status(400).json({error: e.message});
+  }
+};
+
+const post_create_recipe = async (req, res) => {
+  console.log('controller req', req.params);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({errors: errors.array()});
+  }
+  try {
+    const id = await postModel.uploadPostRecipe(req, req.params.id);
+    const post = await postModel.getRecipe(id);
     res.send(post);
   } catch (e) {
     res.status(400).json({error: e.message});
@@ -112,14 +133,29 @@ const post_get_likes = async (req, res) => {
   res.json(likes);
 };
 
+const post_get_all_tags = async (req, res) => {
+  const tags = await postModel.getAllTags();
+  return res.json(tags);
+}
+
+const post_get_all_tagRelations = async (req,res) => {
+  const tagRelations = await postModel.getTagRelatedPosts(req.body.userInput);
+  return res.json(tagRelations)
+}
+
+
 module.exports = {
   post_create,
   post_list_get,
   post_create_image,
   post_list_get_postedBy,
   feed_list_get,
+  post_create_recipe,
   post_add_ingredient,
+  post_list_get_all_recipes,
   post_list_get_ingredients,
+  post_get_all_tags,
+  post_get_all_tagRelations,
   post_add_comment,
   post_find_comments,
   feed_like,
