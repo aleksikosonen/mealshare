@@ -10,13 +10,17 @@
 <body>
 
 <nav class="topNav">
-    <li><a href="index.html"><img src="images/mealshare_logo_red.png" alt="PageId" style="width: 50px"></a></li>
-    <li><a href="myprofile.html">MY PROFILE</a></li>
-    <li><a href="post.html">SHARE</a></li>
+    <div class="topLeft">
+        <li><a href="index.html"><img src="images/mealshare_logo_red.png" alt="PageId" style="width: 50px"></a></li>
+        <li><a href="myprofile.html">MY PROFILE</a></li>
+        <li><a href="post.html">SHARE</a></li>
+    </div>
+    <div class="search-container">
+    </div>
     <ul id="matchList"></ul>
-    <li class="spacer"><a href="/signup.html" id="signUp">SIGN UP</a></li>
-    <li><a href="/login.html" id="logIn">LOG IN</a></li>
-    <li><a href="/index.html" id="logOut" onclick="logOut">LOG OUT</a></li>
+    <div class="logout">
+        <li><a href="index.html" id="logOut">LOG OUT</a></li>
+    </div>
 </nav>
 
 <div id="profileInfo">

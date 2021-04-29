@@ -11,9 +11,11 @@
 <div class="layer" id="layer">
 
     <nav class="topNav">
-        <li><a href="index.html"><img src="images/mealshare_logo_red.png" alt="PageId" style="width: 50px"></a></li>
-        <li><a href="myprofile.html">MY PROFILE</a></li>
-        <li><a href="post.html">SHARE</a></li>
+        <div class="topLeft">
+            <li><a href="index.html"><img src="images/mealshare_logo_red.png" alt="PageId" style="width: 50px"></a></li>
+            <li><a href="myprofile.html">MY PROFILE</a></li>
+            <li><a href="post.html">SHARE</a></li>
+        </div>
         <div class="search-container">
                 <input list ="matches" type="search" name="searchBar" id="searchBar" placeholder="Search for a user or #tag" autocomplete="off">
                 <button type="submit"><i class="fa fa-search" id="searchBtn">
@@ -22,7 +24,9 @@
                 <datalist id="matches"></datalist>
         </div>
         <ul id="matchList"></ul>
-        <li><a href="/index.html" id="logOut">LOG OUT</a></li>
+        <div class="logout">
+            <li><a href="/index.html" id="logOut">LOG OUT</a></li>
+        </div>
     </nav>
 
     <ul class="feedContainer" id ='feedContainer'>
