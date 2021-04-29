@@ -56,6 +56,7 @@ body {
     padding: 10px;
     font-size: 17px;
     border: none;
+    width: 275px;
 }
 
 /*To remove 'clear' button*/
@@ -63,6 +64,10 @@ body {
 [type="search"]::-webkit-search-decoration{
     -webkit-appearance: none;
     appearance: none;
+}
+/*remove 'list-arrow' from searchbar*/
+input::-webkit-calendar-picker-indicator {
+    display: none;
 }
 
 .topNav .search-container button {
@@ -244,5 +249,12 @@ li a {
  }#likeBtn:active{
     transform: scale(0.8);
    }
+
+datalist {
+    position: absolute;
+    background-color: lightgrey;
+    font-family: sans-serif;
+    font-size: 0.8rem;
+}
 
 

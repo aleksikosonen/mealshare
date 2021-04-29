@@ -37,6 +37,10 @@ const create_user = async(req, res, next) => {
     }
 };
 
+const get_all_usernames = async(req, res) => {
+    const usernames = await userModel.getAllUsernames();
+    res.json(usernames);
+
 const update_user = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -98,6 +102,7 @@ module.exports = {
     get_user,
     user_list_get,
     create_user,
+    get_all_usernames,
     update_user,
     update_password,
     update_username,

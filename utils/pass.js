@@ -16,11 +16,11 @@ passport.use(new Strategy(
         if (user === undefined) {
           return done(null, false, {message: 'Incorrect credentials.'});
         }
-        if (!bcrypt.compare(password, user.password)) {
+        if (!await bcrypt.compare(password, user.password)) {
           return done(null, false, {message: 'Incorrect credentials.'});
         }
         delete user.password;
-        return done(null, {...user}, {message: 'Logged In Successfully'}); 
+        return done(null, {...user}, {message: 'Logged In Successfully'});
       } catch (err) {
         return done(err);
       }
