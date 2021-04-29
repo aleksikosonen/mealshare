@@ -13,25 +13,32 @@ const loadData = (posts, comments) => {
     console.log('comment ids are ', comment)
     const html = `
       <li class="post" data-postid=${post.postId}>
-        <article>
+        <article id="topCard">
           <h2>
             <img src="${post.avatar}" alt="" id="avatar">
             <a>${post.username}</a>
           </h2>
-          <figure>
+          <figure id="postImage">
             <img src="${post.file}" alt="${post.caption}">
           </figure>
-          <a>${post.caption} &emsp;&emsp;&emsp;&emsp;&emsp; <button id="likeBtn"onclick="getLikeUser('${post.postId}')">❤️</button></a><br>
-          <ul id="commentList">
-          </ul>
+          </article>
+          
+          <article id="bottomCard">
+          
+          <div id="postCaptionTitle">
+            <p id="postCaption">${post.caption}</p>
+            <button id="likeBtn" onclick="getLikeUser('${post.postId}')">❤️</button>
+          </div>
+          
           <form id="commentForm">
-            <div>
+            <div id="commentFormInput">
               <input class="light-border" type="text" placeholder="Comment" name="comment"/>
-            </div>
-            <div>
               <button class="light-b<order" type="submit">Comment</button>
             </div>
           </form>
+          
+          <ul id="commentList"></ul>
+          
         </article>
       </li>
       `;
@@ -44,21 +51,24 @@ const loadData = (posts, comments) => {
       console.log('e ', e);
       
       const commentRender = document.createElement('div');
+      commentRender.id = "commentRender";
       commentList.appendChild(commentRender);
 
       const commenter = document.createElement('div');
+      commenter.id ="commenterInfo"
       commentRender.appendChild(commenter);
 
       const commenterName = document.createElement('a');
       commenterName.innerHTML = e.username;
 
       const commenterAvatar = document.createElement('img');
-      commenterAvatar.id = 'avatar';
+      commenterAvatar.id = 'commentAvatar';
       commenterAvatar.src = e.avatar;
       commenter.appendChild(commenterAvatar);
       commenter.appendChild(commenterName);
 
       const commentCaption = document.createElement('p');
+      commentCaption.id = "postComment";
       commentCaption.innerHTML= e.comment;
       commentRender.appendChild(commentCaption)
     });
