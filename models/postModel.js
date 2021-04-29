@@ -187,7 +187,7 @@ const findComments = async(postId) => {
   try {
     const comments = [];
     for(let i = 0; i < postId.length; i++){
-      const [rows] = await promisePool.execute('SELECT ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_user.username from ms_postcomment left join ms_user on ms_postcomment.userId = ms_user.userId where postId = ? ORDER BY commentId', [postId[i]]);
+      const [rows] = await promisePool.execute('SELECT ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_user.username, ms_user.avatar from ms_postcomment left join ms_user on ms_postcomment.userId = ms_user.userId where postId = ? ORDER BY commentId', [postId[i]]);
       comments.push(rows);
     }
     return comments;
