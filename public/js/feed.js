@@ -25,7 +25,7 @@ const loadData = (posts, comments) => {
           <figure>
             <img src="${post.file}" alt="${post.caption}">
           </figure>
-          <a>${post.caption} &emsp;&emsp;&emsp;&emsp;&emsp; <button id="likeBtn">❤️</button></a><br>
+          <a>${post.caption} &emsp;&emsp;&emsp;&emsp;&emsp; <button id="likeBtn"onclick="getLikeUser('${post.postId}')">❤️</button></a><br>
           <ul id="commentList">
           </ul>
           <form id="commentForm">
