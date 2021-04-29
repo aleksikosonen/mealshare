@@ -39,6 +39,7 @@ document.querySelector('#searchBtn').addEventListener('click', (evt) => {
   if(tagMatches.includes(userInput)){
     console.log('found tag related photos!' + userInput);
     getTagRelatedPosts();
+    feedContainer.innerHTML = "";
   }
 })
 
@@ -91,6 +92,7 @@ const getTagRelatedPosts = async () => {
     };
     const response = await fetch(url + '/post/matches/', options);
     const tagRelatedPosts = await response.json();
+    loadData(tagRelatedPosts);
   }
   catch (e) {
     console.log(e.message);
