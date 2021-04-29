@@ -97,6 +97,21 @@ const post_add_ingredient = async (req, res) => {
   }
 };
 
+const post_delete = async (req, res) => {
+  const deleteOk = await postModel.deletePost(req.params.id);
+  res.json(deleteOk);
+};
+
+const post_update = async (req, res) => {
+  const deleteOk = await postModel.updatePost(req.params.id, req.body.caption);
+  res.json(deleteOk);
+};
+
+const post_get_likes = async (req, res) => {
+  const likes = await postModel.getLikes(req.params.id);
+  res.json(likes);
+};
+
 module.exports = {
   post_create,
   post_list_get,
@@ -108,4 +123,7 @@ module.exports = {
   post_add_comment,
   post_find_comments,
   feed_like,
+  post_delete,
+  post_get_likes,
+  post_update,
 };

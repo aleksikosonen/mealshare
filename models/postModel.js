@@ -195,6 +195,33 @@ const findComments = async(postId) => {
     console.error('findComments, error ', e.message);
   }
 }
+
+const deletePost = async (id) => {
+  try {
+    const [rows] = await promisePool.execute('DELETE FROM ms_post WHERE postId = ?', [id]);
+    return rows.affectedRows === 1;
+  } catch (e) {
+    console.error('delete Post:', e.message);
+  }
+};
+
+const updatePost = async (id, caption) => {
+  try {
+    const [rows] = await promisePool.execute('UPDATE ms_post SET caption = ? WHERE postId = ?;', [caption, id]);
+    return rows.affectedRows === 1;
+  } catch (e) {
+    console.error('delete Post:', e.message);
+  }
+};
+
+const getLikes = async (id) => {
+  try {
+    const [rows] = await promisePool.execute('SELECT count(postId) as likes FROM ms_likes WHERE postId = ?;', [id]);
+    return rows[0];
+  } catch (e) {
+    console.error('postModel getLikes :', e.message);
+  }
+};
  
 module.exports = {
   uploadPost,
@@ -213,4 +240,7 @@ module.exports = {
   uploadPostIngredients,
   getUnits,
   likePost,
+  deletePost,
+  getLikes,
+  updatePost,
 };

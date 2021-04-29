@@ -47,5 +47,9 @@ router.post('/ingredient/:id', postController.post_add_ingredient);
 router.get('/:id', postController.post_list_get);
 router.get('/ingredient/', postController.post_list_get_ingredients);
 router.get('/recipe/ingredients/:id', postController.post_list_get_ingredients)
+router.get('/likes/:id', postController.post_get_likes)
+
+router.put('/:id', postController.post_update);
+router.delete('/:id', postController.post_delete);
 
 module.exports = router;

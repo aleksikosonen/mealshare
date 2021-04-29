@@ -88,7 +88,9 @@ const update_password = async (req, res) => {
 
 const add_avatar = async (req, res) => {
     try {
-        await userModel.uploadAvatar(req);
+        const avatar = await userModel.uploadAvatar(req);
+        //res.send(avatar);
+        return res.status(200).json({message: 'Updated avatar!'});
     } catch (e) {
         res.status(400).json({error: e.message});
     }
