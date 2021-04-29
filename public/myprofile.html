@@ -4,9 +4,24 @@
     <meta charset="UTF-8">
     <title>My Profile</title>
     <link rel="stylesheet" href="styles/myprofile.css">
+    <link rel="stylesheet" href="styles/topnav.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+
+<nav class="topNav">
+    <div class="topLeft">
+        <li><a href="index.html"><img src="images/mealshare_logo_red.png" alt="PageId" style="width: 50px"></a></li>
+        <li><a href="myprofile.html">MY PROFILE</a></li>
+        <li><a href="post.html">SHARE</a></li>
+    </div>
+    <div class="search-container">
+    </div>
+    <ul id="matchList"></ul>
+    <div class="logout">
+        <li><a href="index.html" id="logOut">LOG OUT</a></li>
+    </div>
+</nav>
 
 <div id="profileInfo">
     <img src="images/jari.png" alt="User Thumbnail" id="avatar">
@@ -20,6 +35,7 @@
 
 <script src="js/serialize.js"></script>
 <script src="js/myprofile.js"></script>
+<script src="js/logout.js"></script>
 
 </body>
 </html>
