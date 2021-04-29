@@ -21,12 +21,112 @@ const getUserInfo = (users) => {
 const getUserImages = (posts, loggedUser) => {
     const userPhotos = posts.filter(user => user.userId === loggedUser[0].userId);
     userPhotos.reverse();
-    userPhotos.forEach((post) => {
+    userPhotos.forEach( async (post) => {
+        const profilePhotoGrid = document.createElement('div');
+        profilePhotoGrid.className = "profilePhotoGrid";
+
         const photo = document.createElement("img");
         photo.src = post.file;
         photo.alt = post.caption;
-        photo.className = "profilePhotoGrid";
-        photoContainer.appendChild(photo);
+        photo.className = "profilePhotoGridPhoto";
+        photoContainer.appendChild(profilePhotoGrid);
+
+        const descriptionBackground = document.createElement("div");
+        descriptionBackground.setAttribute('id', 'descBackGround');
+        const description = document.createElement('p');
+        description.innerHTML = post.caption;
+
+        const likes = document.createElement('p');
+
+        const editButton = document.createElement('button');
+        editButton.type = "click";
+        editButton.innerHTML = "Edit post";
+
+        const deleteButton = document.createElement('button');
+        deleteButton.type = "click";
+        deleteButton.innerHTML = "Delete post";
+
+        descriptionBackground.style.height='50px';
+        descriptionBackground.style.width='100%';
+
+        try {
+            const options = {
+                headers: {
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+                },
+            };
+            const response = await fetch(url + '/post/likes/' + post.postId, options);
+            const likesAmount = await response.json();
+            likes.innerHTML = likesAmount.likes;
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+
+        descriptionBackground.appendChild(likes);
+        descriptionBackground.appendChild(description);
+        descriptionBackground.appendChild(editButton);
+        descriptionBackground.appendChild(deleteButton);
+        profilePhotoGrid.appendChild(photo);
+
+        profilePhotoGrid.appendChild(descriptionBackground);
+
+        editButton.addEventListener('click',  async () => {
+            photoContainer.remove();
+            console.log(post.postId);
+
+            const editPostForm = document.createElement('form');
+            editPostForm.setAttribute('id', 'editPost');
+
+            const caption = document.createElement('input');
+            caption.name = "caption";
+            caption.type = "text";
+            caption.placeholder = "Add new caption";
+
+            const doneButton = document.createElement('button');
+            doneButton.innerHTML ="Done"
+            doneButton.type = 'submit';
+
+            body.appendChild(editPostForm);
+            editPostForm.appendChild(caption);
+            editPostForm.appendChild(doneButton);
+
+            editPostForm.addEventListener('submit', async(evt) => {
+                evt.preventDefault()
+                const data = serializeJson(editPostForm);
+                try {
+                    const options = {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data),
+                    };
+                    await fetch(url + '/post/' + post.postId, options);
+                    window.location.href = 'http://localhost:3000/myprofile.html'
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
+            })
+        })
+
+        deleteButton.addEventListener('click', async () => {
+            try {
+                const options = {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+                    },
+                };
+                await fetch(url + '/post/' + post.postId, options);
+                window.location.href = 'http://localhost:3000/myprofile.html'
+            }
+            catch (e) {
+                console.log(e.message);
+            }
+        })
     });
 }
 
@@ -184,8 +284,6 @@ settingsButton.addEventListener('click', async () => {
             evt.preventDefault();
             const loggedUser = await getLoggedUser()
             const data = new FormData(uploadAvatarForm);
-            //const data = {loggedUser : loggedUser, newAvatar : newAvatar.avatar};
-            console.log('daatta', data);
             const fetchOptions = {
                 method: 'POST',
                 headers: {
@@ -193,7 +291,9 @@ settingsButton.addEventListener('click', async () => {
                 },
                 body: data,
             };
-            const response = await fetch(url + '/auth/update/avatar/' + loggedUser, fetchOptions);
+            console.log('mist sä tuut');
+            await fetch(url + '/auth/update/avatar/' + loggedUser, fetchOptions);
+            window.location.href = 'http://localhost:3000/myprofile.html'
         })
     })
 

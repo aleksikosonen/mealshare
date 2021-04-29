@@ -118,6 +118,21 @@ const post_add_ingredient = async (req, res) => {
   }
 };
 
+const post_delete = async (req, res) => {
+  const deleteOk = await postModel.deletePost(req.params.id);
+  res.json(deleteOk);
+};
+
+const post_update = async (req, res) => {
+  const deleteOk = await postModel.updatePost(req.params.id, req.body.caption);
+  res.json(deleteOk);
+};
+
+const post_get_likes = async (req, res) => {
+  const likes = await postModel.getLikes(req.params.id);
+  res.json(likes);
+};
+
 const post_get_all_tags = async (req, res) => {
   const tags = await postModel.getAllTags();
   return res.json(tags);
@@ -127,6 +142,7 @@ const post_get_all_tagRelations = async (req,res) => {
   const tagRelations = await postModel.getTagRelatedPosts(req.body.userInput);
   return res.json(tagRelations)
 }
+
 
 module.exports = {
   post_create,
@@ -143,4 +159,7 @@ module.exports = {
   post_add_comment,
   post_find_comments,
   feed_like,
+  post_delete,
+  post_get_likes,
+  post_update,
 };
