@@ -105,11 +105,9 @@ li a {
     padding-right: 10%;
     display: flex;
     flex-direction: column;
-    //border: groove 2px white;
 }
 
 .landContainerLeftBottom {
-    //border: groove 2px white;
 
 }
 
@@ -125,7 +123,6 @@ li a {
     height: 80%;
     width: 50%;
     display: flex;
-    //border: groove 2px white
 }
 
 .hexFood {
@@ -157,40 +154,68 @@ li a {
 
 .feedContainer {
     height: 100%;
-    width:65%;
+    width:80%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     align-self: center;
     align-items: center;
+    justify-content: space-evenly;
     text-align: center;
     background-color:rgba(255,255,255, 0.5);
 }
 
 .feedContainer .post{
-    width:30%;
-    max-width:30%;
-    max-height:450px;
+    border: groove 1px grey;
+    border-radius: 3%;
+    box-sizing: border-box;
+    width:300px;
+    height: 450px;
     margin: 20px;
     display: flex;
-    flex-direction: column-reverse;
-    align-self: center;
-    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
     text-align: center;
-    background: #FF6965;
+    background: #FFFFFF;
 }
 
-.feedContainer article{
-    width:75%;
-    margin: 20px;
-    background-color: #4E596A90;
-    border-radius: 17%;
+#topCard {
+    box-sizing: border-box;
+    width:100%;
+    height: 70%;
+    max-height: 70%;
+    border-radius: 3%;
+}
+
+#bottomCard{
+    overflow: scroll;
+    box-sizing: border-box;
+    width:100%;
+    height: 30%;
+    border-radius: 3%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#postCaption {
+    font-size: 16px;
+}
+
+#postCaptionTitle {
+    width: 100%;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
 }
 
 .feedContainer img{
-    border: solid;
-    max-width: 300px;
-    max-height: 300px;
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    max-height: 260px;
 }
 
 .feedContainer h2{
@@ -198,9 +223,11 @@ li a {
     height:50px;
     display:flex;
     text-align: center;
+    color: black;
 }
 
 .feedContainer #avatar{
+    margin: 5px;
     border-radius: 50%;
     max-width: 40px;
     max-height: 40px;
@@ -216,9 +243,48 @@ li a {
     min-height: 40px;
 }
 
+#commentList {
+    width: 100%;
+    padding: 8px;
+    overflow: scroll;
+}
+
+#commentForm {
+    width: 100%;
+    padding: 8px;
+    overflow: scroll;
+}
+
+#commentRender {
+    width: 100%;
+    border: groove 1px black;
+    margin-bottom: 3px;
+    background: rgba(255,255,255, 0.5);
+}
+
+#commenterInfo {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#postComment {
+    padding: 8px;
+}
+
+#commentAvatar {
+    margin:  8px;
+    border-radius: 50%;
+    max-width: 40px;
+    max-height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+}
+
 .feedContainer a{
-    font-size:20px;
+    font-size:12px;
     align-self: center;
+    color: black;
 }
 
 #showMoreBtn{
