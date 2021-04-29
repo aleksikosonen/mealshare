@@ -24,7 +24,7 @@ logOut.addEventListener('click', async (evt) => {
     // remove token
     sessionStorage.removeItem('token');
     alert('You have logged out');
-    logIn.style.display = 'flex';
+    logIn.style.display = 'block';
     signUp.style.display = 'flex';
     logOut.style.display = 'none';
     topnav.style.display = 'none';
