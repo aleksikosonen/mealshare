@@ -58,6 +58,11 @@ const loadData = (posts, comments) => {
       commenter.id ="commenterInfo"
       commentRender.appendChild(commenter);
 
+      const comment = document.createElement('div');
+      comment.id = "userAndComment";
+
+      commentRender.appendChild(comment);
+
       const commenterName = document.createElement('a');
       commenterName.innerHTML = e.username;
 
@@ -65,12 +70,12 @@ const loadData = (posts, comments) => {
       commenterAvatar.id = 'commentAvatar';
       commenterAvatar.src = e.avatar;
       commenter.appendChild(commenterAvatar);
-      commenter.appendChild(commenterName);
+      comment.appendChild(commenterName);
 
       const commentCaption = document.createElement('p');
       commentCaption.id = "postComment";
       commentCaption.innerHTML= e.comment;
-      commentRender.appendChild(commentCaption)
+      comment.appendChild(commentCaption)
     });
   });
   
