@@ -1,7 +1,6 @@
 'use strict';
 
 const url = 'http://localhost:3000';
-
 const addForm = document.querySelector('#add-post-form');
 const latestUpload = document.querySelector('#latestUpload');
 const captionText = document.querySelector('#captionText');
@@ -222,3 +221,13 @@ const getRecipeIngredient = async (id, recipeText) => {
 };
 
 getLatestPost();
+
+// to hide login && signup
+// for some reason cant use logout.js with these files,,, url doesnt work
+if (sessionStorage.getItem('token')) {
+  logIn.style.display = 'none';
+  signUp.style.display = 'none';
+  logOut.style.display = 'flex';
+}else{
+  logOut.style.display = 'none';
+}

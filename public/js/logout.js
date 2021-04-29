@@ -3,8 +3,8 @@ const logOut = document.querySelector('#logOut');
 const signUp = document.querySelector('#signUp');
 const landContainer = document.querySelector('#landContainer');
 const feedContainer = document.querySelector('#feedContainer')
-const body = document.querySelector('body');
 const layer = document.querySelector('#layer')
+const topnav = document.querySelector('.topNav');
 const url = 'http://localhost:3000';
 
 //logout
@@ -27,6 +27,7 @@ logOut.addEventListener('click', async (evt) => {
     logIn.style.display = 'flex';
     signUp.style.display = 'flex';
     logOut.style.display = 'none';
+    topnav.style.display = 'none';
     landContainer.style.display = 'flex';
     feedContainer.style.display = 'none';
     layer.style.height = '100%';
@@ -46,6 +47,7 @@ if (sessionStorage.getItem('token')) {
   layer.style.height = 'auto';
 }else{
   logOut.style.display = 'none';
+  topnav.style.display = 'none';
   feedContainer.style.display ='none';
 }
 

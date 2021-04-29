@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Mealshare</title>
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/topnav.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -14,19 +15,14 @@
         <li><a href="myprofile.html">MY PROFILE</a></li>
         <li><a href="post.html">SHARE</a></li>
         <div class="search-container">
-<!--            <form action="/">-->
                 <input list ="matches" type="search" name="searchBar" id="searchBar" placeholder="Search for a user or #tag" autocomplete="off">
                 <button type="submit"><i class="fa fa-search" id="searchBtn">
                     <img src="images/search.png">
                 </i></button>
-<!--            </form>-->
                 <datalist id="matches"></datalist>
         </div>
         <ul id="matchList"></ul>
-        <li class="spacer"><a href="/signup.html" id="signUp">SIGN UP</a></li>
-        <li><a href="/login.html" id="logIn">LOG IN</a></li>
         <li><a href="/index.html" id="logOut">LOG OUT</a></li>
-
     </nav>
 
     <ul class="feedContainer" id ='feedContainer'>
@@ -49,6 +45,8 @@
 
         </div>
 
+        <a href="/login.html" id="logIn">LOG IN</a>
+        <a href="/signup.html" id="signUp">New user? Sign up now!</a>
         <div class="landContainerRight">
             <img src="images/food_hexa.png" alt="food" class="hexFood">
             <img src="images/homeofmedia.png" alt="foodCatchPhrase" class="hexHome">

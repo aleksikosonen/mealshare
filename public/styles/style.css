@@ -21,6 +21,35 @@ body {
     //align-items: center;
 }
 
+#logIn{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    border: solid;
+    width:6em;
+    padding: 30px;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    font-size: 40px;
+    align-items: center;
+}
+#logIn:hover{
+    background: rgba(255,255,255,0.5);
+}
+#signUp{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    bottom: 40%;
+    text-decoration: none;
+    color: white;
+    background: #FF6965;
+}
+#signUp:hover{
+    background: none;
+}
+
 .layer {
     background-color: #4E596A90;
     position: absolute;
@@ -34,60 +63,6 @@ body {
 
 .spacer {
     padding-left: 10%;
-}
-
-.topNav {
-    width: 100%;
-    height: 8%;
-    min-height: 50px;
-    list-style-type: none;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    background-color:rgba(0,0,0, 0.5);
-}
-
-.topNav a:hover {
-    background-color: #ddd;
-    color: black;
-}
-
-.topNav input[type=search] {
-    padding: 10px;
-    font-size: 17px;
-    border: none;
-    width: 275px;
-}
-
-/*To remove 'clear' button*/
-[type="search"]::-webkit-search-cancel-button,
-[type="search"]::-webkit-search-decoration{
-    -webkit-appearance: none;
-    appearance: none;
-}
-/*remove 'list-arrow' from searchbar*/
-input::-webkit-calendar-picker-indicator {
-    display: none;
-}
-
-.topNav .search-container button {
-    background: transparent;
-    border: none;
-    outline: none;
-    margin-left: -33px;
-}.topNav .search-container button:hover {
-     background: #ccc;
- }.topNav .search-container button img{
-       width: 20px;
-       height: 20px;
-       object-fit: cover;
-   }
-
-li a {
-    display: block;
-    padding: 8px;
-    color: white;
-    text-decoration: none;
 }
 
 .landContainer {
@@ -154,7 +129,7 @@ li a {
 
 .feedContainer {
     height: 100%;
-    width:80%;
+    width:65%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
