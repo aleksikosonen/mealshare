@@ -7,10 +7,9 @@ let retrieved = 0;
 
 const loadData = (posts, comments) => {
   const merged = [].concat.apply([], comments)
-  console.log(merged)
+  console.log('loadData, ', posts);
   posts.forEach((post, i) => {
     const comment = merged.filter(e => e.postId === post.postId)
-    console.log('comment ids are ', comment)
     const html = `
       <li class="post" data-postid=${post.postId}>
         <article id="topCard">
@@ -43,12 +42,10 @@ const loadData = (posts, comments) => {
       </li>
       `;
     feedContainer.innerHTML += html;
-    console.log('i ', i);
     const elements = document.querySelectorAll('#commentList');
     const commentList = elements[i];
 
     comment.forEach((e) => {
-      console.log('e ', e);
       
       const commentRender = document.createElement('div');
       commentRender.id = "commentRender";
@@ -74,46 +71,42 @@ const loadData = (posts, comments) => {
     });
   });
   
-  feedContainer.addEventListener('submit', async (e) => {
-    e.preventDefault(); 
-
-    const id = e.target.closest('.post').dataset.postid;
-    const data = serializeJson(e.target.closest('#commentForm'));
-    const loggedUser = [];
-    console.log(id);
-    try {
-      const options = {
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-        },
-      };
-      const responseUser = await fetch(url + '/user', options);
-      const users = await responseUser.json();
-      loggedUser.push(users);
-    } catch (e) {
-        console.log(e.message);
-    }
-    try{
-      const options = {
-        method: 'POST',
-        headers:{
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-        },
-        body: JSON.stringify(data),
-      };
-      const response = await fetch(url + `/post/com/${id}/${loggedUser[0][0].userId}`, options);
-      const json = await response.json();
-    }catch(e){
-      console.error(e.message);
-    }
-    
-  });
-
 };
 
+feedContainer.addEventListener('submit', async (e) => {
+  e.preventDefault(); 
 
+  const id = e.target.closest('.post').dataset.postid;
+  const data = serializeJson(e.target.closest('#commentForm'));
+  const loggedUser = [];
+  try {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+      },
+    };
+    const responseUser = await fetch(url + '/user', options);
+    const users = await responseUser.json();
+    loggedUser.push(users);
+  } catch (e) {
+      console.error(e.message);
+  }
+  try{
+    const options = {
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+      },
+      body: JSON.stringify(data),
+    };
+    const response = await fetch(url + `/post/com/${id}/${loggedUser[0][0].userId}`, options);
+    const json = await response.json();
+  }catch(e){
+    console.error(e.message);
+  }
+});
 const getPosts = async () => {
   try {
     const options = {
@@ -162,7 +155,7 @@ const likePost = async (postId, userId) => {
     await fetch(url + '/post/feed/like/' + postId + '/' + userId, options);
   }
   catch (e) {
-    console.log(e.message);
+    console.error(e.message);
   }
 };
 
@@ -180,6 +173,6 @@ const getLikeUser = async (postId) => {
     await likePost(postId, users[0].userId);
 
   } catch (e) {
-      console.log(e.message);
+      console.error(e.message);
     }
 }
