@@ -26,7 +26,8 @@ const getUserImages = (posts, loggedUser) => {
         profilePhotoGrid.className = "profilePhotoGrid";
 
         const photo = document.createElement("img");
-        photo.src = post.file;
+        console.log('tiedostonimi', post.file)
+        photo.src = url + '/thumbnails/' + post.file;
         photo.alt = post.caption;
         photo.className = "profilePhotoGridPhoto";
         photoContainer.appendChild(profilePhotoGrid);

@@ -15,7 +15,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
 
-//box-sizing: border-box;
+    //box-sizing: border-box;
     //display: flex;
     //justify-content: center;
     //align-items: center;
@@ -127,51 +127,53 @@ body {
     color: #FF6965;
 }
 
-.feedContainer {
+#feedContainer {
     height: 100%;
-    width:65%;
+    width:85%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     align-self: center;
-    align-items: center;
-    justify-content: space-evenly;
+    //align-items: center;
     text-align: center;
-    background-color:rgba(255,255,255, 0.5);
 }
 
 .feedContainer .post{
-    border: groove 1px grey;
-    border-radius: 3%;
+    //border: groove 1px grey;
+    //border-radius: 3%;
     box-sizing: border-box;
-    width:25%;
-    height: 450px;
-    margin: 20px;
+    width: 33.33%;
+    max-width: 1000px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     text-align: center;
-    background: #FFFFFF;
+    background-color:rgba(255,255,255, 0.5);
 }
 
 #topCard {
     box-sizing: border-box;
     width:100%;
-    height: 70%;
-    max-height: 70%;
-    border-radius: 3%;
+    height: 75%;
+    border-radius: 10px 10px 0 0;
+    //border: solid 1px grey;
+    background: white;
+
 }
 
 #bottomCard{
-    overflow: scroll;
+    overflow: auto;
     box-sizing: border-box;
     width:100%;
-    height: 30%;
-    border-radius: 3%;
+    height: 150px;
+    border-radius: 0 0 10px 10px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-between;
+    border: solid 1px grey;
+    background: white;
 }
 
 #postCaption {
@@ -190,7 +192,7 @@ body {
     display: block;
     box-sizing: border-box;
     width: 100%;
-    max-height: 260px;
+    //max-height: 260px;
 }
 
 .feedContainer h2{
@@ -308,20 +310,30 @@ datalist {
     font-size: 0.8rem;
 }
 
-@media only screen and (max-width: 1620px) {
+@media only screen and (max-width: 1100px) {
+
     .feedContainer .post{
-        width:40%;
+        width: 50%;
     }
 }
 
-@media only screen and (max-width: 650px) {
+@media only screen and (max-width: 800px) {
     #feedContainer {
         width: 100%;
     }
 
     .feedContainer .post{
+        padding: 0!important;
         width:100%;
         margin: 10px 0 10px 0;
+    }
+
+    #topCard {
+        border-radius: 0;
+    }
+
+    #bottomCard {
+        border-radius: 0;
     }
 
     #myProfileHref {

@@ -18,11 +18,9 @@ const loadData = (posts, comments) => {
             <a>${post.username}</a>
           </h2>
           <figure id="postImage">
-            <img src="${post.file}" alt="${post.caption}">
+            <img src="${url + '/thumbnails/' + post.file}" alt="${post.caption}">
           </figure>
-          </article>
-          
-          <article id="bottomCard">
+           <article id="bottomCard">
           
           <div id="postCaptionTitle">
             <p id="postCaption">${post.caption}</p>
@@ -39,6 +37,9 @@ const loadData = (posts, comments) => {
           <ul id="commentList"></ul>
           
         </article>
+          </article>
+          
+         
       </li>
       `;
     feedContainer.innerHTML += html;
