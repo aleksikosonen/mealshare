@@ -3,6 +3,8 @@
 const postModel = require('../models/postModel');
 const {validationResult} = require('express-validator');
 const { hash } = require('bcryptjs');
+const {makePost} = require('../utils/resize');
+
 
 const post_list_get = async (req, res) => {
   const posts = await postModel.getAllPosts();
@@ -123,6 +125,18 @@ const post_get_all_tagRelations = async (req,res) => {
   return res.json(tagRelations)
 }
 
+const make_post = async (req, res, next) => {
+  try {
+    console.log('filename', req.file.filename);
+    const post = await makePost(req.file.path, req.file.filename);
+    if (post) {
+      next();
+    }
+  } catch (e) {
+    res.status(400).json({error: e.message});
+  }
+};
+
 
 module.exports = {
   post_create,
@@ -140,4 +154,5 @@ module.exports = {
   post_delete,
   post_get_likes,
   post_update,
+  make_post,
 };
