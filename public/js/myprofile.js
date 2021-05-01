@@ -190,6 +190,7 @@ const getLoggedUser = async () => {
 
 settingsButton.addEventListener('click', async () => {
     photoContainer.remove();
+    settingsButton.remove();
 
     const userUpdateForm = document.createElement('form');
     const firstnameInput = document.createElement('input');
@@ -215,6 +216,10 @@ settingsButton.addEventListener('click', async () => {
     const changeEmail = document.createElement('button');
     changeEmail.textContent = "Change email";
     changeEmail.className = "settingButton";
+
+    const cancelButton = document.createElement('button');
+    cancelButton.textContent = "Cancel";
+    cancelButton.className = "settingButton";
 
     firstnameInput.type = "input";
     lastnameInput.type = "input";
@@ -244,6 +249,12 @@ settingsButton.addEventListener('click', async () => {
     formContainer.appendChild(changeUsername);
     formContainer.appendChild(changeEmail);
     formContainer.appendChild(changePassword);
+    formContainer.appendChild(cancelButton);
+
+    cancelButton.addEventListener('click', async () => {
+        window.location.href = 'http://localhost:3000/myprofile.html'
+    })
+
 
     userUpdateForm.addEventListener('submit', async (evt) => {
         evt.preventDefault();
@@ -273,6 +284,7 @@ settingsButton.addEventListener('click', async () => {
         changeEmail.remove();
         userUpdateForm.remove();
         uploadAvatar.remove();
+        cancelButton.remove();
 
         const uploadAvatarForm = document.createElement('form');
         uploadAvatarForm.enctype = "multipart/form-data";
@@ -286,9 +298,18 @@ settingsButton.addEventListener('click', async () => {
         uploadAvatarButton.textContent = "Upload profilepicture";
         uploadAvatarButton.type = "submit";
 
+        const cancelPicture = document.createElement('button');
+        cancelPicture.textContent = "cancel";
+
         formContainer.appendChild(uploadAvatarForm);
         uploadAvatarForm.appendChild(avatarInput);
         uploadAvatarForm.appendChild(uploadAvatarButton);
+        uploadAvatarForm.appendChild(cancelPicture);
+
+        cancelPicture.addEventListener('click', () => {
+            uploadAvatarForm.remove();
+            refreshForm();
+        })
 
         uploadAvatarForm.addEventListener('submit', async (evt) => {
             evt.preventDefault();
@@ -301,18 +322,18 @@ settingsButton.addEventListener('click', async () => {
                 },
                 body: data,
             };
-            console.log('mist sä tuut');
             await fetch(url + '/auth/update/avatar/' + loggedUser, fetchOptions);
             window.location.href = 'http://localhost:3000/myprofile.html'
         })
     })
 
-    changeUsername.addEventListener('click', async () => {
+    changeUsername.addEventListener('click',  () => {
         changePassword.remove();
         changeUsername.remove();
         changeEmail.remove();
         userUpdateForm.remove();
         uploadAvatar.remove();
+        cancelButton.remove();
 
         const changeUsernameForm = document.createElement('form');
         const usernameInput = document.createElement('input');
@@ -324,9 +345,18 @@ settingsButton.addEventListener('click', async () => {
         changeUsernameButton.textContent = "Change username";
         changeUsernameButton.type = "submit";
 
+        const cancelUsernameUpdate = document.createElement('button');
+        cancelUsernameUpdate.textContent = "cancel";
+
         formContainer.appendChild(changeUsernameForm);
         changeUsernameForm.appendChild(usernameInput);
         changeUsernameForm.appendChild(changeUsernameButton);
+        changeUsernameForm.appendChild(cancelUsernameUpdate);
+
+        cancelUsernameUpdate.addEventListener('click', () => {
+            changeUsernameForm.remove();
+            refreshForm();
+        })
 
         changeUsernameForm.addEventListener('submit', async (evt) => {
             evt.preventDefault();
@@ -357,12 +387,13 @@ settingsButton.addEventListener('click', async () => {
 
     })
 
-    changeEmail.addEventListener('click', async () => {
+    changeEmail.addEventListener('click', () => {
         changePassword.remove();
         changeUsername.remove();
         changeEmail.remove();
         userUpdateForm.remove();
         uploadAvatar.remove();
+        cancelButton.remove();
 
         const changeEmailForm = document.createElement('form');
         const emailInput = document.createElement('input');
@@ -375,9 +406,18 @@ settingsButton.addEventListener('click', async () => {
         changeEmailButton.textContent = "Change email";
         changeEmailButton.type = "submit";
 
+        const cancelEmailUpdate = document.createElement('button');
+        cancelEmailUpdate.textContent = "cancel";
+
         formContainer.appendChild(changeEmailForm);
         changeEmailForm.appendChild(emailInput);
         changeEmailForm.appendChild(changeEmailButton);
+        changeEmailForm.appendChild(cancelEmailUpdate)
+
+        cancelEmailUpdate.addEventListener('click', () => {
+            changeEmailForm.remove();
+            refreshForm();
+        })
 
         changeEmailForm.addEventListener('submit', async (evt) => {
             evt.preventDefault();
@@ -407,12 +447,13 @@ settingsButton.addEventListener('click', async () => {
         })
     })
 
-    changePassword.addEventListener('click', async () => {
+    changePassword.addEventListener('click',  () => {
         changePassword.remove();
         changeUsername.remove();
         changeEmail.remove();
         userUpdateForm.remove();
         uploadAvatar.remove();
+        cancelButton.remove();
 
         const changePasswordForm = document.createElement('form');
         const password = document.createElement('input');
@@ -427,6 +468,10 @@ settingsButton.addEventListener('click', async () => {
         verifyPassword.name = "verify_password";
         verifyPassword.placeholder = "Verify new password";
         verifyPassword.pattern= "(?=.*[A-Z]).{8,}";
+
+        const cancelPasswordUpdate = document.createElement('button');
+        cancelPasswordUpdate.textContent = "cancel";
+
 
         function validatePassword(){
             if(password.value !== verifyPassword.value) {
@@ -447,6 +492,12 @@ settingsButton.addEventListener('click', async () => {
         changePasswordForm.appendChild(password);
         changePasswordForm.appendChild(verifyPassword);
         changePasswordForm.appendChild(changeNewPassword);
+        changePasswordForm.appendChild(cancelPasswordUpdate);
+
+        cancelPasswordUpdate.addEventListener('click', () => {
+            changePasswordForm.remove();
+            refreshForm();
+        })
 
         changePasswordForm.addEventListener('submit',  async(evt) => {
             evt.preventDefault();
@@ -469,6 +520,20 @@ settingsButton.addEventListener('click', async () => {
              }
         });
     });
+    const refreshForm = () => {
+        formContainer.appendChild(userUpdateForm);
+
+        userUpdateForm.appendChild(firstnameInput);
+        userUpdateForm.appendChild(lastnameInput);
+        userUpdateForm.appendChild(bioInput);
+        userUpdateForm.appendChild(updateUserCredentials);
+
+        formContainer.appendChild(uploadAvatar)
+        formContainer.appendChild(changeUsername);
+        formContainer.appendChild(changeEmail);
+        formContainer.appendChild(changePassword);
+        formContainer.appendChild(cancelButton);
+    }
 });
 
 getMyProfile();
