@@ -259,7 +259,6 @@ settingsButton.addEventListener('click', async () => {
     userUpdateForm.addEventListener('submit', async (evt) => {
         evt.preventDefault();
         const data = serializeJson(userUpdateForm);
-        const loggedUser = await getLoggedUser();
         console.log(data.username);
         try {
         const fetchOptions = {
@@ -270,7 +269,7 @@ settingsButton.addEventListener('click', async () => {
             },
             body: JSON.stringify(data),
         };
-        const response = await fetch(url + '/auth/update/' + loggedUser, fetchOptions);
+        const response = await fetch(url + '/user/update', fetchOptions);
         console.log(response)
         window.location.href = 'http://localhost:3000/myprofile.html'
         } catch (e) {
@@ -313,7 +312,6 @@ settingsButton.addEventListener('click', async () => {
 
         uploadAvatarForm.addEventListener('submit', async (evt) => {
             evt.preventDefault();
-            const loggedUser = await getLoggedUser()
             const data = new FormData(uploadAvatarForm);
             const fetchOptions = {
                 method: 'POST',
@@ -322,7 +320,7 @@ settingsButton.addEventListener('click', async () => {
                 },
                 body: data,
             };
-            await fetch(url + '/auth/update/avatar/' + loggedUser, fetchOptions);
+            await fetch(url + '/user/update/avatar', fetchOptions);
             window.location.href = 'http://localhost:3000/myprofile.html'
         })
     })
@@ -360,9 +358,8 @@ settingsButton.addEventListener('click', async () => {
 
         changeUsernameForm.addEventListener('submit', async (evt) => {
             evt.preventDefault();
-            const loggedUser = await getLoggedUser()
             const newUsername = serializeJson(changeUsernameForm);
-            const data = {loggedUser : loggedUser, newUsername : newUsername.username};
+            const data = {newUsername : newUsername.username};
             try {
                 const fetchOptions = {
                     method: 'POST',
@@ -372,7 +369,7 @@ settingsButton.addEventListener('click', async () => {
                     },
                     body: JSON.stringify(data),
                 };
-                const response = await fetch(url + '/auth/update/username/', fetchOptions);
+                const response = await fetch(url + '/user/update/username', fetchOptions);
                 console.log('response', response);
                     const json = await response.json();
                     console.log('username change response ', json);
@@ -421,9 +418,8 @@ settingsButton.addEventListener('click', async () => {
 
         changeEmailForm.addEventListener('submit', async (evt) => {
             evt.preventDefault();
-            const loggedUser = await getLoggedUser()
             const newEmail = serializeJson(changeEmailForm);
-            const data = {loggedUser : loggedUser, newEmail : newEmail.email};
+            const data = {newEmail : newEmail.email};
             try {
                 const fetchOptions = {
                     method: 'POST',
@@ -433,7 +429,7 @@ settingsButton.addEventListener('click', async () => {
                     },
                     body: JSON.stringify(data),
                 };
-                const response = await fetch(url + '/auth/update/email/', fetchOptions);
+                const response = await fetch(url + '/user/update/email', fetchOptions);
                 console.log('response', response);
                 const json = await response.json();
                 console.log('username change response ', json);
@@ -501,19 +497,17 @@ settingsButton.addEventListener('click', async () => {
 
         changePasswordForm.addEventListener('submit',  async(evt) => {
             evt.preventDefault();
-            const loggedUser = await getLoggedUser()
             const data = serializeJson(changePasswordForm);
              try {
                  const fetchOptions = {
                      method: 'POST',
                      headers: {
-                         'Authorization': 'Bearer ' +
-                             sessionStorage.getItem('token'),
+                         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
                          'Content-Type': 'application/json'
                      },
                      body: JSON.stringify(data),
                  };
-                    await fetch(url + '/auth/changepassword/' + loggedUser, fetchOptions);
+                    await fetch(url + '/user/changepassword', fetchOptions);
                  window.location.href = 'http://localhost:3000/myprofile.html'
              } catch (e) {
                  console.error(e.message);

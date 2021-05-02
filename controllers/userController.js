@@ -5,14 +5,23 @@ const {validationResult} = require('express-validator');
 const bcrypt = require('bcryptjs');
 
 const get_user = async(req, res) => {
-    const id = req.user.userId;
-    const user = await userModel.getUser(id);
-    return res.status(200).json(user);
+    try{
+        const id = req.user.userId;
+        const user = await userModel.getUser(id);
+        return res.status(200).json(user);
+    }catch(e){
+        res.status(400).message({error: e.message});
+    }
+    
 }
 
 const user_list_get = async (req, res) => {
-    const users = await userModel.getAllUsers();
+    try{
+        const users = await userModel.getAllUsers();
     res.json(users);
+    }catch(e){
+        res.status(400).message({error: e.message});
+    }
 }
 
 const create_user = async(req, res, next) => {
@@ -38,8 +47,13 @@ const create_user = async(req, res, next) => {
 };
 
 const get_all_usernames = async(req, res) => {
-    const usernames = await userModel.getAllUsernames();
-    res.json(usernames);
+    try{
+        const usernames = await userModel.getAllUsernames();
+        res.json(usernames);
+    }catch(e){
+        res.status(400).json({error: e.message});
+    }
+
 }
 
 const update_user = async (req, res) => {
@@ -47,9 +61,14 @@ const update_user = async (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({errors: errors.array()});
     }
-    const updateOk = await userModel.updateUser(req.params.id, req);
-    console.log(`updated... ${updateOk}`);
-    res.send(`updated... ${updateOk}`);
+    try{
+        const updateOk = await userModel.updateUser(req.user.userId, req);
+        console.log(`updated... ${updateOk}`);
+        res.send(`updated... ${updateOk}`);
+    }catch(e){
+        res.tatus(400).json({error: e.message});
+    }
+    
 };
 
 const update_username = async (req, res, next) => {
@@ -58,7 +77,7 @@ const update_username = async (req, res, next) => {
         return res.status(400).json({errors: errors.array()});
     }
     console.log('controller req', req.body);
-    const updateOk = await userModel.updateUsername(req.body);
+    const updateOk = await userModel.updateUsername(req.user.userId, req.body);
     console.log(`updated... ${updateOk}`);
     if (!updateOk) {
         res.status(400).json({error: 'Username already in use'}).end()
@@ -73,7 +92,7 @@ const update_email = async (req, res) => {
         return res.status(400).json({errors: errors.array()});
     }
     console.log('controller req', req.body);
-    const updateOk = await userModel.updateEmail(req.body);
+    const updateOk = await userModel.updateEmail(req.user.userId, req.body);
     console.log(`updated... ${updateOk}`);
     if (!updateOk) {
         res.status(400).json({error: 'Email already in use'}).end()
@@ -83,18 +102,22 @@ const update_email = async (req, res) => {
 };
 
 const update_password = async (req, res) => {
-    const user = {};
-    const salt = bcrypt.genSaltSync(12);
-    user.password = bcrypt.hashSync(req.body.password, salt);
-    console.log(user)
-    const updateOk = await userModel.updatePassword(user, req.params.id);
-    res.send(`updated... ${updateOk}`);
+    try{
+        const user = {};
+        const salt = bcrypt.genSaltSync(12);
+        user.password = bcrypt.hashSync(req.body.password, salt);
+        console.log(user)
+        const updateOk = await userModel.updatePassword(user, req.user.userId);
+        res.send(`updated... ${updateOk}`);
+    }catch(e){
+        return res.status(400).json({error: e.message});
+    }
+    
 };
 
 const add_avatar = async (req, res) => {
     try {
         const avatar = await userModel.uploadAvatar(req);
-        //res.send(avatar);
         return res.status(200).json({message: 'Updated avatar!'});
     } catch (e) {
         res.status(400).json({error: e.message});
