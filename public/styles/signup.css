@@ -1,19 +1,20 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: Verdana;
 }
 
 body {
     margin: 0;
     padding: 0;
-    background: #fff1ff;
+    background: #f7f7f7;
     height:100vh;
     display: flex;
 }
 
 .container {
-    background: white;
-    width: 20em;
+    background: #f7f7f7;
+    width: 15em;
     height: auto;
     margin: auto;
     padding: 1em;
@@ -26,16 +27,23 @@ body {
 .light-border {
     padding: 1em;
     box-sizing: border-box;
+    border:groove 1px black;
 }
 
 .form-wrapper {
     display: flex;
-    background: aquamarine;
+    background: #434C5A;
+    color: #ebebebef;
     flex-wrap : wrap;
-    height: 100%;
+    height: 100%;¢
     width: 100%;
     text-align: center;
     flex-direction: column;
+    box-shadow:0px 0px 6px 3px rgba(0, 0, 0, 0.454);
+}
+
+.paragraph{
+    padding-bottom: 10px;
 }
 
 h3{
@@ -44,17 +52,18 @@ h3{
 }
 
 #add-user-form{
-    background: antiquewhite;
+    background: #f7f7f7;
 }
 
 input, button, select {
     display: inline-block;
+    border:groove 1px black;
     width: 100%;
     margin: .5em 0;
 }
 
 button{
-    background-color: #ccc;
+    background-color:#FF6965;
     color: #fff;
     box-shadow: 0 8px 6px -6px black;
 }
@@ -62,3 +71,17 @@ button{
 .hide {
     display: none !important;
 }
+
+#PopUp{
+    display: none;
+    left: 100px; 
+    top: 50px; 
+    color: #f7f7f7;
+    border: solid black 1px; 
+    padding: 10px; 
+    background-color: #434C5A;
+    text-align: ;
+    font-size: 12px; 
+    width: 200px;
+}
+  

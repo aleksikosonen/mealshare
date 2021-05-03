@@ -38,8 +38,6 @@ const loadData = (posts, comments) => {
           
         </article>
           </article>
-          
-         
       </li>
       `;
     feedContainer.innerHTML += html;
