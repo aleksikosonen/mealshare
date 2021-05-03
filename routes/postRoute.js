@@ -30,8 +30,8 @@ router.post('/matches/', postController.post_get_all_tagRelations);
 router.post('/feed/like/:id/:user', postController.feed_like);
 
 router.post('/com/:postId/:commenter',
-  body('comment').isLength({min: 1}).escape().blacklist(';'),
-  postController.post_add_comment
+    body('comment').isLength({min: 1}).escape().blacklist(';'),
+    postController.post_add_comment
 );
 
 router.post('/comm', postController.post_find_comments);
@@ -45,10 +45,12 @@ router.post('/',
 );
 
 router.post('/ingredient/:id', postController.post_add_ingredient);
+router.post('/workphases/:id', postController.post_add_workphases);
 
 router.get('/:id', postController.post_list_get);
 router.get('/ingredient/', postController.post_list_get_ingredients);
 router.get('/recipe/ingredients/:id', postController.post_list_get_ingredients);
+router.get('/recipe/workphases/:id', postController.post_list_get_workphases);
 
 router.post('/tag', postController.post_get_all_tags);
 
@@ -59,3 +61,4 @@ router.put('/:id', postController.post_update);
 router.delete('/:id', postController.post_delete);
 
 module.exports = router;
+
