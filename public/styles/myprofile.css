@@ -60,7 +60,7 @@ body {
 
 .profilePhotoGridPhoto {
     max-width: 100%;
-    max-height: 800px;
+    max-height: 1000px;
 }
 
 #editPost {
@@ -73,6 +73,7 @@ body {
     padding: 5px;
     overflow: auto;
     width: 20%;
+    max-width: 1000px;
     display: flex;
     justify-content: space-evenly;
     border: 1px groove grey;

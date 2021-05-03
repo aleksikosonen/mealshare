@@ -10,12 +10,16 @@ html{
 
 body {
     min-height: 100%;
-    background-image: url('../images/food_background.jpeg ');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background: url('../images/food_background.jpeg ')no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 
-//box-sizing: border-box;
+    //background-position: center;
+    //background-repeat: no-repeat;
+    //background-attachment: fixed;
+    //box-sizing: border-box;
     //display: flex;
     //justify-content: center;
     //align-items: center;
@@ -38,16 +42,12 @@ body {
     background: rgba(255,255,255,0.5);
 }
 #signUp{
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0);
-    bottom: 40%;
     text-decoration: none;
     color: white;
-    background: #FF6965;
+    background: none;
 }
 #signUp:hover{
-    background: none;
+    background: #FF6965;
 }
 
 .layer {
@@ -65,39 +65,90 @@ body {
     padding-left: 10%;
 }
 
-.landContainer {
+#landContainer {
     height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.landContainerLeft {
-    box-sizing: border-box;
-    height: 80%;
     width: 50%;
-    padding-left: 10%;
-    padding-right: 10%;
+    max-width: 1000px;
+    align-self: center;
     display: flex;
     flex-direction: column;
-}
-
-.landContainerLeftBottom {
-
-}
-
-.landContainerLeftTop {
-    display: flex;
+    justify-content: space-around;
     align-items: center;
-    height: 70%;
-
 }
 
-.landContainerRight {
-    box-sizing: border-box;
-    height: 80%;
-    width: 50%;
+#landName {
+    width: 100%;
+}
+
+#login-form-index {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#login-form-index input {
+    background: none;
+    border: solid 3px white;
+    height: 8vh;
+    min-height: 30px;
+    max-height: 100px;
+    width: 16vw;
+    min-width: 160px;
+    margin: 2vh;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+}
+
+#login-form-index input::placeholder {
+    color: white;
+    opacity: 0.8;
+    text-align: center;
+}
+
+#login-form-index button {
+    background: #F26966;
+    border: none;
+    border-radius: 20px;
+    height: 8vh;
+    min-height: 30px;
+    max-height: 100px;
+    width: 16vw;
+    min-width: 160px;
+    margin: 2vh;
+    color: white;
+    font-size: 28px;
+}
+
+#login-form-index button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+#login-form-index button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+#login-form-index button:hover span {
+    padding-right: 25px;
+}
+
+#login-form-index button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+#hexas {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
 }
 
 .hexFood {
@@ -127,51 +178,53 @@ body {
     color: #FF6965;
 }
 
-.feedContainer {
+#feedContainer {
     height: 100%;
-    width:65%;
+    width:85%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     align-self: center;
-    align-items: center;
-    justify-content: space-evenly;
+    //align-items: center;
     text-align: center;
-    background-color:rgba(255,255,255, 0.5);
 }
 
 .feedContainer .post{
-    border: groove 1px grey;
-    border-radius: 3%;
+    //border: groove 1px grey;
+    //border-radius: 3%;
     box-sizing: border-box;
-    width:25%;
-    height: 450px;
-    margin: 20px;
+    width: 33.33%;
+    max-width: 1000px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     text-align: center;
-    background: #FFFFFF;
+    background-color:rgba(255,255,255, 0.5);
 }
 
 #topCard {
     box-sizing: border-box;
     width:100%;
-    height: 70%;
-    max-height: 70%;
-    border-radius: 3%;
+    height: 75%;
+    border-radius: 10px 10px 0 0;
+    //border: solid 1px grey;
+    background: white;
+
 }
 
 #bottomCard{
-    overflow: scroll;
+    overflow: auto;
     box-sizing: border-box;
     width:100%;
-    height: 30%;
-    border-radius: 3%;
+    height: 150px;
+    border-radius: 0 0 10px 10px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-between;
+    border: solid 1px grey;
+    background: white;
 }
 
 #postCaption {
@@ -190,7 +243,7 @@ body {
     display: block;
     box-sizing: border-box;
     width: 100%;
-    max-height: 260px;
+    //max-height: 260px;
 }
 
 .feedContainer h2{
@@ -308,20 +361,69 @@ datalist {
     font-size: 0.8rem;
 }
 
-@media only screen and (max-width: 1620px) {
-    .feedContainer .post{
-        width:40%;
+@media only screen and (max-width: 2300px) {
+
+    #hexas {
+        height: 350px;
+        width: 350px;
     }
+
 }
 
-@media only screen and (max-width: 650px) {
+@media only screen and (max-width: 1600px) {
+
+    #hexas {
+        height: 300px;
+        width: 300px;
+    }
+
+}
+
+@media only screen and (max-width: 1100px) {
+
+    #hexas {
+        display: none;
+    }
+
+    #landContainer {
+        width: 70%;
+    }
+
+    .feedContainer .post{
+        width: 50%;
+    }
+
+    #login-form-index button {
+        font-size: 24px;
+    }
+
+}
+
+@media only screen and (max-width: 800px) {
     #feedContainer {
         width: 100%;
     }
 
+    #landContainer {
+        width: 90%;
+    }
+
     .feedContainer .post{
+        padding: 0!important;
         width:100%;
         margin: 10px 0 10px 0;
+    }
+
+    #login-form-index button {
+        font-size: 20px;
+    }
+
+    #topCard {
+        border-radius: 0;
+    }
+
+    #bottomCard {
+        border-radius: 0;
     }
 
     #myProfileHref {

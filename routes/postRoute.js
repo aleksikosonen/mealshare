@@ -38,10 +38,11 @@ router.post('/com/:postId/:commenter',
 router.post('/comm', postController.post_find_comments);
 
 router.post('/',
-  upload.single('post'),
-  testFile,
-  body('caption').isLength({min: 1}),
-  postController.post_create_image
+    upload.single('post'),
+    testFile,
+    postController.make_post,
+    body('caption').isLength({min: 1}),
+    postController.post_create_image
 );
 
 router.post('/ingredient/:id', postController.post_add_ingredient);

@@ -3,6 +3,8 @@
 const postModel = require('../models/postModel');
 const {validationResult} = require('express-validator');
 const { hash } = require('bcryptjs');
+const {makePost} = require('../utils/resize');
+
 
 const post_list_get = async (req, res) => {
   const posts = await postModel.getAllPosts();
@@ -15,8 +17,8 @@ const feed_list_get = async (req, res) => {
 };
 
 const feed_like = async (req, res) => {
-  console.log('like', req.params.id, req.params.user);
-  const like = await postModel.likePost(req.params.id, req.params.user);
+  console.log('like', req.params.id, req.user.userId);
+  const like = await postModel.likePost(req.params.id, req.user.userId);
   return res.json(like);
 }
 
@@ -26,8 +28,8 @@ const post_list_get_postedBy = async (req, res) => {
 };
 
 const post_add_comment = async (req, res) => {
-  console.log('add comment ', req.body.comment);
-  const comments = await postModel.addComment(req.params.postId, req.params.commenter, req.body.comment);
+  console.log('add comment ', req.body.comment, req.user.userId);
+  const comments = await postModel.addComment(req.params.postId, req.user.userId, req.body.comment);
   return res.json(comments);
 };
 
@@ -99,13 +101,28 @@ const post_add_ingredient = async (req, res) => {
 };
 
 const post_delete = async (req, res) => {
-  const deleteOk = await postModel.deletePost(req.params.id);
-  res.json(deleteOk);
+  try{
+    const owner = await postModel.getPost(req.params.id);
+    console.log('post_delete ', owner, " trying to delete")
+    if (req.user.userId === owner.userId || req.user.admin === 1){
+      const deleteOk = await postModel.deletePost(req.params.id);
+      res.json(deleteOk);
+    }
+  }catch(e){
+    res.status(403).json({error: e.message});
+  }
 };
 
 const post_update = async (req, res) => {
-  const deleteOk = await postModel.updatePost(req.params.id, req.body.caption);
-  res.json(deleteOk);
+  try{
+    const owner = await postModel.getPost(req.params.id);
+    if(req.user.userId === owner.userId){
+      const deleteOk = await postModel.updatePost(req.params.id, req.body.caption);
+      res.json(deleteOk);
+    }
+  }catch(e){
+    res.status(403).json({error: e.message});
+  }
 };
 
 const post_get_likes = async (req, res) => {
@@ -128,6 +145,18 @@ const post_get_all_userRelations = async (req,res) => {
   return res.json(userRelations);
 }
 
+const make_post = async (req, res, next) => {
+  try {
+    console.log('filename', req.file.filename);
+    const post = await makePost(req.file.path, req.file.filename);
+    if (post) {
+      next();
+    }
+  } catch (e) {
+    res.status(400).json({error: e.message});
+  }
+};
+
 
 module.exports = {
   post_create,
@@ -146,4 +175,5 @@ module.exports = {
   post_get_likes,
   post_update,
   post_get_all_userRelations,
+  make_post,
 };

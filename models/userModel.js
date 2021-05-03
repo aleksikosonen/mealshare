@@ -66,11 +66,11 @@ const updateUser = async (id, req) => {
     }
 };
 
-const updateUsername = async (req) => {
+const updateUsername = async (id, req) => {
     try {
         const [rows] = await promisePool.execute(
             'UPDATE ms_user SET username = ? WHERE userId = ?;',
-            [req.newUsername, req.loggedUser]);
+            [req.newUsername, id]);
         console.log('userModel update username:', rows);
         console.log('userModel affected rows:', rows.affectedRows);
         return rows.affectedRows === 1;
@@ -79,11 +79,11 @@ const updateUsername = async (req) => {
     }
 };
 
-const updateEmail = async (req) => {
+const updateEmail = async (id, req) => {
     try {
         const [rows] = await promisePool.execute(
             'UPDATE ms_user SET email = ? WHERE userId = ?;',
-            [req.newEmail, req.loggedUser]);
+            [req.newEmail, id]);
         console.log('userModel update email:', rows);
         console.log('userModel affected rows:', rows.affectedRows);
         return rows.affectedRows === 1;
@@ -107,7 +107,7 @@ const updatePassword = async (req, id) => {
 const uploadAvatar = async (req) => {
     try {
         const [rows] = await promisePool.execute('UPDATE ms_user set avatar = ? WHERE userId = ?;',
-            [req.file.filename, req.params.id]);
+            [req.file.filename, req.user.userId]);
         return rows.insertId;
     } catch (e) {
         console.error('upload post :', e.message);

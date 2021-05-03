@@ -2,8 +2,35 @@
 
 const showMoreBtn = document.getElementById('showMoreBtn');
 const likeButton = document.querySelectorAll('#likeBtn');
+const loginForm = document.querySelector('#login-form-index');
+//const landContainer = document.querySelector('#landContainer');
+
 
 let retrieved = 0;
+
+loginForm.addEventListener('submit', async (evt) => {
+  evt.preventDefault();
+  const data = serializeJson(loginForm);
+  const fetchOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  };
+
+  const response = await fetch(url + '/auth/login', fetchOptions);
+  const json = await response.json();
+  console.log('login response', json);
+  if (!json.user) {
+    alert(json.message);
+  } else {
+    sessionStorage.setItem('token', json.token);
+    //landContainer.style.display = 'none';
+    console.log(`Hello ${json.user.fname}`);
+    window.location.href = 'http://localhost:3000/index.html'
+  }
+});
 
 const loadData = (posts, comments) => {
   const merged = [].concat.apply([], comments)
@@ -17,11 +44,9 @@ const loadData = (posts, comments) => {
             <a>${post.username}</a>
           </h2>
           <figure id="postImage">
-            <img src="${post.file}" alt="${post.caption}">
+            <img src="${url + '/thumbnails/' + post.file}" alt="${post.caption}">
           </figure>
-          </article>
-          
-          <article id="bottomCard">
+           <article id="bottomCard">
           
           <div id="postCaptionTitle">
             <p id="postCaption">${post.caption}</p>
@@ -38,6 +63,9 @@ const loadData = (posts, comments) => {
           <ul id="commentList"></ul>
           
         </article>
+          </article>
+          
+         
       </li>
       `;
     feedContainer.innerHTML += html;

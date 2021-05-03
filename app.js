@@ -17,7 +17,6 @@ app.use(express.json());
 
 app.use('/auth', authRoute);
 app.use('/user', passport.authenticate('jwt', {session:false}),  userRoute);
-app.use('/login', passport.authenticate('jwt', {session:false}),  authRoute);
 app.use('/post', passport.authenticate('jwt', {session:false}), postRoute);
 
 

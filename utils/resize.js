@@ -1,11 +1,11 @@
 'use strict';
 const sharp = require('sharp');
 
-const makeThumbnail = async (file, thumbname) => { // file = full path to image (req.file.path), thumbname = filename (req.file.filename)
-  // TODO: use sharp to create a png thumbnail of 160x160px, use async await
-  return await sharp(file).resize(160, 160).toFile('thumbnails/' + thumbname);
+const makePost = async (file, postname) => {
+  console.log('makepost ', file, postname);
+  return await sharp(file).resize(1000, 1000).toFile('thumbnails/' + postname);
 };
 
 module.exports = {
-  makeThumbnail,
+  makePost,
 };

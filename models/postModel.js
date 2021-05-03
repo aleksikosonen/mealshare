@@ -17,6 +17,7 @@ const uploadPost = async (req) => {
 
 const uploadPostImage = async (req) => {
   try {
+    console.log('upload image', req.file)
     const [rows] = await promisePool.execute('INSERT INTO ms_post (userId, file, caption, vst) VALUES (?, ?, ?, ?);',
         [req.user.userId, req.file.filename, req.body.caption, date]);
     return rows.insertId;
