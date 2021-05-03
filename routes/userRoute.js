@@ -29,9 +29,6 @@ const fileFilter = (req, file, cb) => {
 router.route('/')
     .get(userController.get_user);
 
-router.route('/:id')
-    .get(userController.get_user);
-
 router.route('/username')
     .post(userController.user_list_get);
 
