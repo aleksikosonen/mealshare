@@ -1,8 +1,5 @@
-const loginWrapper = document.querySelector('#login-wrapper');
 const loginForm = document.querySelector('#login-form');
-const url = 'http://localhost:3000';
 
-// login
 loginForm.addEventListener('submit', async (evt) => {
   evt.preventDefault();
   const data = serializeJson(loginForm);
@@ -21,7 +18,7 @@ loginForm.addEventListener('submit', async (evt) => {
     alert(json.message);
   } else {
     sessionStorage.setItem('token', json.token);
-    loginWrapper.style.display = 'none';
+    //landContainer.style.display = 'none';
     console.log(`Hello ${json.user.fname}`);
     window.location.href = 'http://localhost:3000/index.html'
   }
