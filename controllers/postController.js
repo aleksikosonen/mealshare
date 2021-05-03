@@ -123,6 +123,11 @@ const post_get_all_tagRelations = async (req,res) => {
   return res.json(tagRelations)
 }
 
+const post_get_all_userRelations = async (req,res) => {
+  const userRelations = await postModel.getUserRelatedPosts(req.body.userInput);
+  return res.json(userRelations);
+}
+
 
 module.exports = {
   post_create,
@@ -140,4 +145,5 @@ module.exports = {
   post_delete,
   post_get_likes,
   post_update,
+  post_get_all_userRelations,
 };

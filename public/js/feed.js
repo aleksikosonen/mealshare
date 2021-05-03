@@ -7,7 +7,6 @@ let retrieved = 0;
 
 const loadData = (posts, comments) => {
   const merged = [].concat.apply([], comments)
-  console.log('loadData, ', posts);
   posts.forEach((post, i) => {
     const comment = merged.filter(e => e.postId === post.postId)
     const html = `
@@ -123,6 +122,7 @@ const getPosts = async () => {
     const response = await fetch(url + '/post/feed/' + retrieved, options);
     const posts = await response.json();
 
+    //POSTMODELISSA LIMIT RAJOITTAA POSTIT MYÖS KOMMENTTIEN MUKAAN = JOS KOMMENTTEJA 6 KUVIA VAIN 1???
     const postIds = []
     posts.forEach(e => {postIds.push(e.postId)});
     const fetchoptions = {
@@ -136,7 +136,7 @@ const getPosts = async () => {
     const res = await fetch(url + `/post/comm`,fetchoptions);
     const comments = await res.json(); 
 
-    loadData(posts, comments);      
+    loadData(posts, comments);
   }
   catch (e) {
     console.error(e.message);
