@@ -8,6 +8,9 @@ const avatar = document.querySelector('#avatar');
 const photoContainer = document.querySelector('#photoContainer');
 const settingsButton = document.querySelector('#userSsettings');
 const body = document.querySelector('body');
+const layer = document.querySelector('.layer');
+const profileInfo = document.querySelector('#profileInfo');
+const newPost = document.querySelector('#newPost');
 
 const getUserInfo = (users) => {
     //done with foreach if in some case would need to handle multiple users
@@ -76,6 +79,11 @@ const getUserImages = (posts, loggedUser) => {
             photoContainer.remove();
             console.log(post.postId);
 
+            const formContainer = document.createElement('div');
+            formContainer.id = "formContainer";
+
+            layer.appendChild(formContainer);
+
             const editPostForm = document.createElement('form');
             editPostForm.setAttribute('id', 'editPost');
 
@@ -88,7 +96,7 @@ const getUserImages = (posts, loggedUser) => {
             doneButton.innerHTML ="Done"
             doneButton.type = 'submit';
 
-            body.appendChild(editPostForm);
+            formContainer.appendChild(editPostForm);
             editPostForm.appendChild(caption);
             editPostForm.appendChild(doneButton);
 
@@ -191,6 +199,12 @@ const getLoggedUser = async () => {
 settingsButton.addEventListener('click', async () => {
     photoContainer.remove();
     settingsButton.remove();
+    newPost.remove();
+    username.remove();
+    bio.remove();
+
+    profileInfo.style.transition = "all 0.7s";
+    profileInfo.style.height = "13em";
 
     const userUpdateForm = document.createElement('form');
     const firstnameInput = document.createElement('input');
@@ -218,6 +232,7 @@ settingsButton.addEventListener('click', async () => {
     changeEmail.className = "settingButton";
 
     const cancelButton = document.createElement('button');
+    cancelButton.id = "cancelButton";
     cancelButton.textContent = "Cancel";
     cancelButton.className = "settingButton";
 
@@ -235,7 +250,7 @@ settingsButton.addEventListener('click', async () => {
     const formContainer = document.createElement('div');
     formContainer.id = "formContainer";
 
-    body.appendChild(formContainer);
+    layer.appendChild(formContainer);
 
     userUpdateForm.setAttribute("id", "userUpdateForm");
     formContainer.appendChild(userUpdateForm);

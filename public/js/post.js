@@ -23,13 +23,13 @@ addForm.addEventListener('submit', async (evt) => {
 
   const addRecipe = document.createElement('button');
   addRecipe.setAttribute("id", "addRecipe");
-  addRecipe.className = "light-border";
+  addRecipe.className = "add-recipe";
   addRecipe.type = "submit";
   addRecipe.innerHTML = "Add recipe?";
 
   const noRecipe = document.createElement('button');
   noRecipe.setAttribute("id", "dontAddRecipe");
-  noRecipe.className = "light-border";
+  noRecipe.className = "add-recipe";
   noRecipe.type = "submit";
   noRecipe.innerHTML = "Don't add and post!?";
 
