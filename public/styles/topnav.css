@@ -83,3 +83,136 @@ li a {
     justify-content: flex-end;
     margin-right: 50px;
 }
+.hamburger{
+    display: none;
+    background-color:#434C5A;
+    color: white;
+}
+
+.topNavs .fillings{
+    display:none;
+}
+
+.topNavs .search-container{
+    display:none;
+}
+
+@media screen and (max-width: 1300px) {
+    .topLeft #myProfileHref{
+        display:none;
+    }
+    .topLeft #shareHref{
+        display:none;
+    }
+    .hamburger {
+        float: right;
+        display: block;
+        position: absolute;
+        margin-right: 20px;
+        margin-left: 15%;
+        margin-top: -10px;
+    }
+    .responsive {
+        position: relative;
+        margin-left:6%
+    }
+    .responsive .hamburger {
+        float: right;
+        display: block;
+        position: absolute;
+        margin-left: 100%;
+        margin-top: 25px;
+    }
+    .responsive .fillings {
+      float: none;
+      display: block;
+      text-align: left;
+      width: 100%;
+    }
+     .responsive #logOut{
+        display:none;
+    }
+    .responsive .search-container{
+        display:none;
+    }
+    .logout{
+        width:10%;
+        display:flex;
+        justify-content: flex-end;
+        margin-right: 50px;
+    }
+    .responsive #myProfileHref{
+        margin-top: 60px;
+    }
+  }
+  @media screen and (max-width: 600px) {
+    .topLeft #myProfileHref{
+        display:none;
+    }
+    .topLeft #shareHref{
+        display:none;
+    }
+    .topNavs{
+        position: absolute;
+
+        margin-left: 90%;
+    }
+    .hamburger {
+        float: right;
+        display: block;
+        position: absolute;
+        margin-right: 20px;
+        margin-top: -10px;
+
+    }
+    .responsive {
+        display: flex;
+        flex-direction: column;
+    }
+    .responsive .hamburger {
+        float: right;
+        display: block;
+        position: absolute;
+        margin-left: 100%;
+        margin-top: 25px;
+    }
+    .responsive .fillings {
+      float: none;
+      display: block;
+      text-align: left;
+    }
+    .responsive #myProfileHref{
+        margin-top: 60px;
+    }
+    .logout{
+        display: none;
+    }
+    .topNav .search-container{
+        display: none;
+    }
+    .responsive .search-container{
+        margin-left: -15px;
+        width:20%;
+        align-self: center;
+        display: flex;
+        justify-content: center;
+    }
+    .responsive .search-container button {
+        background: transparent;
+        border: none;
+        outline: none;
+        margin-left: -18px;
+    }.responsive .search-container button:hover {
+         background: #ccc;
+     }.responsive .search-container button img{
+          width: 20px;
+          height: 20px;
+          object-fit: cover;
+      }
+      .topLeft{
+        align-self: flex-start;
+        display: flex;
+        width: 20%;
+        align-items: center;
+    }
+  }

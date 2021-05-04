@@ -35,6 +35,14 @@ addUserForm.addEventListener('submit', async (evt) =>{
     window.location.href = 'http://localhost:3000/index.html';
   }
 });
+password.onfocus = function() {
+  document.getElementById("PopUp").style.display = "block";
+}
+
+// When the user clicks outside of the password field, hide the message box
+password.onblur = function() {
+  document.getElementById("PopUp").style.display = "none";
+}
 
 password.onchange = validatePassword;
 verify_password.onkeyup = validatePassword;

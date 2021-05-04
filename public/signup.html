@@ -8,9 +8,9 @@
 </head>
 <body>
 <div class="container">
-    <div class="form-wrapper">
-              <h3>Register</h3>
-              <p>Create new account!</p>
+       <div class="form-wrapper">
+              <h3 class="paragraph">Sign up</h3>
+              <p class="paragraph">Create new account!</p>
               <form class="light-border" id="add-user-form">
                      <input class="light-border"
                             type="text"
@@ -31,16 +31,27 @@
                             pattern="[A-Za-z0-9]+"
                             placeholder="Username"
                             required>
-                     <input class="light-border" type="password" name="password" pattern="(?=.*[A-Z]).{8,}"
-                            placeholder="Password" id="password" required>
-
-                     <input class="light-border" type="password" name="password" pattern="(?=.*[A-Z]).{8,}"
+                     <input class="light-border" type="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" placeholder="Password" id="password"  required>
+                     <div id='PopUp'">
+                            <p id='PopUpText'>Must&#160contain&#160lowercase,uppercase,<br>number&#160and&#160minimum&#160of 8 characters</p>
+                     </div>
+                     <input class="light-border" type="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                             placeholder="Verify password" id="verify_password" required>
                      <button class="light-border" type="submit">Register</button>
               </form>
     </div>
+    <div id="message">
+        <h3>Password must contain the following:</h3>
+        <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+        <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+        <p id="number" class="invalid">A <b>number</b></p>
+        <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+    </div>
+   </div>
+       
 </div>
 <script src="js/serialize.js"></script>
 <script src="js/signup.js"></script>
+<script src="js/passwordInputValidate.js"></script>
 </body>
 </html>

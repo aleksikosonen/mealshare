@@ -34,7 +34,6 @@ const post_add_comment = async (req, res) => {
 };
 
 const post_find_comments = async(req, res) => {
-  console.log(req.body, 'body ', req.user)
   const comments = await postModel.findComments(req.body);
   return res.json(comments);
 }
@@ -170,6 +169,11 @@ const post_get_all_tagRelations = async (req,res) => {
   return res.json(tagRelations)
 }
 
+const post_get_all_userRelations = async (req,res) => {
+  const userRelations = await postModel.getUserRelatedPosts(req.body.userInput);
+  return res.json(userRelations);
+}
+
 const make_post = async (req, res, next) => {
   try {
     const post = await makePost(req.file.path, req.file.filename);
@@ -198,6 +202,7 @@ module.exports = {
   post_delete,
   post_get_likes,
   post_update,
+  post_get_all_userRelations,
   make_post,
   post_add_workphases,
   post_list_get_workphases,
