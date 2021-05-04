@@ -29,7 +29,6 @@ const getUserImages = (posts, loggedUser) => {
         profilePhotoGrid.className = "profilePhotoGrid";
 
         const photo = document.createElement("img");
-        console.log('tiedostonimi', post.file)
         photo.src = url + '/thumbnails/' + post.file;
         photo.alt = post.caption;
         photo.className = "profilePhotoGridPhoto";
@@ -560,9 +559,9 @@ getMyProfile();
 if (sessionStorage.getItem('token')) {
     //logIn.style.display = 'none';
     //signUp.style.display = 'none';
-    logOut.style.display = 'flex';
+    //logOut.style.display = 'flex';
 }else{
-    logOut.style.display = 'none';
+    //logOut.style.display = 'none';
 }
 
 const hamburger = document.querySelector('.hamburger');

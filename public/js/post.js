@@ -277,11 +277,12 @@ getLatestPost();
 
 // to hide login && signup
 // for some reason cant use logout.js with these files,,, url doesnt work
-if (sessionStorage.getItem('token')) {
+
+/*if (sessionStorage.getItem('token')) {
   logOut.style.display = 'flex';
 }else{
   logOut.style.display = 'none';
-}
+}*/
 
 const hamburger = document.querySelector('.hamburger');
 hamburger.addEventListener('click', () => {

@@ -50,7 +50,7 @@ body {
 }
 
 #ingredientWrapper {
-    margin: 4em;
+    margin: 4px;
 }
 
 #add-post-form {
@@ -145,7 +145,6 @@ h3 {
     align-self: center;
     margin-bottom: 50px;
     background: rgba(0,0,0, 0.2);
-
 }
 
 #latestPost img {
