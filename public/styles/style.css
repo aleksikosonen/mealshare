@@ -226,6 +226,24 @@ body {
     border: solid 1px grey;
     background: white;
 }
+#bottomCard::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+#bottomCard::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+#bottomCard::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+#bottomCard::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 
 #postCaption {
     font-size: 16px;
@@ -274,13 +292,11 @@ body {
 #commentList {
     width: 100%;
     padding: 8px;
-    overflow: scroll;
 }
 
 #commentForm {
     width: 100%;
     padding: 8px;
-    overflow: scroll;
 }
 
 #commentRender {
@@ -339,6 +355,18 @@ body {
 
 #showMoreBtn:hover{
     background-color:rgba(0,0,0, 0.65);
+}
+#postLikesAmount{
+    width:100%;
+    display: flex;
+    justify-content: flex-start;
+    text-align: center;
+
+}
+#likeAmount{
+    font-size: 10px;
+    font-weight: bold;
+    margin:5px 0 0 5px;
 }
 
 #likeBtn{

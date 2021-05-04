@@ -6,10 +6,24 @@ const likeButton = document.querySelectorAll('#likeBtn');
 let retrieved = 0;
 
 const loadData = (posts, comments) => {
-  const merged = [].concat.apply([], comments)
-  console.log('loadData, ', posts);
-  posts.forEach((post, i) => {
-    const comment = merged.filter(e => e.postId === post.postId)
+
+  let likes = "";
+  posts.forEach( async (post) => {
+    //get likeamounts
+    try {
+      const options = {
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+        },
+      };
+      const response = await fetch(url + '/post/likes/' + post.postId, options);
+      const likesAmount = await response.json();
+      likes = likesAmount.likes;
+    }
+    catch (e) {
+      console.log(e.message);
+    }
+
     const html = `
       <li class="post" data-postid=${post.postId}>
         <article id="topCard">
@@ -22,59 +36,64 @@ const loadData = (posts, comments) => {
           </figure>
            <article id="bottomCard">
           
-          <div id="postCaptionTitle">
-            <p id="postCaption">${post.caption}</p>
+          <div id="postLikesAmount">
             <button id="likeBtn" onclick="getLikeUser('${post.postId}')">❤️</button>
+            <p id="likeAmount"> ${likes} likes this </p>
           </div>
           
+          <div id="postCaptionTitle">
+            <p id="postCaption">${post.caption}</p>
+          </div>
+         
           <form id="commentForm">
             <div id="commentFormInput">
               <input class="light-border" type="text" placeholder="Comment" name="comment"/>
               <button class="light-b<order" type="submit">Comment</button>
             </div>
           </form>
-          
+
           <ul id="commentList"></ul>
           
-        </article>
           </article>
+        </article>
       </li>
       `;
     feedContainer.innerHTML += html;
-    const elements = document.querySelectorAll('#commentList');
-    const commentList = elements[i];
 
-    comment.forEach((e) => {
-      
-      const commentRender = document.createElement('div');
-      commentRender.id = "commentRender";
-      commentList.appendChild(commentRender);
+    comments.forEach((comment) => {
+      if(comment.postId === post.postId){
 
-      const commenter = document.createElement('div');
-      commenter.id ="commenterInfo"
-      commentRender.appendChild(commenter);
+        const commentRender = document.createElement('div');
+        commentRender.id = 'commentRender';
+        const commentlist = document.querySelectorAll('#commentList');
+        commentlist[(commentlist.length - 1)].appendChild(commentRender);
 
-      const comment = document.createElement('div');
-      comment.id = "userAndComment";
+        const commenterInfo = document.createElement('div');
+        commenterInfo.id = 'commenterInfo';
+        commentRender.appendChild(commenterInfo);
 
-      commentRender.appendChild(comment);
+        const userAndComment = document.createElement('div');
+        userAndComment.id = 'userAndComment';
+        commentRender.appendChild(userAndComment);
 
-      const commenterName = document.createElement('a');
-      commenterName.innerHTML = e.username;
+        const commenterName = document.createElement('a');
+        commenterName.id = 'commenterName';
+        commenterName.innerHTML = comment.username;
 
-      const commenterAvatar = document.createElement('img');
-      commenterAvatar.id = 'commentAvatar';
-      commenterAvatar.src = e.avatar;
-      commenter.appendChild(commenterAvatar);
-      comment.appendChild(commenterName);
+        const commentAvatar = document.createElement('img');
+        commentAvatar.id = 'commentAvatar';
+        commentAvatar.src = comment.avatar;
+        commentAvatar.alt = "commentAvatar";
+        commenterInfo.appendChild(commentAvatar);
+        userAndComment.appendChild(commenterName);
 
-      const commentCaption = document.createElement('p');
-      commentCaption.id = "postComment";
-      commentCaption.innerHTML= e.comment;
-      comment.appendChild(commentCaption)
+        const commentCaption = document.createElement('p');
+        commentCaption.id = "postComment";
+        commentCaption.innerHTML= comment.comment;
+        userAndComment.appendChild(commentCaption);
+      }
     });
   });
-  
 };
 
 feedContainer.addEventListener('submit', async (e) => {
@@ -111,6 +130,7 @@ feedContainer.addEventListener('submit', async (e) => {
     console.error(e.message);
   }
 });
+
 const getPosts = async () => {
   try {
     const options = {
@@ -122,20 +142,16 @@ const getPosts = async () => {
     const response = await fetch(url + '/post/feed/' + retrieved, options);
     const posts = await response.json();
 
-    const postIds = []
-    posts.forEach(e => {postIds.push(e.postId)});
     const fetchoptions = {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(postIds),
     };
     const res = await fetch(url + `/post/comm`,fetchoptions);
-    const comments = await res.json(); 
-
-    loadData(posts, comments);      
+    const comments = await res.json();
+    loadData(posts, comments);
   }
   catch (e) {
     console.error(e.message);
@@ -143,6 +159,7 @@ const getPosts = async () => {
 };
 
 getPosts();
+
 showMoreBtn.addEventListener('click',()=>{
   retrieved += 6;
   getPosts();
@@ -173,10 +190,12 @@ const getLikeUser = async (postId) => {
     };
     const responseUser = await fetch(url + '/user', options);
     const users = await responseUser.json();
-
     await likePost(postId, users[0].userId);
-
   } catch (e) {
       console.error(e.message);
     }
+
+
+
+    console.log((document.querySelector('#likeBtn').innerHTML === '❤️'))
 }
