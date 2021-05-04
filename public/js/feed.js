@@ -3,6 +3,7 @@
 const showMoreBtn = document.getElementById('showMoreBtn');
 const likeButton = document.querySelectorAll('#likeBtn');
 
+
 let retrieved = 0;
 
 const loadData = (posts, comments) => {
@@ -36,8 +37,8 @@ const loadData = (posts, comments) => {
           
           <ul id="commentList"></ul>
           
-        </article>
           </article>
+        </article>
       </li>
       `;
     feedContainer.innerHTML += html;
@@ -56,7 +57,6 @@ const loadData = (posts, comments) => {
 
       const comment = document.createElement('div');
       comment.id = "userAndComment";
-
       commentRender.appendChild(comment);
 
       const commenterName = document.createElement('a');
@@ -180,3 +180,14 @@ const getLikeUser = async (postId) => {
       console.error(e.message);
     }
 }
+
+const hamburger = document.querySelector('.hamburger');
+hamburger.addEventListener('click', () => {
+  const x = document.getElementById("myTopNav");
+  console.log('clicked');
+  if (x.className === "topNavs") {
+    x.className = "responsive";
+  } else {
+    x.className = "topNavs";
+  }
+});

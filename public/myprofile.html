@@ -5,6 +5,7 @@
     <title>My Profile</title>
     <link rel="stylesheet" href="styles/myprofile.css">
     <link rel="stylesheet" href="styles/topnav.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -20,6 +21,21 @@
     <ul id="matchList"></ul>
     <div class="logout">
         <li><a href="index.html" id="logOut">LOG OUT</a></li>
+    </div>
+    <div class="topNavs" id="myTopNav">
+        <button class="hamburger">
+            <i class="fa fa-bars"></i>
+        </button>
+        <li id="myProfileHref" class="fillings"><a href="myprofile.html">MY PROFILE</a></li>
+        <li id="shareHref" class="fillings"><a href="post.html">SHARE</a></li>
+        <li><a href="/index.html" id="logOut" class="fillings">LOG OUT</a></li>
+        <div class="search-container">
+            <input list ="matches" type="search" name="searchBar" id="searchBar" placeholder="Search for a user or #tag" autocomplete="off">
+            <button type="submit"><i id="searchBtn">
+                <img src="images/search.png">
+            </i></button>
+            <datalist id="matches"></datalist>
+        </div>
     </div>
 </nav>
 

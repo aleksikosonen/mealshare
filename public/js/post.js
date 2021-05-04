@@ -324,3 +324,14 @@ if (sessionStorage.getItem('token')) {
 }else{
   logOut.style.display = 'none';
 }
+
+const hamburger = document.querySelector('.hamburger');
+hamburger.addEventListener('click', () => {
+  const x = document.getElementById("myTopNav");
+  console.log('clicked');
+  if (x.className === "topNavs") {
+    x.className = "responsive";
+  } else {
+    x.className = "topNavs";
+  }
+});
