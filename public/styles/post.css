@@ -44,6 +44,13 @@ body {
     display: flex;
     flex-direction: column;
     border: solid white 3px;
+    //background: rgb(58, 63, 72);
+    background: #4E596A;
+    padding: 25px;
+}
+
+#ingredientWrapper {
+    margin: 4em;
 }
 
 #add-post-form {
@@ -133,11 +140,12 @@ h3 {
 }
 
 #latestPost {
-    width: 25em;
+    width: 28em;
     border:solid 3px white;
     align-self: center;
     margin-bottom: 50px;
     background: rgba(0,0,0, 0.2);
+
 }
 
 #latestPost img {
@@ -151,5 +159,5 @@ h3 {
 }
 
 #latestUpload {
-    height: 300px;
+    height: 350px;
 }

@@ -37,7 +37,7 @@ const getPost = async (id) => {
 
 const getRecipe = async (id) => {
   try {
-    const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId where ms_post_ingredients.postId = ? ORDER by ms_post_ingredients.addOrder desc limit 1;', [id]);
+    const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount, ms_post_ingredients.addOrder from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId where ms_post_ingredients.postId = ? ORDER by ms_post_ingredients.addOrder desc limit 1;', [id]);
     return rows[0];
   } catch (e) {
     console.error('postModel getPost :', e.message);
@@ -46,7 +46,7 @@ const getRecipe = async (id) => {
 
 const getAllIngredients = async (id) => {
   try {
-    const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId where ms_post_ingredients.postId = ? ORDER by ms_post_ingredients.addOrder;', [id]);
+    const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount, ms_post_ingredients.addOrder from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId where ms_post_ingredients.postId = ? ORDER by ms_post_ingredients.addOrder;', [id]);
     return rows;
   } catch (e) {
     console.error('postModel getPost :', e.message);
@@ -55,7 +55,7 @@ const getAllIngredients = async (id) => {
 
 const deleteIngredient = async (id) => {
   try {
-    const [rows] = await promisePool.execute('delete from ms_post_ingredients where postId = ? order by addOrder desc limit 1;', [id]);
+    const [rows] = await promisePool.execute('delete from ms_post_ingredients where addOrder = ? order by addOrder desc limit 1;', [id]);
     return rows[0];
   } catch (e) {
     console.error('postModel getPost :', e.message);

@@ -33,7 +33,7 @@ addForm.addEventListener('submit', async (evt) => {
   noRecipe.setAttribute("id", "dontAddRecipe");
   noRecipe.className = "add-recipe";
   noRecipe.type = "submit";
-  noRecipe.innerHTML = "Don't add and post!?";
+  noRecipe.innerHTML = "Don't add and post!";
 
   fromWrapper.appendChild(addRecipe);
   fromWrapper.appendChild(noRecipe);
@@ -63,14 +63,7 @@ addForm.addEventListener('submit', async (evt) => {
     addIngredientBtn.type = 'submit';
     addIngredientBtn.innerHTML = "Add ingredient";
 
-    const deleteIngredientBtn = document.createElement('button');
-    deleteIngredientBtn.setAttribute('id', 'deleteIngredient');
-    deleteIngredientBtn.innerHTML = "Delete last ingredient";
-    deleteIngredientBtn.className = "addPostButton";
-    deleteIngredientBtn.type = 'click';
-
     ingredientForm.appendChild(addIngredientBtn);
-    fromWrapper.appendChild(deleteIngredientBtn);
 
     const recipeIngredients = document.createElement('p');
     recipeIngredients.innerHTML = "";
@@ -82,29 +75,6 @@ addForm.addEventListener('submit', async (evt) => {
       clearInputs(ingredientForm);
       await getRecipeIngredient(post.postId, recipeIngredients);
     });
-
-    deleteIngredientBtn.addEventListener('click', async () => {
-      const fetchOptions = {
-        method: 'DELETE',
-        headers: {
-          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-        }
-      };
-      await fetch(url + '/post/delete/ingredient/' + post.postId, fetchOptions);
-      recipeIngredients.innerHTML = "";
-
-      const fetchOptionsGet = {
-        headers: {
-          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-        }
-      };
-      const response = await fetch(url + '/post/recipe/allingredients/' + post.postId, fetchOptionsGet);
-
-      const ingredients = await response.json();
-      console.log('ingriidientit', ingredients);
-      ingredients.forEach((ingredient) => {
-      recipeIngredients.innerHTML += ingredient.ingredient + ' ' + ingredient.amount + ' ' + ingredient.unit + '</br>';});
-    })
 
     const doneButton = document.createElement('button');
     doneButton.setAttribute('id', 'doneButton');
@@ -269,7 +239,38 @@ const getRecipeIngredient = async (id, recipeText) => {
   const response = await fetch(url + '/post/recipe/ingredients/' + id, fetchOptions);
   const json = await response.json();
   console.log('respo', json);
-  recipeText.innerHTML += json.ingredient + ' ' + json.amount + ' ' + json.unit + '</br>';
+
+  const ingredientWrapper = document.createElement('div');
+  ingredientWrapper.id = "ingredientWrapper";
+
+  const workphaseForm = document.querySelector("#workphase-form");
+
+  workphaseForm.appendChild(ingredientWrapper);
+
+  const text = document.createElement('p');
+  text.innerHTML = json.ingredient + ' ' + json.amount + ' ' + json.unit;
+
+  ingredientWrapper.appendChild(text);
+
+  const deleteIngredientBtn = document.createElement('btn');
+  deleteIngredientBtn.id = "deleteIngredientBtn";
+  deleteIngredientBtn.innerHTML = "Delete";
+
+  deleteIngredientBtn.addEventListener('click', async() => {
+    console.log('nappi', json.addOrder);
+    const fetchOptions = {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+      }
+    };
+    await fetch(url + '/post/delete/ingredient/' + json.addOrder, fetchOptions);
+    text.innerHTML = "";
+    deleteIngredientBtn.remove();
+  });
+
+  ingredientWrapper.appendChild(deleteIngredientBtn);
+
 };
 
 getLatestPost();

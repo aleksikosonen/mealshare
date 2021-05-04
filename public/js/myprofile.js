@@ -558,8 +558,8 @@ getMyProfile();
 // to hide login && signup
 // for some reason cant use logout.js with these files,,, url doesnt work
 if (sessionStorage.getItem('token')) {
-    logIn.style.display = 'none';
-    signUp.style.display = 'none';
+    //logIn.style.display = 'none';
+    //signUp.style.display = 'none';
     logOut.style.display = 'flex';
 }else{
     logOut.style.display = 'none';
