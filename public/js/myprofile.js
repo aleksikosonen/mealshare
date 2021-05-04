@@ -76,6 +76,7 @@ const getUserImages = (posts, loggedUser) => {
         profilePhotoGrid.appendChild(descriptionBackground);
 
         editButton.addEventListener('click',  async () => {
+            settingsButton.remove();
             photoContainer.remove();
             console.log(post.postId);
 
@@ -91,6 +92,7 @@ const getUserImages = (posts, loggedUser) => {
             caption.name = "caption";
             caption.type = "text";
             caption.placeholder = "Add new caption";
+            caption.value = post.caption;
 
             const doneButton = document.createElement('button');
             doneButton.innerHTML ="Done"
@@ -122,18 +124,21 @@ const getUserImages = (posts, loggedUser) => {
         })
 
         deleteButton.addEventListener('click', async () => {
-            try {
-                const options = {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-                    },
-                };
-                await fetch(url + '/post/' + post.postId, options);
-                window.location.href = 'http://localhost:3000/myprofile.html'
-            }
-            catch (e) {
-                console.log(e.message);
+            if (confirm('Do you want to delete this post?')) {
+                try {
+                    const options = {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+                        },
+                    };
+                    await fetch(url + '/post/' + post.postId, options);
+                    window.location.href = 'http://localhost:3000/myprofile.html'
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
+
             }
         })
     });
@@ -244,8 +249,7 @@ settingsButton.addEventListener('click', async () => {
     lastnameInput.name = "lname";
     bioInput.name = "bio";
 
-    getUserCredentials(firstnameInput, lastnameInput,
-        bioInput);
+    getUserCredentials(firstnameInput, lastnameInput, bioInput);
 
     const formContainer = document.createElement('div');
     formContainer.id = "formContainer";
@@ -267,7 +271,7 @@ settingsButton.addEventListener('click', async () => {
     formContainer.appendChild(cancelButton);
 
     cancelButton.addEventListener('click', async () => {
-        window.location.href = 'http://localhost:3000/myprofile.html'
+        window.location.href = 'http://localhost:3000/myprofile.html';
     })
 
 
@@ -302,6 +306,7 @@ settingsButton.addEventListener('click', async () => {
 
         const uploadAvatarForm = document.createElement('form');
         uploadAvatarForm.enctype = "multipart/form-data";
+        uploadAvatarForm.className = "settingForm";
         const avatarInput = document.createElement('input');
         avatarInput.type = "file";
         avatarInput.name = "avatar";
@@ -313,7 +318,7 @@ settingsButton.addEventListener('click', async () => {
         uploadAvatarButton.type = "submit";
 
         const cancelPicture = document.createElement('button');
-        cancelPicture.textContent = "cancel";
+        cancelPicture.textContent = "Cancel";
 
         formContainer.appendChild(uploadAvatarForm);
         uploadAvatarForm.appendChild(avatarInput);
@@ -349,6 +354,7 @@ settingsButton.addEventListener('click', async () => {
         cancelButton.remove();
 
         const changeUsernameForm = document.createElement('form');
+        changeUsernameForm.className = "settingForm";
         const usernameInput = document.createElement('input');
         usernameInput.type = "input";
         usernameInput.name = "username";
@@ -359,7 +365,7 @@ settingsButton.addEventListener('click', async () => {
         changeUsernameButton.type = "submit";
 
         const cancelUsernameUpdate = document.createElement('button');
-        cancelUsernameUpdate.textContent = "cancel";
+        cancelUsernameUpdate.textContent = "Cancel";
 
         formContainer.appendChild(changeUsernameForm);
         changeUsernameForm.appendChild(usernameInput);
@@ -408,6 +414,7 @@ settingsButton.addEventListener('click', async () => {
         cancelButton.remove();
 
         const changeEmailForm = document.createElement('form');
+        changeEmailForm.className = "settingForm";
         const emailInput = document.createElement('input');
 
         emailInput.type = "input";
@@ -419,7 +426,7 @@ settingsButton.addEventListener('click', async () => {
         changeEmailButton.type = "submit";
 
         const cancelEmailUpdate = document.createElement('button');
-        cancelEmailUpdate.textContent = "cancel";
+        cancelEmailUpdate.textContent = "Cancel";
 
         formContainer.appendChild(changeEmailForm);
         changeEmailForm.appendChild(emailInput);
@@ -467,6 +474,7 @@ settingsButton.addEventListener('click', async () => {
         cancelButton.remove();
 
         const changePasswordForm = document.createElement('form');
+        changePasswordForm.className = "settingForm";
         const password = document.createElement('input');
 
         password.type = "password";
@@ -481,7 +489,7 @@ settingsButton.addEventListener('click', async () => {
         verifyPassword.pattern= "(?=.*[A-Z]).{8,}";
 
         const cancelPasswordUpdate = document.createElement('button');
-        cancelPasswordUpdate.textContent = "cancel";
+        cancelPasswordUpdate.textContent = "Cancel";
 
 
         function validatePassword(){

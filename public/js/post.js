@@ -17,7 +17,9 @@ addForm.addEventListener('submit', async (evt) => {
     },
     body: fd,
   };
-  await fetch(url + '/post', fetchOptions);
+  const postResponse = await fetch(url + '/post', fetchOptions);
+  const post = await postResponse.json();
+  console.log('postaus', post.postId);
 
   addForm.remove();
 
@@ -61,7 +63,14 @@ addForm.addEventListener('submit', async (evt) => {
     addIngredientBtn.type = 'submit';
     addIngredientBtn.innerHTML = "Add ingredient";
 
+    const deleteIngredientBtn = document.createElement('button');
+    deleteIngredientBtn.setAttribute('id', 'deleteIngredient');
+    deleteIngredientBtn.innerHTML = "Delete last ingredient";
+    deleteIngredientBtn.className = "addPostButton";
+    deleteIngredientBtn.type = 'click';
+
     ingredientForm.appendChild(addIngredientBtn);
+    fromWrapper.appendChild(deleteIngredientBtn);
 
     const recipeIngredients = document.createElement('p');
     recipeIngredients.innerHTML = "";
@@ -69,13 +78,37 @@ addForm.addEventListener('submit', async (evt) => {
     ingredientForm.addEventListener('submit', async (evt) => {
       evt.preventDefault();
       const data = serializeJson(ingredientForm);
-      await addIngredient(data);
+      await addIngredient(data, post.postId);
       clearInputs(ingredientForm);
-      await getRecipeIngredients(recipeIngredients);
+      await getRecipeIngredient(post.postId, recipeIngredients);
     });
+
+    deleteIngredientBtn.addEventListener('click', async () => {
+      const fetchOptions = {
+        method: 'DELETE',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+        }
+      };
+      await fetch(url + '/post/delete/ingredient/' + post.postId, fetchOptions);
+      recipeIngredients.innerHTML = "";
+
+      const fetchOptionsGet = {
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+        }
+      };
+      const response = await fetch(url + '/post/recipe/allingredients/' + post.postId, fetchOptionsGet);
+
+      const ingredients = await response.json();
+      console.log('ingriidientit', ingredients);
+      ingredients.forEach((ingredient) => {
+      recipeIngredients.innerHTML += ingredient.ingredient + ' ' + ingredient.amount + ' ' + ingredient.unit + '</br>';});
+    })
 
     const doneButton = document.createElement('button');
     doneButton.setAttribute('id', 'doneButton');
+    doneButton.className = "addPostButton";
     doneButton.innerHTML = "Done";
 
     const workphaseInput = document.createElement('input');
@@ -85,6 +118,7 @@ addForm.addEventListener('submit', async (evt) => {
 
     const addPhases = document.createElement('button');
     addPhases.setAttribute('id', 'addPhases');
+    addPhases.className = "addPostButton";
     addPhases.innerHTML = "Add workphases";
 
     ingredientForm.appendChild(recipeIngredients);
@@ -97,8 +131,8 @@ addForm.addEventListener('submit', async (evt) => {
     workphaseForm.addEventListener('submit', async (evt) => {
       evt.preventDefault();
       const data = serializeJson(workphaseForm);
-      await addWorkphases(data);
-      await getRecipeId(renderedWorkphases);
+      await addWorkphases(data, post.postId);
+      await renderWorkphases(post.postId, renderedWorkphases);
     });
 
     workphaseForm.appendChild(renderedWorkphases);
@@ -136,22 +170,8 @@ const clearInputs = (form) => {
   form.reset();
 };
 
-const addIngredient = async (data) =>{
+const addIngredient = async (data, post) =>{
   try {
-    const options = {
-      headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-    };
-
-    const responseUser = await fetch(url + '/user', options);
-    const users = await responseUser.json();
-
-    const responsePost = await fetch(url + '/post', options);
-    const posts = await responsePost.json();
-
-    const latestPostByLoggedUser = posts.filter(user => user.userId === users[0].userId).pop().postId;
-
     const fetchOptions = {
       method: 'POST',
       headers: {
@@ -160,29 +180,15 @@ const addIngredient = async (data) =>{
       },
       body: JSON.stringify(data),
     };
-    await fetch(url + '/post/ingredient/' + latestPostByLoggedUser, fetchOptions);
+    await fetch(url + '/post/ingredient/' + post, fetchOptions);
   }
   catch (e) {
     console.log(e.message);
   }
 };
 
-const addWorkphases = async (data) =>{
+const addWorkphases = async (data, post) =>{
   try {
-    const options = {
-      headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-    };
-
-    const responseUser = await fetch(url + '/user', options);
-    const users = await responseUser.json();
-
-    const responsePost = await fetch(url + '/post', options);
-    const posts = await responsePost.json();
-
-    const latestPostByLoggedUser = posts.filter(user => user.userId === users[0].userId).pop().postId;
-
     const fetchOptions = {
       method: 'POST',
       headers: {
@@ -191,7 +197,7 @@ const addWorkphases = async (data) =>{
       },
       body: JSON.stringify(data),
     };
-    await fetch(url + '/post/workphases/' + latestPostByLoggedUser, fetchOptions);
+    await fetch(url + '/post/workphases/' + post, fetchOptions);
   }
   catch (e) {
     console.log(e.message);
@@ -243,52 +249,6 @@ const getUsers = async () => {
   }
 };
 
-const getRecipeIngredients = async (recipeText) => {
-  try {
-    const options = {
-      headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-    };
-
-    const responseUser = await fetch(url + '/user', options);
-    const users = await responseUser.json();
-
-    const responsePost = await fetch(url + '/post', options);
-    const posts = await responsePost.json();
-
-    const latestPostByLoggedUser = posts.filter(user => user.userId === users[0].userId).pop().postId;
-
-    await getRecipeIngredient(latestPostByLoggedUser, recipeText);
-  }
-  catch (e) {
-    console.log(e.message);
-  }
-};
-
-const getRecipeId = async (renderedWorkphases) => {
-  try {
-    const options = {
-      headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-    };
-
-    const responseUser = await fetch(url + '/user', options);
-    const users = await responseUser.json();
-
-    const responsePost = await fetch(url + '/post', options);
-    const posts = await responsePost.json();
-
-    const latestPostByLoggedUser = posts.filter(user => user.userId === users[0].userId).pop().postId;
-
-    await renderWorkphases(latestPostByLoggedUser, renderedWorkphases);
-  }
-  catch (e) {
-    console.log(e.message);
-  }
-};
-
 const renderWorkphases = async (id, workphaseText) => {
   const fetchOptions = {
     headers: {
@@ -297,7 +257,7 @@ const renderWorkphases = async (id, workphaseText) => {
   };
   const response = await fetch(url + '/post/recipe/workphases/' + id, fetchOptions);
   const json = await response.json();
-  workphaseText.innerHTML += json.phases + '\n';
+  workphaseText.innerHTML += json.phases + '</br>';
 };
 
 const getRecipeIngredient = async (id, recipeText) => {
@@ -309,7 +269,7 @@ const getRecipeIngredient = async (id, recipeText) => {
   const response = await fetch(url + '/post/recipe/ingredients/' + id, fetchOptions);
   const json = await response.json();
   console.log('respo', json);
-  recipeText.innerHTML += json.ingredient + ' ' + json.amount + ' ' + json.unit + ', \n';
+  recipeText.innerHTML += json.ingredient + ' ' + json.amount + ' ' + json.unit + '</br>';
 };
 
 getLatestPost();
@@ -317,9 +277,6 @@ getLatestPost();
 // to hide login && signup
 // for some reason cant use logout.js with these files,,, url doesnt work
 if (sessionStorage.getItem('token')) {
-  //logIn.style.display = 'none';
-  //signUp.style.display = 'none';
-  //signUp.style.display = 'none';
   logOut.style.display = 'flex';
 }else{
   logOut.style.display = 'none';

@@ -29,6 +29,45 @@ body {
     align-self: center;
 }
 
+.settingForm {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    align-self: center;
+}
+
+.settingForm input {
+    background: none;
+    border: solid 3px white;
+    margin:3px;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+}
+
+.settingForm input::placeholder {
+    color: white;
+}
+
+.settingForm button {
+    margin: 5px;
+    align-self: center;
+    width: 200px;
+    height: 50px;
+    background: #F7F7F7;
+    color: black;
+    border-radius: 10px;
+    max-height: 40px;
+    border: 1px black solid;
+    box-sizing: border-box;
+}
+
+.settingForm button:hover {
+    background: #F26966;
+    border: none;
+    color: white;
+}
+
 .settingButton {
     margin: 5px;
     align-self: center;
