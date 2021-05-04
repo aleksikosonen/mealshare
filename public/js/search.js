@@ -2,7 +2,7 @@ const searchBar = document.querySelector('#searchBar');
 const datalist = document.querySelector('#matches');
 let users = [];
 let tags = [];
-let matches = [];
+let userMatches = [];
 let tagMatches = [];
 let userInput = "";
 
@@ -11,8 +11,8 @@ let userInput = "";
 searchBar.addEventListener('keyup', (evt) => {
   if(evt.target.value.length >= 1){
     users.forEach((user)=>{
-      if(!matches.includes(user)){
-        matches.push(user);
+      if(!userMatches.includes(user.username)){
+        userMatches.push(user.username);
         let optionElement = document.createElement("option");
         optionElement.value = user.username;
         datalist.appendChild(optionElement);
@@ -38,10 +38,13 @@ document.querySelector('#searchBtn').addEventListener('click', (evt) => {
   userInput = searchBar.value;
   if(tagMatches.includes(userInput)){
     getTagRelatedPosts();
-    feedContainer.innerHTML = "";
+  }
+  if(userMatches.includes(userInput)){
+    getUserRelatedPosts();
   }
 })
 
+//for datalist
 const loadUsers = async () => {
   try {
     const options = {
@@ -57,7 +60,7 @@ const loadUsers = async () => {
     console.log(e.message);
   }
 };
-
+//for datalist
 const loadHashtags = async () => {
   try {
     const options = {
@@ -88,9 +91,39 @@ const getTagRelatedPosts = async () => {
       },
       body: JSON.stringify(data),
     };
-    const response = await fetch(url + '/post/matches/', options);
+    const response = await fetch(url + '/post/tagmatches/', options);
     const tagRelatedPosts = await response.json();
-    loadData(tagRelatedPosts);
+    if(tagRelatedPosts.length >= 1){
+      feedContainer.innerHTML = "";
+      loadData(tagRelatedPosts);
+    }else{
+      alert(`Didn't find any posts`);
+    }
+  }
+  catch (e) {
+    console.log(e.message);
+  }
+};
+
+const getUserRelatedPosts = async () => {
+  const data = {userInput : userInput};
+  try {
+    const options = {
+      method:'POST',
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    };
+    const response = await fetch(url + '/post/usermatches/', options);
+    const userRelatedPosts = await response.json();
+    if(userRelatedPosts.length >= 1){
+      feedContainer.innerHTML = "";
+      loadData(userRelatedPosts);
+    }else{
+      alert(`Didn't find any posts`);
+    }
   }
   catch (e) {
     console.log(e.message);
