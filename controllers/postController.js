@@ -43,6 +43,11 @@ const post_list_get_ingredients = async (req, res) => {
   return res.json(ingredients);
 };
 
+const post_list_get_workphases = async (req, res) => {
+  const workphases = await postModel.getWorkphase(req.params.id);
+  return res.json(workphases);
+};
+
 //Made for later adding more details to post
 const post_create = async (req, res) => {
   const errors = validationResult(req);
@@ -68,16 +73,16 @@ const post_create_image =  async (req, res) => {
   const hashtags = filterItems(stringed, '#');
   if (!errors.isEmpty()) {
     return res.status(400).json({errors: errors.array()});
-  } 
+  }
   try {
     const id = await postModel.uploadPostImage(req);
     const post = await postModel.getPost(id);
-    
+
     console.log('image', post);
 
     if(!(Object.entries(hashtags).length === 0)){
       console.log('sending hashtags ', id," ", hashtags);
-        const tags = await postModel.createTags(id, hashtags);
+      const tags = await postModel.createTags(id, hashtags);
     }
     res.send(post);
   } catch (e) {
@@ -95,6 +100,20 @@ const post_add_ingredient = async (req, res) => {
     await postModel.uploadPostIngredients(req, id);
     const ingredient = await postModel.getIngredient(id);
     res.send(ingredient);
+  } catch (e) {
+    res.status(400).json({error: e.message});
+  }
+};
+
+const post_add_workphases = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({errors: errors.array()});
+  }
+  try {
+    const id = await postModel.uploadWorkphases(req);
+    const workphase = await postModel.getWorkphase(id);
+    res.send(workphase);
   } catch (e) {
     res.status(400).json({error: e.message});
   }
@@ -147,7 +166,6 @@ const post_get_all_userRelations = async (req,res) => {
 
 const make_post = async (req, res, next) => {
   try {
-    console.log('filename', req.file.filename);
     const post = await makePost(req.file.path, req.file.filename);
     if (post) {
       next();
@@ -176,4 +194,7 @@ module.exports = {
   post_update,
   post_get_all_userRelations,
   make_post,
+  post_add_workphases,
+  post_list_get_workphases,
 };
+

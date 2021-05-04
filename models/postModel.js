@@ -17,7 +17,6 @@ const uploadPost = async (req) => {
 
 const uploadPostImage = async (req) => {
   try {
-    console.log('upload image', req.file)
     const [rows] = await promisePool.execute('INSERT INTO ms_post (userId, file, caption, vst) VALUES (?, ?, ?, ?);',
         [req.user.userId, req.file.filename, req.body.caption, date]);
     return rows.insertId;
@@ -38,7 +37,7 @@ const getPost = async (id) => {
 
 const getRecipe = async (id) => {
   try {
-    const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId where ms_post_ingredients.postId = ? ORDER BY addOrder DESC LIMIT 1;', [id]);
+    const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId where ms_post_ingredients.postId = ? ORDER BY addOrder DESC LIMIT 1;', [id]);
     return rows[0];
   } catch (e) {
     console.error('postModel getPost :', e.message);
@@ -87,6 +86,26 @@ const uploadIngredient = async (req) => {
     throw new Error('upload failed');
   }
 };
+
+const uploadWorkphases = async (req) => {
+  try {
+    const [rows] = await promisePool.execute('INSERT INTO ms_workphases (postId, phases) VALUES (?, ?);',
+        [req.params.id, req.body.workphases]);
+    return rows.insertId;
+  } catch (e) {
+    console.error('upload ingredient :', e.message);
+    throw new Error('upload failed');
+  }
+};
+
+const getWorkphase = async (id) => {
+  try {
+    const [rows] = await promisePool.execute('SELECT * FROM ms_workphases WHERE postId = ?;', [id]);
+    return rows[0];
+  } catch (e) {
+    console.error('postModel getPost :', e.message);
+  }
+}
 
 const uploadPostIngredients = async (req, id) => {
   try {
@@ -203,7 +222,7 @@ const getTagRelatedPosts = async (input) => {
 };
 
 const addComment = async (postId, userId, comment) => {
- // console.log(postId, " ",userId, " ", comment)
+  // console.log(postId, " ",userId, " ", comment)
   try{
     const [rows] = await promisePool.execute('INSERT INTO ms_postcomment (userId, postId, comment, vst) values (?, ?, ?, ?);', [userId, postId, comment, date]);
     return rows;
@@ -248,6 +267,7 @@ const getLikes = async (id) => {
   }
 };
 
+
 const getUserRelatedPosts = async (input) => {
   try {
     const [rows] = await promisePool.execute('SELECT ms_post.postId, ms_post.file, ms_post.caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar FROM ms_post INNER JOIN ms_user ON ms_post.userId = ms_user.userId WHERE ms_user.username = ? ORDER BY ms_post.postId', [input]);
@@ -258,7 +278,6 @@ const getUserRelatedPosts = async (input) => {
   }
 };
 
- 
 module.exports = {
   uploadPost,
   getPost,
@@ -283,4 +302,6 @@ module.exports = {
   updatePost,
   uploadPostIngredients,
   getUserRelatedPosts,
+  uploadWorkphases,
+  getWorkphase,
 };
