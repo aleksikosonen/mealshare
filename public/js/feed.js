@@ -61,29 +61,6 @@ const loadData = (posts, comments) => {
       `;
     feedContainer.innerHTML += html;
 
-<<<<<<< HEAD
-      const commenter = document.createElement('div');
-      commenter.id ="commenterInfo"
-      commentRender.appendChild(commenter);
-
-      const comment = document.createElement('div');
-      comment.id = "userAndComment";
-      commentRender.appendChild(comment);
-
-      const commenterName = document.createElement('a');
-      commenterName.innerHTML = e.username;
-
-      const commenterAvatar = document.createElement('img');
-      commenterAvatar.id = 'commentAvatar';
-      commenterAvatar.src = e.avatar;
-      commenter.appendChild(commenterAvatar);
-      comment.appendChild(commenterName);
-
-      const commentCaption = document.createElement('p');
-      commentCaption.id = "postComment";
-      commentCaption.innerHTML= e.comment;
-      comment.appendChild(commentCaption)
-=======
     comments.forEach((comment) => {
       if(comment.postId === post.postId){
 
@@ -116,7 +93,6 @@ const loadData = (posts, comments) => {
         commentCaption.innerHTML= comment.comment;
         userAndComment.appendChild(commentCaption);
       }
->>>>>>> 114c61586c834fd9fce4082981f33fca59817dad
     });
   });
 };
