@@ -55,8 +55,10 @@ router.get('/recipe/workphases/:id', postController.post_list_get_workphases);
 
 router.post('/tag', postController.post_get_all_tags);
 
-router.get('/recipe/ingredients/:id', postController.post_list_get_ingredients);
-router.get('/likes/:id', postController.post_get_likes);
+router.get('/recipe/ingredients/:id', postController.post_list_get_ingredients)
+router.get('/recipe/allingredients/:id', postController.post_list_get_all_ingredients)
+router.delete('/delete/ingredient/:id', postController.post_delete_last_ingredient)
+router.get('/likes/:id', postController.post_get_likes)
 
 router.put('/:id', postController.post_update);
 router.delete('/:id', postController.post_delete);

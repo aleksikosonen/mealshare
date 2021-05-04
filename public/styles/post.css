@@ -5,34 +5,159 @@
     text-align: center;
 }
 
-body {
+/*body {
     height: 100%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}*/
+
+body {
+    color: white;
+    min-height: 100%;
+    background: url('../images/food_background.jpeg ')no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
-.light-border {
+.layer {
+    background-color: #4E596A90;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+}
+
+.form-wrapper {
+    margin: 50px;
+    width: 25em;
+    align-items: center;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    border: solid white 3px;
+    //background: rgb(58, 63, 72);
+    background: #4E596A;
+    padding: 25px;
+}
+
+#ingredientWrapper {
+    margin: 4em;
+}
+
+#add-post-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 10px;
+    width: 20em;
+}
+
+.add-recipe {
+    background: #F7F7F7;
+    color: black;
+    border-radius: 10px;
+    height: 40px;
+    margin-top: 4px;
+    border: 1px black solid;
+    box-sizing: border-box;
+    width: 200px;
+    margin-bottom: 40px;
+}
+
+#add-post-form input {
+    background: none;
+    border: solid 3px white;
+    margin: 2vh;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+}
+
+#add-post-form input::placeholder {
+    color: white;
+    opacity: 0.8;
+    text-align: center;
+}
+
+#add-post-form button {
+    background: #F26966;
+    border: none;
+    border-radius: 20px;
+    margin: 2vh;
+    color: white;
+    font-size: 28px;
+}
+
+.post-form-item {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 15px;
 }
 
 h3 {
     margin-bottom: 25px;
 }
 
+#addIngredient {
+    background: #F7F7F7;
+    color: black;
+    border-radius: 10px;
+    height: 40px;
+    margin-top: 4px;
+    border: 1px black solid;
+    box-sizing: border-box;
+    width: 200px;
+}
+
+.addPostButton {
+    background: #F7F7F7;
+    color: black;
+    border-radius: 10px;
+    height: 40px;
+    margin-top: 4px;
+    border: 1px black solid;
+    box-sizing: border-box;
+    width: 200px;
+}
+
+#workphase-form input {
+    width: 30%;
+    height: 30px;
+}
+
+#workphaseInput {
+    height: 200px;
+    width: 100%;
+}
+
 #latestPost {
-    margin-top: 50px;
-    padding: 10px;
-    border:groove 1px black;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px  #aaaaaa;
+    width: 28em;
+    border:solid 3px white;
+    align-self: center;
+    margin-bottom: 50px;
+    background: rgba(0,0,0, 0.2);
+
+}
+
+#latestPost img {
+    border-top: white solid 3px;
+    border-bottom: white solid 3px;
+    width: 100%;
+}
+
+#latestPost p {
+    padding: 5px;
 }
 
 #latestUpload {
-    height: 300px;
+    height: 350px;
 }

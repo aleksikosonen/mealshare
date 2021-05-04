@@ -5,7 +5,21 @@
 }
 
 body {
-    height: 100%;
+    min-height: 100%;
+    background: url('../images/food_background.jpeg ')no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.layer {
+    width: 100%;
+    min-height: 100%;
+    background-color: #4E596A90;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 #userUpdateForm {
@@ -13,6 +27,45 @@ body {
     flex-direction: column;
     width: 200px;
     align-self: center;
+}
+
+.settingForm {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    align-self: center;
+}
+
+.settingForm input {
+    background: none;
+    border: solid 3px white;
+    margin:3px;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+}
+
+.settingForm input::placeholder {
+    color: white;
+}
+
+.settingForm button {
+    margin: 5px;
+    align-self: center;
+    width: 200px;
+    height: 50px;
+    background: #F7F7F7;
+    color: black;
+    border-radius: 10px;
+    max-height: 40px;
+    border: 1px black solid;
+    box-sizing: border-box;
+}
+
+.settingForm button:hover {
+    background: #F26966;
+    border: none;
+    color: white;
 }
 
 .settingButton {
@@ -44,6 +97,7 @@ body {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    background: white;
     //align-items: center;
 }
 
@@ -58,6 +112,37 @@ body {
     transition: transform .5s ease;
 }
 
+#profileInfo button {
+    background: #F26966;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    min-height: 30px;
+    width: 100px;
+    box-sizing: border-box;
+}
+
+#photoContainer button {
+    background: #F7F7F7;
+    color: black;
+    border-radius: 10px;
+    min-height: 30px;
+    width: 100px;
+    border: 1px black solid;
+    box-sizing: border-box;
+}
+
+#photoContainer button:hover {
+    background: #F26966;
+    border: none;
+    color: white;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
 .profilePhotoGridPhoto {
     max-width: 100%;
     max-height: 1000px;
@@ -65,7 +150,10 @@ body {
 
 #editPost {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    width: 200px;
+    align-self: center;
+    align-items: center;
 }
 
 #descBackGround {
@@ -78,6 +166,7 @@ body {
     justify-content: space-evenly;
     border: 1px groove grey;
     border-radius: 0 0px 10px 10px;
+    align-items: center;
 }
 
 #formContainer {
@@ -88,12 +177,74 @@ body {
     margin: 10px;
 }
 
-
-.profilePhotoGrid:hover {
-    transform: scale(1.05);
+#cancelButton {
+    background: #F26966;
+    border: none;
+    border-radius: 20px;
+    margin: 2vh;
+    color: white;
 }
 
-@media only screen and (max-width: 700px) {
+#userUpdateForm input {
+    background: none;
+    border: solid 3px white;
+    margin:3px;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+}
+
+#userUpdateForm button {
+    background: #F7F7F7;
+    color: black;
+    border-radius: 10px;
+    height: 40px;
+    margin-top: 4px;
+    border: 1px black solid;
+    box-sizing: border-box;
+}
+
+#editPost input {
+    background: none;
+    border: solid 3px white;
+    margin:3px;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+}
+
+#editPost input::placeholder {
+    color: white;
+}
+
+#editPost button {
+    background: #F7F7F7;
+    color: black;
+    border-radius: 10px;
+    height: 40px;
+    margin-top: 4px;
+    border: 1px black solid;
+    box-sizing: border-box;
+    width: 100px;
+}
+
+.settingButton {
+    background: #F7F7F7;
+    color: black;
+    border-radius: 10px;
+    max-height: 40px;
+    border: 1px black solid;
+    box-sizing: border-box;
+}
+
+.settingButton:hover {
+    background: #F26966;
+    border: none;
+    color: white;
+}
+
+
+@media only screen and (max-width: 1000px) {
     #profileInfo {
         height: 15em;
     }

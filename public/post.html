@@ -9,54 +9,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+<div class="layer" id="layer">
 
-<nav class="topNav">
-    <div class="topLeft">
-        <li><a href="index.html"><img src="images/mealshare_logo_red.png" alt="PageId" style="width: 50px"></a></li>
-        <li><a href="myprofile.html">MY PROFILE</a></li>
-        <li><a href="post.html">SHARE</a></li>
-    </div>
-    <div class="search-container">
-    </div>
-    <ul id="matchList"></ul>
-    <div class="logout">
-        <li><a href="index.html" id="logOut">LOG OUT</a></li>
-    </div>
-    <div class="topNavs" id="myTopNav">
-        <button class="hamburger">
-            <i class="fa fa-bars"></i>
-        </button>
-        <li id="myProfileHref" class="fillings"><a href="myprofile.html">MY PROFILE</a></li>
-        <li id="shareHref" class="fillings"><a href="post.html">SHARE</a></li>
-        <li><a href="/index.html" id="logOut" class="fillings">LOG OUT</a></li>
-        <div class="search-container">
-            <input list ="matches" type="search" name="searchBar" id="searchBar" placeholder="Search for a user or #tag" autocomplete="off">
-            <button type="submit"><i id="searchBtn">
-                <img src="images/search.png">
-            </i></button>
-            <datalist id="matches"></datalist>
-        </div>
-    </div>
-</nav>
+  <nav class="topNav">
+      <div class="topLeft">
+          <li><a href="index.html"><img src="images/mealshare_logo_red.png" alt="PageId" style="width: 50px"></a></li>
+          <li><a href="myprofile.html">MY PROFILE</a></li>
+          <li><a href="post.html">SHARE</a></li>
+      </div>
+      <div class="search-container">
+      </div>
+      <ul id="matchList"></ul>
+      <div class="logout">
+          <li><a href="index.html" id="logOut">LOG OUT</a></li>
+      </div>
+      <div class="topNavs" id="myTopNav">
+          <button class="hamburger">
+              <i class="fa fa-bars"></i>
+          </button>
+          <li id="myProfileHref" class="fillings"><a href="myprofile.html">MY PROFILE</a></li>
+          <li id="shareHref" class="fillings"><a href="post.html">SHARE</a></li>
+          <li><a href="/index.html" id="logOut" class="fillings">LOG OUT</a></li>
+          <div class="search-container">
+              <input list ="matches" type="search" name="searchBar" id="searchBar" placeholder="Search for a user or #tag" autocomplete="off">
+              <button type="submit"><i id="searchBtn">
+                  <img src="images/search.png">
+              </i></button>
+              <datalist id="matches"></datalist>
+          </div>
+      </div>
+  </nav>
 
-<div class="form-wrapper">
-    <h3>Add post</h3>
-    <form class="light-border"
-          enctype="multipart/form-data"
-          id="add-post-form">
-        <input class="light-border" type="text" name="caption" placeholder="caption" required>
-        <input class="light-border" type="file" name="post" accept="image/*" placeholder="Choose file">
-        <button class="light-border" type="submit">Upload</button>
-    </form>
+    <div class="form-wrapper">
+        <h3>Add post</h3>
+        <form enctype="multipart/form-data"
+              id="add-post-form">
+            <input class="post-form-item" type="text" name="caption" placeholder="caption" required>
+            <input class="post-form-item" type="file" name="post" accept="image/*" placeholder="Choose file">
+            <button class="post-form-item" type="submit">Upload</button>
+        </form>
+    </div>
+
+    <div id="latestPost">
+        <p>Latest post in Mealshare</p>
+        <img src="" alt="" id="latestUpload">
+        <p id="captionText"></p>
+        <p id="postedBy"></p>
+    </div>
 </div>
-
-<div id="latestPost">
-    <p>Latest post in Mealshare</p>
-    <img src="" alt="" id="latestUpload">
-    <p id="captionText"></p>
-    <p id="postedBy"></p>
-</div>
-
 <script src="js/serialize.js"></script>
 <script src="js/post.js"></script>
 
