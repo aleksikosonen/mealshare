@@ -26,10 +26,11 @@ const upload = multer({dest: 'uploads/', fileFilter});
 
 router.get('/', postController.post_list_get);
 router.get('/postedBy', postController.post_list_get_postedBy);
-router.post('/feed/:retrieved', postController.feed_list_get);
+router.post('/feed/:retrieved', postController.feed_list_get)
 router.post('/tagmatches', postController.post_get_all_tagRelations);
 router.post('/usermatches', postController.post_get_all_userRelations);
 router.post('/feed/like/:id/:user', postController.feed_like);
+
 
 router.post('/com/:postId',
     body('comment').isLength({min: 1}).escape().blacklist(';'),
@@ -53,6 +54,8 @@ router.get('/:id', postController.post_list_get);
 router.get('/ingredient/', postController.post_list_get_ingredients);
 router.get('/recipe/ingredients/:id', postController.post_list_get_ingredients);
 router.get('/recipe/workphases/:id', postController.post_list_get_workphases);
+router.post('/recipe/allworkphases', postController.post_list_get_all_workphases);
+router.post('/recipe/allingredientsfeed/', postController.post_list_get_all_ingredients_feed);
 
 router.post('/tag', postController.post_get_all_tags);
 

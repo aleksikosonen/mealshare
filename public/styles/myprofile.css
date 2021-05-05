@@ -112,6 +112,14 @@ body {
     transition: transform .5s ease;
 }
 
+.topNav {
+    justify-content: space-evenly;
+}
+
+#logOut {
+    margin-right: 150px;
+}
+
 #profileInfo button {
     background: #F26966;
     color: white;
@@ -260,14 +268,6 @@ a {
 
     .profilePhotoGrid {
         width: 50%;
-    }
-
-    #myProfileHref {
-        display: none;
-    }
-
-    #shareHref {
-        display: none;
     }
 }
 

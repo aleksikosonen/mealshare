@@ -86,32 +86,24 @@ addForm.addEventListener('submit', async (evt) => {
     workphaseInput.id = 'workphaseInput';
     workphaseInput.placeholder = 'Add ingredients first then write the workspaces here';
 
-    const addPhases = document.createElement('button');
-    addPhases.setAttribute('id', 'addPhases');
-    addPhases.className = "addPostButton";
-    addPhases.innerHTML = "Add workphases";
+    const donePost = document.createElement('button');
+    donePost.setAttribute('id', 'addPhases');
+    donePost.className = "addPostButton";
+    donePost.innerHTML = "Post!";
 
     ingredientForm.appendChild(recipeIngredients);
     workphaseForm.appendChild(workphaseInput);
-    workphaseForm.appendChild(addPhases);
-
-    const renderedWorkphases = document.createElement('p');
-    renderedWorkphases.innerHTML = "";
+    workphaseForm.appendChild(donePost);
 
     workphaseForm.addEventListener('submit', async (evt) => {
       evt.preventDefault();
       const data = serializeJson(workphaseForm);
-      await addWorkphases(data, post.postId);
-      await renderWorkphases(post.postId, renderedWorkphases);
+      if (data.workphases !== "") {
+        await addWorkphases(data, post.postId);
+      }
+      window.location.href = 'http://localhost:3000/'
+
     });
-
-    workphaseForm.appendChild(renderedWorkphases);
-    workphaseForm.appendChild(doneButton);
-
-    doneButton.addEventListener('click', () => {
-      window.location.href = 'http://localhost:3000/post.html'
-    })
-
   });
 });
 
@@ -283,14 +275,14 @@ getLatestPost();
 }else{
   logOut.style.display = 'none';
 }*/
-
+/*
 const hamburger = document.querySelector('.hamburger');
 hamburger.addEventListener('click', () => {
-  const x = document.getElementById("myTopNav");
+  const x = document.getElementById("topNav");
   console.log('clicked');
-  if (x.className === "topNavs") {
-    x.className = "responsive";
+  if (x.className === "topNav") {
+    x.className += " responsive";
   } else {
-    x.className = "topNavs";
+    x.className = "topNav";
   }
-});
+});*/
