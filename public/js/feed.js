@@ -2,6 +2,7 @@
 
 const showMoreBtn = document.getElementById('showMoreBtn');
 
+const url = 'http://localhost:3000';
 
 let retrieved = 0;
 
