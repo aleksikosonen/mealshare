@@ -5,7 +5,6 @@ const {validationResult} = require('express-validator');
 const { hash } = require('bcryptjs');
 const {makePost} = require('../utils/resize');
 
-
 const post_list_get = async (req, res) => {
   const posts = await postModel.getAllPosts();
   return res.json(posts);
@@ -56,6 +55,16 @@ const post_delete_last_ingredient = async (req, res) => {
 const post_list_get_workphases = async (req, res) => {
   const workphases = await postModel.getWorkphase(req.params.id);
   return res.json(workphases);
+};
+
+const post_list_get_all_workphases = async (req, res) => {
+  const allWorkphases = await postModel.getAllWorkphases();
+  return res.json(allWorkphases);
+};
+
+const post_list_get_all_ingredients_feed = async (req, res) => {
+  const ingredients = await postModel.getAllIngredientsFeed();
+  return res.json(ingredients);
 };
 
 //Made for later adding more details to post
@@ -185,7 +194,6 @@ const make_post = async (req, res, next) => {
   }
 };
 
-
 module.exports = {
   post_create,
   post_list_get,
@@ -206,6 +214,8 @@ module.exports = {
   make_post,
   post_add_workphases,
   post_list_get_workphases,
+  post_list_get_all_workphases,
+  post_list_get_all_ingredients_feed,
   post_delete_last_ingredient,
   post_list_get_all_ingredients,
 };
