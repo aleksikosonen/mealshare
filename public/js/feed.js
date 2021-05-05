@@ -1,8 +1,12 @@
 'use strict';
 
 const showMoreBtn = document.getElementById('showMoreBtn');
+
+const url = 'http://localhost:3000';
+
 const likeButton = document.querySelectorAll('#likeBtn');
 const loggedUser = [];
+
 let retrieved = 0;
 
 const findLoggedUser = (async () => {

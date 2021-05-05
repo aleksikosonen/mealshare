@@ -15,7 +15,9 @@ const newPost = document.querySelector('#newPost');
 const getUserInfo = (users) => {
     //done with foreach if in some case would need to handle multiple users
     users.forEach((user) => {
-        avatar.src = user.avatar;
+        if (user.avatar != null) {
+            avatar.src = user.avatar;
+        }
         username.innerHTML = user.username;
         bio.innerHTML = user.bio;
     });
@@ -47,7 +49,8 @@ const getUserImages = (posts, loggedUser) => {
 
         const deleteButton = document.createElement('button');
         deleteButton.type = "click";
-        deleteButton.innerHTML = "Delete post";
+        deleteButton.id = "deletePost"
+        //deleteButton.innerHTML = "Delete post";
 
         descriptionBackground.style.height='50px';
         descriptionBackground.style.width='100%';
@@ -247,6 +250,7 @@ settingsButton.addEventListener('click', async () => {
     firstnameInput.name = "fname";
     lastnameInput.name = "lname";
     bioInput.name = "bio";
+    bioInput.placeholder = "Biography";
 
     getUserCredentials(firstnameInput, lastnameInput, bioInput);
 
