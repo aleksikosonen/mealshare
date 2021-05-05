@@ -5,28 +5,30 @@
     <title>Mealshare</title>
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/topnav.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <div class="layer" id="layer">
 
-    <nav class="topNav">
-        <div class="topLeft">
-            <li><a href="index.html"><img src="images/mealshare_logo_red.png" alt="PageId" style="width: 50px"></a></li>
-            <li id="myProfileHref"><a href="myprofile.html">MY PROFILE</a></li>
-            <li id="shareHref"><a href="post.html">SHARE</a></li>
-        </div>
-        <div class="search-container">
-                <input list ="matches" type="search" name="searchBar" id="searchBar" placeholder="Search for a user or #tag" autocomplete="off">
-                <button type="submit"><i class="fa fa-search" id="searchBtn">
-                    <img src="images/search.png">
-                </i></button>
-                <datalist id="matches"></datalist>
-        </div>
+    <nav class="topNav" id="topNav">
+            <li id="logo"><a href="index.html"><img src="images/mealshare_logo_red.png" alt="PageId" style="width: 50px"></a></li>
+            <li id="myProfileHref" class="hideHamb"><a href="myprofile.html">MY PROFILE</a></li>
+            <li id="shareHref" class="hideHamb"><a href="post.html">NEW POST</a></li>
+            <li class="hideHamb">
+                <div class="search-container" id="search">
+                    <input list ="matches" type="search" name="searchBar" id="searchBar" placeholder="Search for a user or #tag" autocomplete="off">
+                    <button type="submit"><i id="searchBtn">
+                        <img src="images/search.png">
+                    </i></button>
+                    <datalist id="matches"></datalist>
+                </div>
+            </li>
+            <li><a href="/index.html" id="logOut" class="logout">LOG OUT</a></li>
+            <button class="hamburger"></button>
+
         <ul id="matchList"></ul>
-        <div class="logout">
-            <li><a href="/index.html" id="logOut">LOG OUT</a></li>
-        </div>
+
     </nav>
 
     <ul class="feedContainer" id ='feedContainer'>

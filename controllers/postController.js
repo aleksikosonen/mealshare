@@ -42,6 +42,16 @@ const post_list_get_ingredients = async (req, res) => {
   return res.json(ingredients);
 };
 
+const post_list_get_all_ingredients = async (req, res) => {
+  const ingredients = await postModel.getAllIngredients(req.params.id);
+  return res.json(ingredients);
+};
+
+const post_delete_last_ingredient = async (req, res) => {
+  const ingredients = await postModel.deleteIngredient(req.params.id);
+  return res.json(ingredients);
+};
+
 const post_list_get_workphases = async (req, res) => {
   const workphases = await postModel.getWorkphase(req.params.id);
   return res.json(workphases);
@@ -184,6 +194,7 @@ const make_post = async (req, res, next) => {
   }
 };
 
+
 module.exports = {
   post_create,
   post_list_get,
@@ -206,4 +217,7 @@ module.exports = {
   post_list_get_workphases,
   post_list_get_all_workphases,
   post_list_get_all_ingredients_feed,
+  post_delete_last_ingredient,
+  post_list_get_all_ingredients,
 };
+

@@ -8,6 +8,9 @@ const avatar = document.querySelector('#avatar');
 const photoContainer = document.querySelector('#photoContainer');
 const settingsButton = document.querySelector('#userSsettings');
 const body = document.querySelector('body');
+const layer = document.querySelector('.layer');
+const profileInfo = document.querySelector('#profileInfo');
+const newPost = document.querySelector('#newPost');
 
 const getUserInfo = (users) => {
     //done with foreach if in some case would need to handle multiple users
@@ -26,7 +29,6 @@ const getUserImages = (posts, loggedUser) => {
         profilePhotoGrid.className = "profilePhotoGrid";
 
         const photo = document.createElement("img");
-        console.log('tiedostonimi', post.file)
         photo.src = url + '/thumbnails/' + post.file;
         photo.alt = post.caption;
         photo.className = "profilePhotoGridPhoto";
@@ -73,8 +75,14 @@ const getUserImages = (posts, loggedUser) => {
         profilePhotoGrid.appendChild(descriptionBackground);
 
         editButton.addEventListener('click',  async () => {
+            settingsButton.remove();
             photoContainer.remove();
             console.log(post.postId);
+
+            const formContainer = document.createElement('div');
+            formContainer.id = "formContainer";
+
+            layer.appendChild(formContainer);
 
             const editPostForm = document.createElement('form');
             editPostForm.setAttribute('id', 'editPost');
@@ -83,12 +91,13 @@ const getUserImages = (posts, loggedUser) => {
             caption.name = "caption";
             caption.type = "text";
             caption.placeholder = "Add new caption";
+            caption.value = post.caption;
 
             const doneButton = document.createElement('button');
             doneButton.innerHTML ="Done"
             doneButton.type = 'submit';
 
-            body.appendChild(editPostForm);
+            formContainer.appendChild(editPostForm);
             editPostForm.appendChild(caption);
             editPostForm.appendChild(doneButton);
 
@@ -114,18 +123,21 @@ const getUserImages = (posts, loggedUser) => {
         })
 
         deleteButton.addEventListener('click', async () => {
-            try {
-                const options = {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-                    },
-                };
-                await fetch(url + '/post/' + post.postId, options);
-                window.location.href = 'http://localhost:3000/myprofile.html'
-            }
-            catch (e) {
-                console.log(e.message);
+            if (confirm('Do you want to delete this post?')) {
+                try {
+                    const options = {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+                        },
+                    };
+                    await fetch(url + '/post/' + post.postId, options);
+                    window.location.href = 'http://localhost:3000/myprofile.html'
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
+
             }
         })
     });
@@ -191,6 +203,12 @@ const getLoggedUser = async () => {
 settingsButton.addEventListener('click', async () => {
     photoContainer.remove();
     settingsButton.remove();
+    newPost.remove();
+    username.remove();
+    bio.remove();
+
+    profileInfo.style.transition = "all 0.7s";
+    profileInfo.style.height = "13em";
 
     const userUpdateForm = document.createElement('form');
     const firstnameInput = document.createElement('input');
@@ -218,6 +236,7 @@ settingsButton.addEventListener('click', async () => {
     changeEmail.className = "settingButton";
 
     const cancelButton = document.createElement('button');
+    cancelButton.id = "cancelButton";
     cancelButton.textContent = "Cancel";
     cancelButton.className = "settingButton";
 
@@ -229,13 +248,12 @@ settingsButton.addEventListener('click', async () => {
     lastnameInput.name = "lname";
     bioInput.name = "bio";
 
-    getUserCredentials(firstnameInput, lastnameInput,
-        bioInput);
+    getUserCredentials(firstnameInput, lastnameInput, bioInput);
 
     const formContainer = document.createElement('div');
     formContainer.id = "formContainer";
 
-    body.appendChild(formContainer);
+    layer.appendChild(formContainer);
 
     userUpdateForm.setAttribute("id", "userUpdateForm");
     formContainer.appendChild(userUpdateForm);
@@ -252,7 +270,7 @@ settingsButton.addEventListener('click', async () => {
     formContainer.appendChild(cancelButton);
 
     cancelButton.addEventListener('click', async () => {
-        window.location.href = 'http://localhost:3000/myprofile.html'
+        window.location.href = 'http://localhost:3000/myprofile.html';
     })
 
 
@@ -287,6 +305,7 @@ settingsButton.addEventListener('click', async () => {
 
         const uploadAvatarForm = document.createElement('form');
         uploadAvatarForm.enctype = "multipart/form-data";
+        uploadAvatarForm.className = "settingForm";
         const avatarInput = document.createElement('input');
         avatarInput.type = "file";
         avatarInput.name = "avatar";
@@ -298,7 +317,7 @@ settingsButton.addEventListener('click', async () => {
         uploadAvatarButton.type = "submit";
 
         const cancelPicture = document.createElement('button');
-        cancelPicture.textContent = "cancel";
+        cancelPicture.textContent = "Cancel";
 
         formContainer.appendChild(uploadAvatarForm);
         uploadAvatarForm.appendChild(avatarInput);
@@ -334,6 +353,7 @@ settingsButton.addEventListener('click', async () => {
         cancelButton.remove();
 
         const changeUsernameForm = document.createElement('form');
+        changeUsernameForm.className = "settingForm";
         const usernameInput = document.createElement('input');
         usernameInput.type = "input";
         usernameInput.name = "username";
@@ -344,7 +364,7 @@ settingsButton.addEventListener('click', async () => {
         changeUsernameButton.type = "submit";
 
         const cancelUsernameUpdate = document.createElement('button');
-        cancelUsernameUpdate.textContent = "cancel";
+        cancelUsernameUpdate.textContent = "Cancel";
 
         formContainer.appendChild(changeUsernameForm);
         changeUsernameForm.appendChild(usernameInput);
@@ -393,6 +413,7 @@ settingsButton.addEventListener('click', async () => {
         cancelButton.remove();
 
         const changeEmailForm = document.createElement('form');
+        changeEmailForm.className = "settingForm";
         const emailInput = document.createElement('input');
 
         emailInput.type = "input";
@@ -404,7 +425,7 @@ settingsButton.addEventListener('click', async () => {
         changeEmailButton.type = "submit";
 
         const cancelEmailUpdate = document.createElement('button');
-        cancelEmailUpdate.textContent = "cancel";
+        cancelEmailUpdate.textContent = "Cancel";
 
         formContainer.appendChild(changeEmailForm);
         changeEmailForm.appendChild(emailInput);
@@ -452,6 +473,7 @@ settingsButton.addEventListener('click', async () => {
         cancelButton.remove();
 
         const changePasswordForm = document.createElement('form');
+        changePasswordForm.className = "settingForm";
         const password = document.createElement('input');
 
         password.type = "password";
@@ -466,7 +488,7 @@ settingsButton.addEventListener('click', async () => {
         verifyPassword.pattern= "(?=.*[A-Z]).{8,}";
 
         const cancelPasswordUpdate = document.createElement('button');
-        cancelPasswordUpdate.textContent = "cancel";
+        cancelPasswordUpdate.textContent = "Cancel";
 
 
         function validatePassword(){
@@ -534,10 +556,21 @@ getMyProfile();
 
 // to hide login && signup
 // for some reason cant use logout.js with these files,,, url doesnt work
-if (sessionStorage.getItem('token')) {
-    logIn.style.display = 'none';
-    signUp.style.display = 'none';
+/*if (sessionStorage.getItem('token')) {
+    //logIn.style.display = 'none';
+    //signUp.style.display = 'none';
     logOut.style.display = 'flex';
 }else{
     logOut.style.display = 'none';
-}
+}*/
+
+const hamburger = document.querySelector('.hamburger');
+hamburger.addEventListener('click', () => {
+    const x = document.getElementById("topNav");
+    console.log('clicked');
+    if (x.className === "topNav") {
+        x.className += " responsive";
+    } else {
+        x.className = "topNav";
+    }
+});

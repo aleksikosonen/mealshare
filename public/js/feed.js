@@ -1,6 +1,7 @@
 'use strict';
 
 const showMoreBtn = document.getElementById('showMoreBtn');
+const likeButton = document.querySelectorAll('#likeBtn');
 
 let retrieved = 0;
 
@@ -91,6 +92,7 @@ const loadData = (posts, comments, workphases, recipeIngredients) => {
         const commentAvatar = document.createElement('img');
         commentAvatar.id = 'commentAvatar';
         commentAvatar.src = comment.avatar;
+        commentAvatar.alt = "commentAvatar";
         commenterInfo.appendChild(commentAvatar);
         userAndComment.appendChild(commenterName);
 
@@ -271,8 +273,6 @@ const getLikeUser = async (postId) => {
     }
 }
 
-let comment = true;
-
 const showComments = (i) =>{
   const commentlist = document.querySelectorAll('#commentList');
   const recipeDiv = document.querySelectorAll('#recipeDiv');
@@ -287,7 +287,13 @@ const showRecipes = (i) => {
     recipeDiv[i].style.display = 'block';
 }
 
-
-
-
-
+const hamburger = document.querySelector('.hamburger');
+hamburger.addEventListener('click', () => {
+  const x = document.getElementById("topNav");
+  console.log('clicked');
+  if (x.className === "topNav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topNav";
+  }
+});

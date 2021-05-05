@@ -17,21 +17,23 @@ addForm.addEventListener('submit', async (evt) => {
     },
     body: fd,
   };
-  await fetch(url + '/post', fetchOptions);
+  const postResponse = await fetch(url + '/post', fetchOptions);
+  const post = await postResponse.json();
+  console.log('postaus', post.postId);
 
   addForm.remove();
 
   const addRecipe = document.createElement('button');
   addRecipe.setAttribute("id", "addRecipe");
-  addRecipe.className = "light-border";
+  addRecipe.className = "add-recipe";
   addRecipe.type = "submit";
   addRecipe.innerHTML = "Add recipe?";
 
   const noRecipe = document.createElement('button');
   noRecipe.setAttribute("id", "dontAddRecipe");
-  noRecipe.className = "light-border";
+  noRecipe.className = "add-recipe";
   noRecipe.type = "submit";
-  noRecipe.innerHTML = "Don't add and post!?";
+  noRecipe.innerHTML = "Don't add and post!";
 
   fromWrapper.appendChild(addRecipe);
   fromWrapper.appendChild(noRecipe);
@@ -69,13 +71,14 @@ addForm.addEventListener('submit', async (evt) => {
     ingredientForm.addEventListener('submit', async (evt) => {
       evt.preventDefault();
       const data = serializeJson(ingredientForm);
-      await addIngredient(data);
+      await addIngredient(data, post.postId);
       clearInputs(ingredientForm);
-      await getRecipeIngredients(recipeIngredients);
+      await getRecipeIngredient(post.postId, recipeIngredients);
     });
 
     const doneButton = document.createElement('button');
     doneButton.setAttribute('id', 'doneButton');
+    doneButton.className = "addPostButton";
     doneButton.innerHTML = "Done";
 
     const workphaseInput = document.createElement('input');
@@ -85,6 +88,7 @@ addForm.addEventListener('submit', async (evt) => {
 
     const addPhases = document.createElement('button');
     addPhases.setAttribute('id', 'addPhases');
+    addPhases.className = "addPostButton";
     addPhases.innerHTML = "Add workphases";
 
     ingredientForm.appendChild(recipeIngredients);
@@ -97,15 +101,15 @@ addForm.addEventListener('submit', async (evt) => {
     workphaseForm.addEventListener('submit', async (evt) => {
       evt.preventDefault();
       const data = serializeJson(workphaseForm);
-      await addWorkphases(data);
-      await getRecipeId(renderedWorkphases);
+      await addWorkphases(data, post.postId);
+      await renderWorkphases(post.postId, renderedWorkphases);
     });
 
     workphaseForm.appendChild(renderedWorkphases);
     workphaseForm.appendChild(doneButton);
 
     doneButton.addEventListener('click', () => {
-      window.location.href = 'http://localhost:3000/post.html'
+      window.location.href = 'http://localhost:3000/'
     })
 
   });
@@ -136,22 +140,8 @@ const clearInputs = (form) => {
   form.reset();
 };
 
-const addIngredient = async (data) =>{
+const addIngredient = async (data, post) =>{
   try {
-    const options = {
-      headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-    };
-
-    const responseUser = await fetch(url + '/user', options);
-    const users = await responseUser.json();
-
-    const responsePost = await fetch(url + '/post', options);
-    const posts = await responsePost.json();
-
-    const latestPostByLoggedUser = posts.filter(user => user.userId === users[0].userId).pop().postId;
-
     const fetchOptions = {
       method: 'POST',
       headers: {
@@ -160,29 +150,15 @@ const addIngredient = async (data) =>{
       },
       body: JSON.stringify(data),
     };
-    await fetch(url + '/post/ingredient/' + latestPostByLoggedUser, fetchOptions);
+    await fetch(url + '/post/ingredient/' + post, fetchOptions);
   }
   catch (e) {
     console.log(e.message);
   }
 };
 
-const addWorkphases = async (data) =>{
+const addWorkphases = async (data, post) =>{
   try {
-    const options = {
-      headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-    };
-
-    const responseUser = await fetch(url + '/user', options);
-    const users = await responseUser.json();
-
-    const responsePost = await fetch(url + '/post', options);
-    const posts = await responsePost.json();
-
-    const latestPostByLoggedUser = posts.filter(user => user.userId === users[0].userId).pop().postId;
-
     const fetchOptions = {
       method: 'POST',
       headers: {
@@ -191,7 +167,7 @@ const addWorkphases = async (data) =>{
       },
       body: JSON.stringify(data),
     };
-    await fetch(url + '/post/workphases/' + latestPostByLoggedUser, fetchOptions);
+    await fetch(url + '/post/workphases/' + post, fetchOptions);
   }
   catch (e) {
     console.log(e.message);
@@ -243,52 +219,6 @@ const getUsers = async () => {
   }
 };
 
-const getRecipeIngredients = async (recipeText) => {
-  try {
-    const options = {
-      headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-    };
-
-    const responseUser = await fetch(url + '/user', options);
-    const users = await responseUser.json();
-
-    const responsePost = await fetch(url + '/post', options);
-    const posts = await responsePost.json();
-
-    const latestPostByLoggedUser = posts.filter(user => user.userId === users[0].userId).pop().postId;
-
-    await getRecipeIngredient(latestPostByLoggedUser, recipeText);
-  }
-  catch (e) {
-    console.log(e.message);
-  }
-};
-
-const getRecipeId = async (renderedWorkphases) => {
-  try {
-    const options = {
-      headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-    };
-
-    const responseUser = await fetch(url + '/user', options);
-    const users = await responseUser.json();
-
-    const responsePost = await fetch(url + '/post', options);
-    const posts = await responsePost.json();
-
-    const latestPostByLoggedUser = posts.filter(user => user.userId === users[0].userId).pop().postId;
-
-    await renderWorkphases(latestPostByLoggedUser, renderedWorkphases);
-  }
-  catch (e) {
-    console.log(e.message);
-  }
-};
-
 const renderWorkphases = async (id, workphaseText) => {
   const fetchOptions = {
     headers: {
@@ -297,7 +227,7 @@ const renderWorkphases = async (id, workphaseText) => {
   };
   const response = await fetch(url + '/post/recipe/workphases/' + id, fetchOptions);
   const json = await response.json();
-  workphaseText.innerHTML += json.phases + '\n';
+  workphaseText.innerHTML += json.phases + '</br>';
 };
 
 const getRecipeIngredient = async (id, recipeText) => {
@@ -309,18 +239,58 @@ const getRecipeIngredient = async (id, recipeText) => {
   const response = await fetch(url + '/post/recipe/ingredients/' + id, fetchOptions);
   const json = await response.json();
   console.log('respo', json);
-  recipeText.innerHTML += json.ingredient + ' ' + json.amount + ' ' + json.unit + ', \n';
+
+  const ingredientWrapper = document.createElement('div');
+  ingredientWrapper.id = "ingredientWrapper";
+
+  const workphaseForm = document.querySelector("#workphase-form");
+
+  workphaseForm.appendChild(ingredientWrapper);
+
+  const text = document.createElement('p');
+  text.innerHTML = json.ingredient + ' ' + json.amount + ' ' + json.unit;
+
+  ingredientWrapper.appendChild(text);
+
+  const deleteIngredientBtn = document.createElement('btn');
+  deleteIngredientBtn.id = "deleteIngredientBtn";
+  deleteIngredientBtn.innerHTML = "Delete";
+
+  deleteIngredientBtn.addEventListener('click', async() => {
+    console.log('nappi', json.addOrder);
+    const fetchOptions = {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+      }
+    };
+    await fetch(url + '/post/delete/ingredient/' + json.addOrder, fetchOptions);
+    text.innerHTML = "";
+    deleteIngredientBtn.remove();
+  });
+
+  ingredientWrapper.appendChild(deleteIngredientBtn);
+
 };
 
 getLatestPost();
 
 // to hide login && signup
 // for some reason cant use logout.js with these files,,, url doesnt work
-if (sessionStorage.getItem('token')) {
-  //logIn.style.display = 'none';
-  //signUp.style.display = 'none';
-  //signUp.style.display = 'none';
+
+/*if (sessionStorage.getItem('token')) {
   logOut.style.display = 'flex';
 }else{
   logOut.style.display = 'none';
-}
+}*/
+/*
+const hamburger = document.querySelector('.hamburger');
+hamburger.addEventListener('click', () => {
+  const x = document.getElementById("topNav");
+  console.log('clicked');
+  if (x.className === "topNav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topNav";
+  }
+});*/
