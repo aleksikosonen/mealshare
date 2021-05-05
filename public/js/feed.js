@@ -21,6 +21,8 @@ const findLoggedUser = (async () => {
   }
 });
 
+findLoggedUser();
+
 const loadData = (posts, comments, workphases, recipeIngredients) => {
 
   let likes = "";
@@ -198,7 +200,7 @@ const getPosts = async () => {
     };
     const response = await fetch(url + '/post/feed/' + retrieved, options);
     const posts = await response.json();
-
+    console.log(posts);
     const fetchoptions = {
       method: 'POST',
       headers: {
@@ -303,7 +305,6 @@ hamburger.addEventListener('click', () => {
 });
 
 feedContainer.addEventListener('click', async (e) => {
-  e.preventDefault();
   console.log(e.target)
   if(loggedUser[0][0].admin === 1){
     if (e.target.matches('.deleteButton') || e.target.matches('.deleteContainer')){
