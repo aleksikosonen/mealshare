@@ -41,6 +41,7 @@ logOut.addEventListener('click', async (evt) => {
 });
 
 //if logged in hide log in and signup
+
 if (sessionStorage.getItem('token')) {
   signUp.style.display = 'none';
   logOut.style.display = 'flex';
@@ -55,6 +56,3 @@ if (sessionStorage.getItem('token')) {
   feedContainer.style.display ='none';
   landContainer.style.display ='flex';
 }
-
-
-

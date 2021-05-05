@@ -112,6 +112,10 @@ body {
     transition: transform .5s ease;
 }
 
+.topNav {
+    justify-content: space-evenly;
+}
+
 #profileInfo button {
     background: #F26966;
     color: white;

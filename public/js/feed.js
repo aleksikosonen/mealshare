@@ -199,11 +199,11 @@ const getLikeUser = async (postId) => {
 
 const hamburger = document.querySelector('.hamburger');
 hamburger.addEventListener('click', () => {
-  const x = document.getElementById("myTopNav");
+  const x = document.getElementById("topNav");
   console.log('clicked');
-  if (x.className === "topNavs") {
-    x.className = "responsive";
+  if (x.className === "topNav") {
+    x.className += " responsive";
   } else {
-    x.className = "topNavs";
+    x.className = "topNav";
   }
 });
