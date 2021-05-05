@@ -1,11 +1,10 @@
 'use strict';
 
 const showMoreBtn = document.getElementById('showMoreBtn');
-const likeButton = document.querySelectorAll('#likeBtn');
 
 let retrieved = 0;
 
-const loadData = (posts, comments) => {
+const loadData = (posts, comments, workphases, recipeIngredients) => {
 
   let likes = "";
   posts.forEach( async (post) => {
@@ -23,6 +22,8 @@ const loadData = (posts, comments) => {
     catch (e) {
       console.log(e.message);
     }
+
+    const commentlist = document.querySelectorAll('#commentList');
 
     const html = `
       <li class="post" data-postid=${post.postId}>
@@ -45,6 +46,10 @@ const loadData = (posts, comments) => {
             <p id="postCaption">${post.caption}</p>
           </div>
          
+          <div class="buttonHolder">
+            <button id="commentButton" onclick="showComments('${(commentlist.length)}')"> Comments </button>
+            <button id="recipeButton" onclick="showRecipes('${(commentlist.length)}')"> Recipe </button>
+          </div>
           <form id="commentForm">
             <div id="commentFormInput">
               <input class="light-border" type="text" placeholder="Comment" name="comment"/>
@@ -53,6 +58,9 @@ const loadData = (posts, comments) => {
           </form>
 
           <ul id="commentList"></ul>
+          <div id="recipeDiv">
+            <p id="recipeIngredientsTopic"> Ingredients </p>
+          </div>
           
           </article>
         </article>
@@ -83,7 +91,6 @@ const loadData = (posts, comments) => {
         const commentAvatar = document.createElement('img');
         commentAvatar.id = 'commentAvatar';
         commentAvatar.src = comment.avatar;
-        commentAvatar.alt = "commentAvatar";
         commenterInfo.appendChild(commentAvatar);
         userAndComment.appendChild(commenterName);
 
@@ -93,6 +100,52 @@ const loadData = (posts, comments) => {
         userAndComment.appendChild(commentCaption);
       }
     });
+
+    recipeIngredients.forEach((ingredient) => {
+      if(ingredient.postId === post.postId){
+        const recipeDiv = document.querySelectorAll('#recipeDiv');
+
+        const ingredientsDiv = document.createElement('div');
+        ingredientsDiv.id = 'ingredientsDiv';
+        recipeDiv[(recipeDiv.length - 1)].appendChild(ingredientsDiv);
+
+        const ingredientText = document.createElement('p');
+        ingredientText.id = 'ingredientText';
+        ingredientText.innerHTML = ingredient.ingredient;
+
+        const ingredientAmount = document.createElement('p');
+        ingredientAmount.id = 'ingredientAmount';
+        ingredientAmount.innerHTML = ingredient.amount;
+
+        const ingredientUnit = document.createElement('p');
+        ingredientUnit.id = 'ingredientUnit';
+        ingredientUnit.innerHTML = ingredient.unit;
+
+        ingredientsDiv.appendChild(ingredientText);
+        ingredientsDiv.appendChild(ingredientAmount);
+        ingredientsDiv.appendChild(ingredientUnit);
+        recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
+      }
+    });
+
+    workphases.forEach((workphase) => {
+      if(workphase.postId === post.postId){
+          const recipeDiv = document.querySelectorAll('#recipeDiv');
+
+          const workphaseTopic = document.createElement('p');
+          workphaseTopic.id = 'recipeWorkPhaseTopic';
+          workphaseTopic.innerHTML = 'Work Phases'
+
+          const workphaseText = document.createElement('p');
+          workphaseText.id = 'recipeWorkPhases';
+          workphaseText.innerHTML = workphase.phases;
+
+          recipeDiv[(recipeDiv.length - 1)].appendChild(workphaseTopic);
+          recipeDiv[(recipeDiv.length - 1)].appendChild(workphaseText);
+          recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
+      }
+    });
+
   });
 };
 
@@ -151,7 +204,29 @@ const getPosts = async () => {
     };
     const res = await fetch(url + `/post/comm`,fetchoptions);
     const comments = await res.json();
-    loadData(posts, comments);
+
+    const wpOptions = {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+        'Content-Type': 'application/json',
+      },
+    };
+    const wpResponse = await fetch(url + `/post/recipe/allworkphases`,wpOptions);
+    const workphases = await wpResponse.json();
+
+    const recipeOptions = {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+        'Content-Type': 'application/json',
+      },
+    };
+    const recipeResponse = await fetch(url + `/post/recipe/allingredientsfeed/`,recipeOptions);
+    const recipeIngredients = await recipeResponse.json();
+
+
+    loadData(posts, comments, workphases, recipeIngredients);
   }
   catch (e) {
     console.error(e.message);
@@ -194,8 +269,25 @@ const getLikeUser = async (postId) => {
   } catch (e) {
       console.error(e.message);
     }
-
-
-
-    console.log((document.querySelector('#likeBtn').innerHTML === '❤️'))
 }
+
+let comment = true;
+
+const showComments = (i) =>{
+  const commentlist = document.querySelectorAll('#commentList');
+  const recipeDiv = document.querySelectorAll('#recipeDiv');
+    commentlist[i].style.display = 'block';
+    recipeDiv[i].style.display = 'none';
+}
+
+const showRecipes = (i) => {
+  const commentlist = document.querySelectorAll('#commentList');
+  const recipeDiv = document.querySelectorAll('#recipeDiv');
+    commentlist[i].style.display = 'none';
+    recipeDiv[i].style.display = 'block';
+}
+
+
+
+
+

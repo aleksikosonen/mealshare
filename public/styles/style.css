@@ -382,6 +382,52 @@ body {
     transform: scale(0.8);
    }
 
+  .buttonHolder{
+      width:100%;
+      height:auto;
+      display:flex;
+      justify-content: center;
+  }
+
+  #commentButton, #recipeButton{
+      width: 100px;
+      height: 20px;
+      margin: 0 30px;
+  }
+
+  #recipeDiv{
+      margin: 0;
+      width:100%;
+      height: auto;
+      padding: 0 20px 20px 20px;
+      align-items: center;
+      display: flex;
+  }
+
+  #ingredientsDiv {
+      width: 100%;
+      height: auto;
+      display: flex;
+      justify-content: center;
+  }
+
+  #ingredientAmount {
+      margin: 0 10px;
+  }
+
+  #recipeIngredientsTopic{
+      padding: 20px;
+      font-weight: bold;
+      flex:1;
+  }
+
+  #recipeWorkPhaseTopic{
+      padding: 20px;
+      font-weight: bold;
+  }
+  #recipeWorkPhases{
+
+  }
 datalist {
     position: absolute;
     background-color: lightgrey;

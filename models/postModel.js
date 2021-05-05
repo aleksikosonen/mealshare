@@ -107,6 +107,15 @@ const getWorkphase = async (id) => {
   }
 }
 
+const getAllWorkphases = async () => {
+  try {
+    const [rows] = await promisePool.execute('SELECT * FROM ms_workphases;');
+    return rows;
+  } catch (e) {
+    console.error('postModel getAllWorkphases :', e.message);
+  }
+}
+
 const uploadPostIngredients = async (req, id) => {
   try {
     const [rows] = await promisePool.execute('INSERT INTO ms_post_ingredients (ingredientId, postId, unit, amount) VALUES (?, ?, ?, ?);',
@@ -132,16 +141,6 @@ const getFeedPosts = async (req) => {
     const [rows] = await promisePool.execute('SELECT postId, file, caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar FROM ms_post LEFT JOIN ms_user ON ms_post.userId = ms_user.userId ORDER BY postId DESC LIMIT 6 OFFSET ?', [req.params.retrieved]);
     return rows;
   } catch (e) {
-    console.error('postModel getAllPosts:', e.message);
-  }
-};
-
-const getAllRecipes = async () => {
-  try {
-    const [rows] = await promisePool.execute('SELECT * from ms_recipe ORDER BY recipeId');
-    return rows;
-  } catch (e) {
-    console.error('postModel:', e.message);
     console.error('postModel getAllPosts:', e.message);
   }
 };
@@ -278,6 +277,15 @@ const getUserRelatedPosts = async (input) => {
   }
 };
 
+const getAllIngredientsFeed = async () => {
+  try {
+    const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount, ms_post_ingredients.postId , ms_post_ingredients.addOrder from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId ORDER by ms_post_ingredients.addOrder;');
+    return rows;
+  } catch (e) {
+    console.error('postModel getPost :', e.message);
+  }
+};
+
 module.exports = {
   uploadPost,
   getPost,
@@ -288,7 +296,6 @@ module.exports = {
   createTags,
   getRecipe,
   uploadIngredient,
-  getAllRecipes,
   getIngredient,
   getIngredients,
   getAllTags,
@@ -304,4 +311,6 @@ module.exports = {
   getUserRelatedPosts,
   uploadWorkphases,
   getWorkphase,
+  getAllWorkphases,
+  getAllIngredientsFeed,
 };
