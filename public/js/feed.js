@@ -2,6 +2,7 @@
 
 const showMoreBtn = document.getElementById('showMoreBtn');
 
+
 let retrieved = 0;
 
 const loadData = (posts, comments, workphases, recipeIngredients) => {
@@ -287,7 +288,14 @@ const showRecipes = (i) => {
     recipeDiv[i].style.display = 'block';
 }
 
-
-
-
+const hamburger = document.querySelector('.hamburger');
+hamburger.addEventListener('click', () => {
+  const x = document.getElementById("topNav");
+  console.log('clicked');
+  if (x.className === "topNav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topNav";
+  }
+});
 

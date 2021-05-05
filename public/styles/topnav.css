@@ -2,11 +2,17 @@
 .topNav {
     width: 100%;
     height: 8%;
-    min-height: 50px;
+    min-height: 70px;
     list-style-type: none;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     background-color:rgba(0,0,0, 0.5);
+    overflow: hidden;
+}
+
+#logo {
+    margin-left: 50px;
 }
 
 .topNav a:hover {
@@ -19,7 +25,7 @@
     font-size: 17px;
     border: none;
     width: 275px;
-    border-radius: 5%;
+    border-radius: 10px;
     background-color:rgba(255,255,255, 0.1);
     color: white;
 }
@@ -41,7 +47,7 @@ input::-webkit-calendar-picker-indicator {
 
 .topNav .search-container{
     margin:0;
-    width:33.33%;
+    //width:33.33%;
     align-self: center;
     display: flex;
     justify-content: center;
@@ -66,20 +72,40 @@ li a {
     text-decoration: none;
 }
 
-.topLeft{
-    align-self: flex-start;
-    display: flex;
-    width: 33.33%;
-    align-items: center;
+.hamburger{
+    display: none;
+    background-color:#434C5A;
+    color: white;
 }
 
-.topLeft li a{
-    margin: 0 50px;
-}
+@media screen and (max-width: 1300px) {
+    .hideHamb {
+        display: none;
+    }
 
-.logout{
-    width:33.33%;
-    display:flex;
-    justify-content: flex-end;
-    margin-right: 50px;
+    .hamburger {
+        background: url(../images/hamburger.png) no-repeat;
+        height: 25px;
+        width: 50px;
+        border: none;
+        display: inline-block;
+        position: absolute;
+        right: 50px;
+        top: 25px;
+    }
+    .topNav.responsive {position: relative;}
+    .topNav.responsive {
+        float: none;
+        display: block;
+        text-align: left;
+    }
+
+    .topNav.responsive li {
+        display: block;
+        margin-left: 50px;
+    }
+
+    #search {
+        justify-content: flex-start;
+    }
 }
