@@ -48,9 +48,16 @@ const post_list_get_all_ingredients = async (req, res) => {
   return res.json(ingredients);
 };
 
-const post_delete_last_ingredient = async (req, res) => {
-  const ingredients = await postModel.deleteIngredient(req.params.id);
-  return res.json(ingredients);
+const post_delete_ingredient = async (req, res) => {
+  try{
+    const owner = await postModel.getIngredientOwner(req.params.id);
+    if(req.user.userId = owner.userId){
+      const ingredients = await postModel.deleteIngredient(req.params.id);
+      return res.json(ingredients);
+   }
+  }catch(e){
+    return res.status(400).json({error: e.message});
+  } 
 };
 
 const post_list_get_workphases = async (req, res) => {
@@ -132,7 +139,6 @@ const post_add_workphases = async (req, res) => {
 const post_delete = async (req, res) => {
   try{
     const owner = await postModel.getPost(req.params.id);
-    console.log('post_delete ', owner, " trying to delete")
     if (req.user.userId === owner.userId || req.user.admin === 1){
       const deleteOk = await postModel.deletePost(req.params.id);
       res.json(deleteOk);
@@ -176,15 +182,30 @@ const post_get_all_userRelations = async (req,res) => {
 
 const make_post = async (req, res, next) => {
   try {
+
     const post = await makePost(req.file.path, req.file.filename);
     if (post) {
       next();
-    }
+    } 
   } catch (e) {
     res.status(400).json({error: e.message});
   }
 };
 
+const comment_delete = async (req, res) => {
+  try{
+    console.log('made it here ', req.params.id);
+    const ownerId = await postModel.getCommentOwner(req.params.id);
+    console.log(ownerId[0].userId);
+    if(req.user.admin === 1 || req.user.userId === ownerId[0].userId){
+      console.log('we out here');
+      const deleteOk = postModel.deleteComment(req.params.id);
+      res.json(deleteOk);
+    }
+  }catch(e){
+    res.status(400).json({error: e.message})
+  }
+}
 
 module.exports = {
   post_create,
@@ -206,7 +227,8 @@ module.exports = {
   make_post,
   post_add_workphases,
   post_list_get_workphases,
-  post_delete_last_ingredient,
+  post_delete_ingredient,
   post_list_get_all_ingredients,
+  comment_delete
 };
 

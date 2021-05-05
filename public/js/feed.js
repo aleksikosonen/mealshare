@@ -2,12 +2,29 @@
 
 const showMoreBtn = document.getElementById('showMoreBtn');
 const likeButton = document.querySelectorAll('#likeBtn');
-
+const loggedUser = [];
 
 let retrieved = 0;
 
-const loadData = (posts, comments) => {
+const findLoggedUser = (async () => {
+  try {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+      },
+    };
+    const responseUser = await fetch(url + '/user', options);
+    const users = await responseUser.json();
+    loggedUser.push(users);
+  } catch (e) {
+      console.error(e.message);
+  }
+});
 
+findLoggedUser();
+
+const loadData = (posts, comments) => {
   let likes = "";
   posts.forEach( async (post) => {
     //get likeamounts
@@ -28,7 +45,7 @@ const loadData = (posts, comments) => {
     const html = `
       <li class="post" data-postid=${post.postId}>
         <article id="topCard">
-          <h2>
+          <h2 id="${post.postId}">
             <img src="${post.avatar}" alt="" id="avatar">
             <a>${post.username}</a>
           </h2>
@@ -49,7 +66,7 @@ const loadData = (posts, comments) => {
           <form id="commentForm">
             <div id="commentFormInput">
               <input class="light-border" type="text" placeholder="Comment" name="comment"/>
-              <button class="light-b<order" type="submit">Comment</button>
+              <button class="light-border" id="formButton" type="submit">Comment</button>
             </div>
           </form>
 
@@ -61,9 +78,20 @@ const loadData = (posts, comments) => {
       `;
     feedContainer.innerHTML += html;
 
+    if(loggedUser[0][0].admin === 1){
+      const topCard = document.getElementById(post.postId);
+      const adminDeleteButton = document.createElement('button');
+      const deleteImage = document.createElement('img');
+
+      deleteImage.className = 'deleteButton';
+      adminDeleteButton.className = 'deleteContainer';
+      deleteImage.src = '../icons/delete.png';
+      topCard.appendChild(adminDeleteButton);
+      adminDeleteButton.appendChild(deleteImage);
+    }
+
     comments.forEach((comment) => {
       if(comment.postId === post.postId){
-
         const commentRender = document.createElement('div');
         commentRender.id = 'commentRender';
         const commentlist = document.querySelectorAll('#commentList');
@@ -76,6 +104,18 @@ const loadData = (posts, comments) => {
         const userAndComment = document.createElement('div');
         userAndComment.id = 'userAndComment';
         commentRender.appendChild(userAndComment);
+        commentRender.dataset.commentid = comment.commentId;
+
+        if(loggedUser[0][0].admin === 1 || loggedUser[0][0].userId === comment.userId){
+          const adminDeleteButton = document.createElement('button');
+          const deleteImage = document.createElement('img');
+
+          deleteImage.className = 'commentDeleteButton';
+          adminDeleteButton.className = 'commentDeleteContainer';
+          deleteImage.src = '../icons/delete.png';
+          commentRender.appendChild(adminDeleteButton);
+          adminDeleteButton.appendChild(deleteImage);
+        }
 
         const commenterName = document.createElement('a');
         commenterName.id = 'commenterName';
@@ -84,7 +124,7 @@ const loadData = (posts, comments) => {
         const commentAvatar = document.createElement('img');
         commentAvatar.id = 'commentAvatar';
         commentAvatar.src = comment.avatar;
-        commentAvatar.alt = "commentAvatar";
+        commentAvatar.alt = 'avatar';
         commenterInfo.appendChild(commentAvatar);
         userAndComment.appendChild(commenterName);
 
@@ -97,40 +137,6 @@ const loadData = (posts, comments) => {
   });
 };
 
-feedContainer.addEventListener('submit', async (e) => {
-  e.preventDefault(); 
-
-  const id = e.target.closest('.post').dataset.postid;
-  const data = serializeJson(e.target.closest('#commentForm'));
-  const loggedUser = [];
-  try {
-    const options = {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-    };
-    const responseUser = await fetch(url + '/user', options);
-    const users = await responseUser.json();
-    loggedUser.push(users);
-  } catch (e) {
-      console.error(e.message);
-  }
-  try{
-    const options = {
-      method: 'POST',
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-      body: JSON.stringify(data),
-    };
-    const response = await fetch(url + `/post/com/${id}/${loggedUser[0][0].userId}`, options);
-    const json = await response.json();
-  }catch(e){
-    console.error(e.message);
-  }
-});
 
 const getPosts = async () => {
   try {
@@ -200,10 +206,72 @@ const getLikeUser = async (postId) => {
 const hamburger = document.querySelector('.hamburger');
 hamburger.addEventListener('click', () => {
   const x = document.getElementById("myTopNav");
-  console.log('clicked');
   if (x.className === "topNavs") {
     x.className = "responsive";
   } else {
     x.className = "topNavs";
+  }
+});
+
+feedContainer.addEventListener('click', async (e) => {
+  e.preventDefault();
+  console.log(e.target)
+  if(loggedUser[0][0].admin === 1){
+    if (e.target.matches('.deleteButton') || e.target.matches('.deleteContainer')){
+      if(confirm('Do you want to delete this post?')){
+        const id = e.target.closest('.post').dataset.postid;
+        console.log(id);
+        try{
+          const fetchOptions = {
+            method: 'DELETE',
+            headers: {
+              'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+            }
+          };
+          await fetch(url + '/post/' + id , fetchOptions);
+          window.location.href = 'http://localhost:3000/index.html';
+        }catch(er){
+          console.error(e.message);
+        }
+      }
+    }
+  }
+  if (e.target.matches('.commentDeleteButton') || e.target.matches('.commentDeleteContainer')){
+    const commentId = e.target.closest('#commentRender').dataset.commentid;
+    if(confirm('Do you want to delete this comment?')){
+      try{
+        const fetchOptions = {
+          method: 'DELETE',
+          headers: {
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          }
+        };
+        await fetch(url + '/post/comment/' + commentId , fetchOptions);
+        window.location.href = 'http://localhost:3000/index.html';
+      }catch(er){
+        console.error(e.message);
+      }
+    }
+  }
+
+  if(e.target.matches('#formButton')){
+    e.preventDefault(); 
+    console.log('commenting')
+    const id = e.target.closest('.post').dataset.postid;
+    const data = serializeJson(e.target.closest('#commentForm'));
+    try{
+      const options = {
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+        },
+        body: JSON.stringify(data),
+      };
+      const response = await fetch(url + `/post/com/${id}`, options);
+      const json = await response.json();
+    }catch(e){
+      console.error(e.message);
+    }
   }
 });

@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const postController = require('../controllers/postController');
 const {body} = require('express-validator');
+const { route } = require('./userRoute');
 const router = express.Router();
 
 const fileFilter = (req, file, cb) => {
@@ -30,7 +31,7 @@ router.post('/tagmatches', postController.post_get_all_tagRelations);
 router.post('/usermatches', postController.post_get_all_userRelations);
 router.post('/feed/like/:id/:user', postController.feed_like);
 
-router.post('/com/:postId/:commenter',
+router.post('/com/:postId',
     body('comment').isLength({min: 1}).escape().blacklist(';'),
     postController.post_add_comment
 );
@@ -57,11 +58,11 @@ router.post('/tag', postController.post_get_all_tags);
 
 router.get('/recipe/ingredients/:id', postController.post_list_get_ingredients)
 router.get('/recipe/allingredients/:id', postController.post_list_get_all_ingredients)
-router.delete('/delete/ingredient/:id', postController.post_delete_last_ingredient)
+router.delete('/delete/ingredient/:id', postController.post_delete_ingredient)
 router.get('/likes/:id', postController.post_get_likes)
 
 router.put('/:id', postController.post_update);
 router.delete('/:id', postController.post_delete);
-
+router.delete('/comment/:id', postController.comment_delete);
 module.exports = router;
 
