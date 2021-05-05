@@ -115,6 +115,15 @@ const uploadAvatar = async (req) => {
     }
 };
 
+const getUsersLikes = async (id) => {
+    try{
+        const [rows] = await promisePool.execute('SELECT postId, userId from ms_likes where userId = ?;', [id])
+        return rows;
+    }catch(e){
+        console.error('getUsersLikes ', e.message)
+    }
+};
+
 module.exports = {
     getUser,
     insertUser,
@@ -126,4 +135,5 @@ module.exports = {
     updateUsername,
     updateEmail,
     uploadAvatar,
+    getUsersLikes
 };

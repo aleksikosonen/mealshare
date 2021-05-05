@@ -32,6 +32,8 @@ router.route('/')
 router.route('/username')
     .post(userController.user_list_get);
 
+router.route('/likes')
+  .get(userController.get_users_likes);
 
 //Update user
 router.put('/update',

@@ -1,18 +1,16 @@
 'use strict';
-
 const showMoreBtn = document.getElementById('showMoreBtn');
-
 const url = 'http://localhost:3000';
-
 const likeButton = document.querySelectorAll('#likeBtn');
 const loggedUser = [];
+const likedPosts = [];
+const listOfLikes = [];
 
 let retrieved = 0;
 
 const findLoggedUser = (async () => {
   try {
     const options = {
-      method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
       },
@@ -20,6 +18,15 @@ const findLoggedUser = (async () => {
     const responseUser = await fetch(url + '/user', options);
     const users = await responseUser.json();
     loggedUser.push(users);
+    
+    const fetchOptions = {
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+      },
+    };
+    const resLikes = await fetch(url + '/user/likes', fetchOptions);
+    const likes = await resLikes.json()
+    likedPosts.push(likes);
   } catch (e) {
       console.error(e.message);
   }
@@ -27,24 +34,9 @@ const findLoggedUser = (async () => {
 
 findLoggedUser();
 
-const loadData = (posts, comments, workphases, recipeIngredients) => {
+const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
 
-  let likes = "";
-  posts.forEach( async (post) => {
-    //get likeamounts
-    try {
-      const options = {
-        headers: {
-          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-        },
-      };
-      const response = await fetch(url + '/post/likes/' + post.postId, options);
-      const likesAmount = await response.json();
-      likes = likesAmount.likes;
-    }catch (e) {
-      console.log(e.message);
-    }
-
+  posts.forEach( post => {
     const commentlist = document.querySelectorAll('#commentList');
 
     const html = `
@@ -60,8 +52,10 @@ const loadData = (posts, comments, workphases, recipeIngredients) => {
            <article id="bottomCard">
           
           <div id="postLikesAmount">
-            <button id="likeBtn" onclick="getLikeUser('${post.postId}')">❤️</button>
-            <p id="likeAmount"> ${likes} likes this </p>
+            <button id="likeBtn${post.postId}">
+              <img id="likeImg${post.postId}" alt="heart">
+            </button>
+            <p id="likeAmount${post.postId}"></p>
           </div>
           
           <div id="postCaptionTitle">
@@ -89,6 +83,28 @@ const loadData = (posts, comments, workphases, recipeIngredients) => {
       </li>
       `;
     feedContainer.innerHTML += html;
+
+    const likes = likeList.filter(e => e.postId === post.postId);
+    const likesAmount = document.getElementById(`likeAmount${post.postId}`);
+    const likeImage = document.getElementById(`likeImg${post.postId}`);
+    const likeButton = document.getElementById(`likeBtn${post.postId}`);
+
+    if(likes.length != 0){
+      likesAmount.innerHTML = `${likes[0].likes} likes this`;
+    }else{
+      likesAmount.innerHTML = 'Be the first to like this';
+    }
+    const userLikes = [];
+    likedPosts[0].forEach(e => userLikes.push(e.postId));
+    if(userLikes.includes(post.postId)){
+      likeImage.src = '../icons/like-2.png';
+      likeImage.className = 'alreadyLiked';
+      likeButton.className = 'alreadyLiked';
+    }else{
+      likeImage.src ='../icons/like-1.png';
+      likeImage.className = 'notLiked';
+      likeButton.className = 'notLiked';
+    }
 
     if(loggedUser[0][0].admin === 1){
       const topCard = document.getElementById(post.postId);
@@ -235,8 +251,20 @@ const getPosts = async () => {
     const recipeResponse = await fetch(url + `/post/recipe/allingredientsfeed/`,recipeOptions);
     const recipeIngredients = await recipeResponse.json();
 
+    
+    const likeOptions = {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(posts),
+    };
+    const likesResponse = await fetch(url + '/post/likes', likeOptions);
+    const likesAmount = await likesResponse.json();
+    listOfLikes.push(likesAmount);
 
-    loadData(posts, comments, workphases, recipeIngredients);
+    loadData(posts, comments, workphases, recipeIngredients, likesAmount);
   }
   catch (e) {
     console.error(e.message);
@@ -250,36 +278,6 @@ showMoreBtn.addEventListener('click',()=>{
   getPosts();
 });
 
-const likePost = async (postId, userId) => {
-  try {
-    const options = {
-      method:'POST',
-      headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-    };
-    await fetch(url + '/post/feed/like/' + postId + '/' + userId, options);
-  }
-  catch (e) {
-    console.error(e.message);
-  }
-};
-
-const getLikeUser = async (postId) => {
-  try {
-    const options = {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-    };
-    const responseUser = await fetch(url + '/user', options);
-    const users = await responseUser.json();
-    await likePost(postId, users[0].userId);
-  } catch (e) {
-      console.error(e.message);
-    }
-}
 
 let comment = true;
 
@@ -308,12 +306,14 @@ hamburger.addEventListener('click', () => {
   }
 });
 
+//monstrous eventListener for all buttons in feedContainer
 feedContainer.addEventListener('click', async (e) => {
-  console.log(e.target)
+  const postId = e.target.closest('.post').dataset.postid;
+
   if(loggedUser[0][0].admin === 1){
     if (e.target.matches('.deleteButton') || e.target.matches('.deleteContainer')){
+      //the admin deletebutton 
       if(confirm('Do you want to delete this post?')){
-        const id = e.target.closest('.post').dataset.postid;
         console.log(id);
         try{
           const fetchOptions = {
@@ -322,7 +322,7 @@ feedContainer.addEventListener('click', async (e) => {
               'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
             }
           };
-          await fetch(url + '/post/' + id , fetchOptions);
+          await fetch(url + '/post/' + postId , fetchOptions);
           window.location.href = 'http://localhost:3000/index.html';
         }catch(er){
           console.error(e.message);
@@ -330,7 +330,9 @@ feedContainer.addEventListener('click', async (e) => {
       }
     }
   }
+
   if (e.target.matches('.commentDeleteButton') || e.target.matches('.commentDeleteContainer')){
+    //the admin and the user deletebuttons
     const commentId = e.target.closest('#commentRender').dataset.commentid;
     if(confirm('Do you want to delete this comment?')){
       try{
@@ -349,9 +351,8 @@ feedContainer.addEventListener('click', async (e) => {
   }
 
   if(e.target.matches('#formButton')){
+    //commenting form button
     e.preventDefault(); 
-    console.log('commenting')
-    const id = e.target.closest('.post').dataset.postid;
     const data = serializeJson(e.target.closest('#commentForm'));
     try{
       const options = {
@@ -362,11 +363,63 @@ feedContainer.addEventListener('click', async (e) => {
         },
         body: JSON.stringify(data),
       };
-      const response = await fetch(url + `/post/com/${id}`, options);
+      const response = await fetch(url + `/post/com/${postIid}`, options);
       const json = await response.json();
     }catch(e){
       console.error(e.message);
     }
   }
-});
+  console.log(e.target.matches('.alreadyLiked'), !e.target.matches('.notLiked'));
 
+  if(e.target.matches('.notLiked')){
+    e.preventDefault();
+    try {
+
+      const options = {
+        method:'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+        },
+      };
+      const like = await fetch(url + '/post/feed/like/' + postId, options);
+
+      const likeImage = document.getElementById(`likeImg${postId}`);
+      const likeButton = document.getElementById(`likeBtn${postId}`);
+      
+      window.setTimeout(1000);
+      //const likes = listOfLikes[listOfLikes.length - 1].filter(e => e.postId === postId);
+      //console.log(listOfLikes[listOfLikes.length - 1].postId);
+      const likesAmount = document.getElementById(`likeAmount${postId}`);
+      likeImage.src = '../icons/like-2.png';
+      likeImage.className = 'alreadyLiked';
+      likeButton.className = 'alreadyLiked';
+      //console.log(likes);
+      //likesAmount.innerHTML = `${likes[0].likes +1} likes this`;
+    }
+    catch (e) {
+      console.error(e.message);
+    }
+  } 
+
+  if(e.target.matches('.alreadyLiked')){
+    e.preventDefault();
+    console.log(e.target.matches('.alreadyLiked'), !e.target.matches('.notLiked'));
+    try {
+      const options = {
+        method:'DELETE',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+        },
+      };
+      const like = await fetch(url + '/post/feed/like/' + postId, options);
+      eventHappened = true;
+      const likeImage = document.getElementById(`likeImg${postId}`);
+      const likeButton = document.getElementById(`likeBtn${postId}`);
+      likeImage.src = '../icons/like-1.png';
+      likeImage.className = 'notLiked';
+      likeButton.className = 'notLiked';
+    }catch(e){
+      console.error(e.message);
+    }
+  }
+});

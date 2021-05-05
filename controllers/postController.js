@@ -211,7 +211,7 @@ const post_update = async (req, res) => {
 
 const post_get_likes = async (req, res) => {
   try{
-    const likes = await postModel.getLikes(req.params.id);
+    const likes = await postModel.getLikes(req.body);
     res.json(likes);
   }catch(e){
     res.status(400).json({error: e.message});
@@ -265,10 +265,19 @@ const comment_delete = async (req, res) => {
       res.json(deleteOk);
     }
   }catch(e){
-    res.status(400).json({error: e.message})
+    res.status(400).json({error: e.message});
   }
 };
 
+const delete_like = async (req, res) => {
+  try{
+    console.log(req.params.id, req.user.userId)
+    const deleteLikes = await postModel.deleteLike(req.params.id, req.user.userId);
+    res.json(deleteLikes);
+  }catch(e){
+    res.status(400).json({error: e.message});
+  }
+}
 
 module.exports = {
   post_create,
@@ -294,6 +303,7 @@ module.exports = {
   post_list_get_all_workphases,
   post_list_get_all_ingredients_feed,
   post_list_get_all_ingredients,
-  comment_delete
+  comment_delete,
+  delete_like
 };
 
