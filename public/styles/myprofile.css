@@ -269,14 +269,6 @@ a {
     .profilePhotoGrid {
         width: 50%;
     }
-
-    #myProfileHref {
-        display: none;
-    }
-
-    #shareHref {
-        display: none;
-    }
 }
 
 @media only screen and (max-width: 550px) {
