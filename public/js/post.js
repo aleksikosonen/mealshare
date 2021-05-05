@@ -109,7 +109,7 @@ addForm.addEventListener('submit', async (evt) => {
     workphaseForm.appendChild(doneButton);
 
     doneButton.addEventListener('click', () => {
-      window.location.href = 'http://localhost:3000/post.html'
+      window.location.href = 'http://localhost:3000/'
     })
 
   });
@@ -283,14 +283,14 @@ getLatestPost();
 }else{
   logOut.style.display = 'none';
 }*/
-
+/*
 const hamburger = document.querySelector('.hamburger');
 hamburger.addEventListener('click', () => {
-  const x = document.getElementById("myTopNav");
+  const x = document.getElementById("topNav");
   console.log('clicked');
-  if (x.className === "topNavs") {
-    x.className = "responsive";
+  if (x.className === "topNav") {
+    x.className += " responsive";
   } else {
-    x.className = "topNavs";
+    x.className = "topNav";
   }
-});
+});*/

@@ -556,21 +556,21 @@ getMyProfile();
 
 // to hide login && signup
 // for some reason cant use logout.js with these files,,, url doesnt work
-if (sessionStorage.getItem('token')) {
+/*if (sessionStorage.getItem('token')) {
     //logIn.style.display = 'none';
     //signUp.style.display = 'none';
-    //logOut.style.display = 'flex';
+    logOut.style.display = 'flex';
 }else{
-    //logOut.style.display = 'none';
-}
+    logOut.style.display = 'none';
+}*/
 
 const hamburger = document.querySelector('.hamburger');
 hamburger.addEventListener('click', () => {
-  const x = document.getElementById("myTopNav");
-  console.log('clicked');
-  if (x.className === "topNavs") {
-    x.className = "responsive";
-  } else {
-    x.className = "topNavs";
-  }
+    const x = document.getElementById("topNav");
+    console.log('clicked');
+    if (x.className === "topNav") {
+        x.className += " responsive";
+    } else {
+        x.className = "topNav";
+    }
 });
