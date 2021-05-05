@@ -116,6 +116,10 @@ body {
     justify-content: space-evenly;
 }
 
+#logOut {
+    margin-right: 150px;
+}
+
 #profileInfo button {
     background: #F26966;
     color: white;
