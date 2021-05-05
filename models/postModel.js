@@ -53,6 +53,15 @@ const getAllIngredients = async (id) => {
   }
 };
 
+const getIngredientOwner = async(id) => {
+  try{
+    const[rows] = await promisePool.execute('SELECT ms_post.userId FROM ms_post INNER JOIN ms_post_ingredients ON ms_post.postId = ms_post_ingredients.postId where ms_post_ingredients.addOrder = ?;',[id]);
+    return rows[0];
+  }catch(e){
+    console.error('postmodel ingredientOwner :', e.message)
+  }
+};
+
 const deleteIngredient = async (id) => {
   try {
     const [rows] = await promisePool.execute('delete from ms_post_ingredients where addOrder = ? order by addOrder desc limit 1;', [id]);
@@ -249,7 +258,7 @@ const addComment = async (postId, userId, comment) => {
 
 const findComments = async() => {
   try {
-    const [rows] = await promisePool.execute('SELECT ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_user.username as username, ms_user.avatar as avatar FROM ms_postcomment LEFT JOIN ms_user ON ms_postcomment.userId = ms_user.userId ORDER BY commentId');
+    const [rows] = await promisePool.execute('SELECT ms_postcomment.commentId, ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_user.username as username, ms_user.avatar as avatar FROM ms_postcomment LEFT JOIN ms_user ON ms_postcomment.userId = ms_user.userId ORDER BY commentId');
     return rows
   }catch(e){
     console.error('findComments, error ', e.message);
@@ -294,6 +303,26 @@ const getUserRelatedPosts = async (input) => {
   }
 };
 
+
+const getCommentOwner = async (id) => {
+  try{
+    console.log(id);
+    const [rows] = await promisePool.execute('SELECT userId from ms_postcomment where commentId = ?;', [id])
+    return rows;
+  }catch(e) {
+    console.error('postModel getCommentOwner ', e.message)
+  }
+};
+
+const deleteComment = async (id) => {
+  try {
+    const [rows] = await promisePool.execute ('DELETE from ms_postcomment where commentId = ?;', [id]);
+    return rows;
+  }catch(e){
+    console.error('postModel deleteComment ', e.message)
+  }
+};
+
 const getAllIngredientsFeed = async () => {
   try {
     const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount, ms_post_ingredients.postId , ms_post_ingredients.addOrder from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId ORDER by ms_post_ingredients.addOrder;');
@@ -302,6 +331,7 @@ const getAllIngredientsFeed = async () => {
     console.error('postModel getPost :', e.message);
   }
 };
+
 
 module.exports = {
   uploadPost,
@@ -332,5 +362,8 @@ module.exports = {
   getAllIngredientsFeed,
   deleteIngredient,
   getAllIngredients,
+  getIngredientOwner,
+  getCommentOwner,
+  deleteComment,
 };
 
