@@ -21,9 +21,6 @@ const findLoggedUser = (async () => {
   }
 });
 
-
-let retrieved = 0;
-
 const loadData = (posts, comments, workphases, recipeIngredients) => {
 
   let likes = "";
