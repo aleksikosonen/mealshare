@@ -237,7 +237,6 @@ module.exports = {
   post_delete_ingredient,
   post_list_get_all_workphases,
   post_list_get_all_ingredients_feed,
-  post_delete_last_ingredient,
   post_list_get_all_ingredients,
   comment_delete
 };

@@ -26,9 +26,6 @@ let retrieved = 0;
 
 const loadData = (posts, comments, workphases, recipeIngredients) => {
 
-findLoggedUser();
-
-const loadData = (posts, comments) => {
   let likes = "";
   posts.forEach( async (post) => {
     //get likeamounts
@@ -41,8 +38,7 @@ const loadData = (posts, comments) => {
       const response = await fetch(url + '/post/likes/' + post.postId, options);
       const likesAmount = await response.json();
       likes = likesAmount.likes;
-    }
-    catch (e) {
+    }catch (e) {
       console.log(e.message);
     }
 
@@ -190,12 +186,10 @@ const loadData = (posts, comments) => {
           recipeDiv[(recipeDiv.length - 1)].appendChild(workphaseTopic);
           recipeDiv[(recipeDiv.length - 1)].appendChild(workphaseText);
           recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
-      }
+        }
+      });
     });
-
-  });
-};
-
+  };
 
 const getPosts = async () => {
   try {
