@@ -52,7 +52,6 @@ input::-webkit-calendar-picker-indicator {
 
 .topNav .search-container{
     margin:0;
-    //width:33.33%;
     align-self: center;
     display: flex;
     justify-content: center;
@@ -112,5 +111,20 @@ li a {
 
     #search {
         justify-content: flex-start;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    #logOut {
+        padding-right: 80px;
+    }
+
+    #logo {
+        margin-left: 0;
+    }
+
+    .hamburger {
+        right: 0px;
+        top: 25px;
     }
 }

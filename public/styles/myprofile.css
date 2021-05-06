@@ -160,7 +160,6 @@ body {
     box-sizing: border-box;
 }
 
-
 #profileInfo button {
     background: #F26966;
     color: white;
@@ -209,6 +208,16 @@ a {
     width: 200px;
     align-self: center;
     align-items: center;
+}
+
+#likeContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#likeIcon {
+    margin-right: 2px;
 }
 
 #descBackGround {
