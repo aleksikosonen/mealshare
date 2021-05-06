@@ -6,15 +6,6 @@ const capital = document.getElementById('capital');
 const number = document.getElementById('number');
 const length = document.getElementById('length');
 
-// When the user clicks on the password field, show the message box
-passwordInput.onfocus = function() {
-  document.getElementById("message").style.display = "block";
-};
-
-// When the user clicks outside of the password field, hide the message box
-passwordInput.onblur = function() {
-  document.getElementById("message").style.display = "none";
-};
 
 // When the user starts to type something inside the password field
 passwordInput.onkeyup = function() {
