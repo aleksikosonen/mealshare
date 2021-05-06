@@ -306,7 +306,7 @@ const showRecipes = (i) => {
     recipeDiv[i].style.display = 'block';
 }
 
-
+//hamburger for the nav bar
 const hamburger = document.querySelector('.hamburger');
 hamburger.addEventListener('click', () => {
   const x = document.getElementById("topNav");
@@ -384,8 +384,8 @@ feedContainer.addEventListener('click', async (e) => {
 
   if(e.target.matches('.notLiked')){
     e.preventDefault();
+    //the like button
     try {
-
       const options = {
         method:'POST',
         headers: {
@@ -406,6 +406,7 @@ feedContainer.addEventListener('click', async (e) => {
       const likes = await resLike.json();
       console.log(likes[0]);
       const likesAmount = document.getElementById(`likeAmount${postId}`);
+      //once user has liked, re render the likes and change buttons class
       likeImage.src = '../icons/like-2.png';
       likeImage.className = 'alreadyLiked';
       likeButton.className = 'alreadyLiked';
@@ -417,6 +418,7 @@ feedContainer.addEventListener('click', async (e) => {
     }
   }else if(e.target.matches('.alreadyLiked')){
     e.preventDefault();
+    //the like button once your logged in user has liked, in which case its remove like button
     try {
       const options = {
         method:'DELETE',
@@ -439,6 +441,7 @@ feedContainer.addEventListener('click', async (e) => {
       const likeImage = document.getElementById(`likeImg${postId}`);
       const likeButton = document.getElementById(`likeBtn${postId}`);
       const likesAmount = document.getElementById(`likeAmount${postId}`);
+      //once the user has removed the likes, re-render and change the button class
       likeImage.src = '../icons/like-1.png';
       likeImage.className = 'notLiked';
       likeButton.className = 'notLiked';
@@ -447,7 +450,6 @@ feedContainer.addEventListener('click', async (e) => {
       }else{
         likesAmount.innerHTML = 'Be the first to like this';
       }
-
     }catch(e){
       console.error(e.message);
     }
