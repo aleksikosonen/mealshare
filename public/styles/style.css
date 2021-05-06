@@ -215,7 +215,7 @@ body {
     overflow: auto;
     box-sizing: border-box;
     width:100%;
-    height: 150px;
+    height: 175px;
     border-radius: 0 0 10px 10px;
     display: flex;
     flex-wrap: wrap;
@@ -231,11 +231,13 @@ body {
 /* Track */
 #bottomCard::-webkit-scrollbar-track {
     background: #f1f1f1;
+    border-radius: 20px;
 }
 
 /* Handle */
 #bottomCard::-webkit-scrollbar-thumb {
-    background: #888;
+    background: #cccccc;
+    border-radius: 20px;
 }
 
 /* Handle on hover */
@@ -245,14 +247,15 @@ body {
 
 #postCaption {
     font-size: 16px;
+    margin-left: 30px;
 }
 
 #postCaptionTitle {
     width: 100%;
-    padding: 8px;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+    padding: 10px 0 10px 0;
 }
 
 .feedContainer img{
@@ -290,18 +293,27 @@ body {
 .buttonHolder button {
     background: #F7F7F7;
     color: black;
-    border-radius: 10px;
+    width: 50%;
     min-height: 30px;
-    width: 100px;
-    border: 1px black solid;
+    //border: 1px black solid;
+    border: none;
+    border-radius: 5px 5px 0 0;
     box-sizing: border-box;
 }
 
-.buttonHolder button:hover {
+#commentButton {
     background: #F26966;
-    border: none;
     color: white;
-    cursor: pointer;
+}
+
+#commentButton:hover  {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#recipeButton:hover  {
+    font-size: 13px;
+    font-weight: bold;
 }
 
 #commentForm button {
@@ -309,7 +321,7 @@ body {
     color: black;
     border-radius: 10px;
     height: 30px;
-    width: 100px;
+    width: 15%;
     border: 1px black solid;
     box-sizing: border-box;
 }
@@ -325,21 +337,17 @@ body {
     background: #F7F7F7;
     color: black;
     min-height: 30px;
-    width: 155px;
+    width: 80%;
     border: 1px black solid;
     box-sizing: border-box;
+    padding: 5px;
 }
-
-
 
 #postLikesAmount p {
     font-size: 12px;
     font-weight: bold;
     color: black;
-}
-
-#postCaption {
-    padding-left: 12px;
+    align-self: flex-end;
 }
 
 #commentList {
@@ -349,7 +357,8 @@ body {
 
 #commentForm {
     width: 100%;
-    padding: 8px;
+    padding: 8px 0 8px 0;
+    box-sizing: border-box;
 }
 
 #commentRender {
@@ -414,7 +423,6 @@ body {
     display: flex;
     justify-content: flex-start;
     text-align: center;
-
 }
 #likeAmount{
     font-size: 10px;
@@ -428,7 +436,7 @@ body {
     width: 15px;
     height: 15px;
     border: none;
-    margin: 1px 5px 1px 1px;
+    margin: 4px;
 }
 
 .notLiked:hover {
@@ -442,12 +450,16 @@ body {
     width: 15px;
     height: 15px;
     border: none;
-    margin: 1px 5px 1px 1px;
+    margin: 4px;
 }
 
 .alreadyLiked:hover {
     cursor: pointer;
     transform: scale(1.05);
+}
+
+.likeText {
+    margin-left: 8px;
 }
 
 
@@ -458,17 +470,11 @@ body {
       justify-content: center;
   }
 
-  #commentButton, #recipeButton{
-      width: 100px;
-      height: 20px;
-      margin: 0 30px;
-  }
-
   #recipeDiv{
       margin: 0;
       width:100%;
       height: auto;
-      padding: 0 20px 20px 20px;
+      //margin: 0 20px 20px 20px;
       align-items: center;
       display: flex;
   }
@@ -627,6 +633,29 @@ datalist {
         border-radius: 0;
     }
 
- 
+    .notLiked {
+        height: 30px;
+        width: 30px;
+    }
+
+    .alreadyLiked {
+        height: 30px;
+        width: 30px;
+    }
+
+    #postLikesAmount p {
+        font-size: 16px;
+        align-self: center;
+    }
+
+    #postCaption {
+        font-size: 16px;
+        align-self: center;
+    }
+
+    #commentForm {
+        padding: 20px 0 20px 0;
+    }
+
 }
 
