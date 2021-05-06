@@ -91,6 +91,21 @@ body {
     margin-bottom: 40px;
 }
 
+.add-recipe:hover {
+    cursor: pointer;
+    transform: scale(1.03);
+}
+
+#addIngredient:hover {
+    cursor: pointer;
+    transform: scale(1.03);
+}
+
+#addPhases:hover {
+    cursor: pointer;
+    transform: scale(1.03);
+}
+
 #add-post-form input {
     background: #46505F;
     border: solid 3px white;
@@ -113,6 +128,11 @@ body {
     margin: 2vh;
     color: white;
     font-size: 28px;
+}
+
+#add-post-form button:hover {
+    cursor: pointer;
+    transform: scale(1.03);
 }
 
 .post-form-item {
