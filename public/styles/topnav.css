@@ -18,6 +18,13 @@
     color: white;
 }
 
+#searchBtn {
+    background: url("../icons/search.png") no-repeat center;
+    width: 20px;
+    height: 60px;
+    background-size: contain;
+}
+
 .topNav input[type=search] {
     padding: 15px;
     font-size: 17px;

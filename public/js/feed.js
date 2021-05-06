@@ -56,7 +56,7 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
             <button id="likeBtn${post.postId}">
               <img id="likeImg${post.postId}" alt="heart">
             </button>
-            <p id="likeAmount${post.postId}"></p>
+            <p id="likeAmount${post.postId}" class="likeText"></p>
           </div>
           
           <div id="postCaptionTitle">
@@ -64,13 +64,13 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
           </div>
          
           <div class="buttonHolder">
-            <button id="commentButton" onclick="showComments('${(commentlist.length)}')"> Comments </button>
-            <button id="recipeButton" onclick="showRecipes('${(commentlist.length)}')"> Recipe </button>
+            <button id="commentButton" onclick="showComments('${(commentlist.length)}')">View comments </button>
+            <button id="recipeButton" onclick="showRecipes('${(commentlist.length)}')"> View recipe </button>
           </div>
           <form id="commentForm">
             <div id="commentFormInput">
-              <input class="light-border" type="text" placeholder="Comment" name="comment"/>
-              <button class="light-border" id="formButton" type="submit">Comment</button>
+              <input class="light-border" type="text" placeholder="Add new comment" name="comment"/>
+              <button class="light-border" id="formButton" type="submit">send</button>
             </div>
           </form>
 
@@ -172,6 +172,8 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
       }
     });
 
+    const recipeDiv = document.querySelectorAll('#recipeDiv');
+    recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
     //here we render the recipes for the posts
     recipeIngredients.forEach((ingredient) => {
       if(ingredient.postId === post.postId){
@@ -294,16 +296,38 @@ let comment = true;
 
 const showComments = (i) =>{
   const commentlist = document.querySelectorAll('#commentList');
+  commentlist[i].style.display = 'block';
+
   const recipeDiv = document.querySelectorAll('#recipeDiv');
-    commentlist[i].style.display = 'block';
-    recipeDiv[i].style.display = 'none';
+  const commentFormList = document.querySelectorAll('#commentForm');
+  commentFormList[i].style.display = 'block';
+  recipeDiv[i].style.display = 'none';
+
+  const commentButton = document.querySelectorAll('#commentButton');
+  commentButton[i].style.color = "white";
+  commentButton[i].style.background = "#F26966";
+
+  const recipeButton = document.querySelectorAll('#recipeButton');
+  recipeButton[i].style.background = "#F7F7F7";
+  recipeButton[i].style.color = "black";
+
 }
 
 const showRecipes = (i) => {
+  const commentFormList = document.querySelectorAll('#commentForm');
+  const commentButton = document.querySelectorAll('#commentButton');
+  const recipeButton = document.querySelectorAll('#recipeButton');
+
+  recipeButton[i].style.color = "white";
+  recipeButton[i].style.background = "#F26966";
+
   const commentlist = document.querySelectorAll('#commentList');
   const recipeDiv = document.querySelectorAll('#recipeDiv');
     commentlist[i].style.display = 'none';
     recipeDiv[i].style.display = 'block';
+    commentFormList[i].style.display = 'none';
+    commentButton[i].style.background = "#F7F7F7";
+    commentButton[i].style.color = "black";
 }
 
 //hamburger for the nav bar

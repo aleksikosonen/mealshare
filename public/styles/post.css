@@ -5,14 +5,9 @@
     text-align: center;
 }
 
-/*body {
-    height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}*/
+textarea:focus, input:focus, button:focus{
+    outline: none;
+}
 
 body {
     color: white;
@@ -55,14 +50,21 @@ body {
     justify-content: center;
 }
 
+#ingredientWrapper p {
+    margin: 10px;
+    display: flex;
+    align-items: center;
+}
+
 #deleteIngredientBtn {
     background: url(../icons/delete.png) no-repeat center;
     background-size: contain;
     border: none;
     align-items: center;
     border-radius: 0;
-    height: 20px;
-    width: 20px;
+    height: 40px;
+    width: 40px;
+    margin: 10px;
 }
 
 #deleteIngredientBtn:hover {
@@ -90,7 +92,7 @@ body {
 }
 
 #add-post-form input {
-    background: none;
+    background: #46505F;
     border: solid 3px white;
     margin: 2vh;
     color: white;
@@ -121,6 +123,7 @@ body {
 
 h3 {
     margin-bottom: 25px;
+    font-size: 32px;
 }
 
 #addIngredient {
@@ -129,10 +132,13 @@ h3 {
     border-radius: 10px;
     height: 40px;
     margin-top: 4px;
+    margin-bottom: 10px;
     border: 1px black solid;
     box-sizing: border-box;
     width: 200px;
 }
+
+
 
 .addPostButton {
     background: #F7F7F7;
@@ -148,6 +154,7 @@ h3 {
 #workphase-form input {
     width: 30%;
     height: 30px;
+    margin-bottom: 10px;
 }
 
 #workphaseInput {
@@ -175,4 +182,16 @@ h3 {
 
 #latestUpload {
     height: 350px;
+}
+
+
+@media only screen and (max-width: 550px) {
+    .form-wrapper {
+        width: 100%;
+    }
+
+    #latestPost {
+        width: 100%;
+    }
+
 }

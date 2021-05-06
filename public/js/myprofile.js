@@ -219,10 +219,10 @@ settingsButton.addEventListener('click', async () => {
 
     const updateUserCredentials = document.createElement('button');
     updateUserCredentials.type = "submit";
-    updateUserCredentials.textContent = "Update";
+    updateUserCredentials.textContent = "Update name and bio";
 
     const uploadAvatar = document.createElement('button');
-    uploadAvatar.textContent = "Upload profileimage";
+    uploadAvatar.textContent = "Change profileimage";
     uploadAvatar.className = "settingButton";
 
     const changePassword = document.createElement('button');
@@ -256,7 +256,11 @@ settingsButton.addEventListener('click', async () => {
     const formContainer = document.createElement('div');
     formContainer.id = "formContainer";
 
+    const credentialContainer = document.createElement('div');
+    credentialContainer.id = "credentialContainer";
+
     layer.appendChild(formContainer);
+    layer.appendChild(credentialContainer);
 
     userUpdateForm.setAttribute("id", "userUpdateForm");
     formContainer.appendChild(userUpdateForm);
@@ -266,11 +270,11 @@ settingsButton.addEventListener('click', async () => {
     userUpdateForm.appendChild(bioInput);
     userUpdateForm.appendChild(updateUserCredentials);
 
-    formContainer.appendChild(uploadAvatar)
-    formContainer.appendChild(changeUsername);
-    formContainer.appendChild(changeEmail);
-    formContainer.appendChild(changePassword);
-    formContainer.appendChild(cancelButton);
+    credentialContainer.appendChild(uploadAvatar)
+    credentialContainer.appendChild(changeUsername);
+    credentialContainer.appendChild(changeEmail);
+    credentialContainer.appendChild(changePassword);
+    credentialContainer.appendChild(cancelButton);
 
     cancelButton.addEventListener('click', async () => {
         window.location.href = 'http://localhost:3000/myprofile.html';
@@ -316,7 +320,7 @@ settingsButton.addEventListener('click', async () => {
         avatarInput.placeholder="Choose file";
 
         const uploadAvatarButton = document.createElement('button');
-        uploadAvatarButton.textContent = "Upload profilepicture";
+        uploadAvatarButton.textContent = "Change profilepicture";
         uploadAvatarButton.type = "submit";
 
         const cancelPicture = document.createElement('button');
@@ -547,11 +551,11 @@ settingsButton.addEventListener('click', async () => {
         userUpdateForm.appendChild(bioInput);
         userUpdateForm.appendChild(updateUserCredentials);
 
-        formContainer.appendChild(uploadAvatar)
-        formContainer.appendChild(changeUsername);
-        formContainer.appendChild(changeEmail);
-        formContainer.appendChild(changePassword);
-        formContainer.appendChild(cancelButton);
+        credentialContainer.appendChild(uploadAvatar)
+        credentialContainer.appendChild(changeUsername);
+        credentialContainer.appendChild(changeEmail);
+        credentialContainer.appendChild(changePassword);
+        credentialContainer.appendChild(cancelButton);
     }
 });
 
