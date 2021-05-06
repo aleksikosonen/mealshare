@@ -241,16 +241,23 @@ const getPosts = async () => {
     };
     const res = await fetch(url + `/post/comm`,fetchoptions);
     const comments = await res.json();
-    //then the comments
+    const postIds = [];
+    posts.forEach(post => {
+      postIds.push(post.postId);
+    });
+
     const wpOptions = {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(postIds),
     };
-    const wpResponse = await fetch(url + `/post/recipe/allworkphases`,wpOptions);
+    const wpResponse = await fetch(url + '/post/recipe/allworkphases', wpOptions);
     const workphases = await wpResponse.json();
+
+    console.log('feedjs ' + workphases);
     //then the workphases
     const recipeOptions = {
       method: 'POST',
@@ -273,6 +280,7 @@ const getPosts = async () => {
     };
     const likesResponse = await fetch(url + '/post/likes', likeOptions);
     const likesAmount = await likesResponse.json();
+    console.log(likesAmount);
     listOfLikes.push(likesAmount);
     //then the likes
     loadData(posts, comments, workphases, recipeIngredients, likesAmount);
@@ -377,6 +385,7 @@ feedContainer.addEventListener('click', async (e) => {
         body: JSON.stringify(data),
       };
       const response = await fetch(url + `/post/com/${postId}`, options);
+      alert('comment sent, refresh the page to render it')
     }catch(e){
       console.error(e.message);
     }

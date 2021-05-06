@@ -38,7 +38,7 @@ const feed_like = async (req, res) => {
 
 const post_list_get_postedBy = async (req, res) => {
   try{
-    //functiion for getting the person who posted the post
+    //function for getting the person who posted the post
     const posts = await postModel.getPostedBy();
     return res.json(posts);
   }catch(e){
@@ -111,8 +111,7 @@ const post_list_get_workphases = async (req, res) => {
 
 const post_list_get_all_workphases = async (req, res) => {
   try{
-    //function for getting all workphases
-    const allWorkphases = await postModel.getAllWorkphases();
+    const allWorkphases = await postModel.getAllWorkphases(req.body);
     return res.json(allWorkphases);
   }catch(e){
     return res.status(400).json({error: e.message});

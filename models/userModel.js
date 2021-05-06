@@ -6,6 +6,7 @@ const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
 const getUser = async(id) => {
     try{
+        //function where we dig out the users info based on token
         const [rows] = await promisePool.execute(`SELECT * FROM ms_user WHERE userId = ?`, [id]);
         return rows;
     }catch(e) {
@@ -16,15 +17,6 @@ const getUser = async(id) => {
 const getAllUsers = async () => {
     try {
         const [rows] = await promisePool.execute('SELECT * FROM ms_user');
-        return rows;
-    } catch (e) {
-        console.error('userModel:', e.message);
-    }
-}
-
-const getAllUsernames = async () => {
-    try {
-        const [rows] = await promisePool.execute('SELECT username FROM ms_user');
         return rows;
     } catch (e) {
         console.error('userModel:', e.message);
@@ -129,7 +121,6 @@ module.exports = {
     insertUser,
     getUserLogin,
     getAllUsers,
-    getAllUsernames,
     updateUser,
     updatePassword,
     updateUsername,
