@@ -265,10 +265,18 @@ const addComment = async (postId, userId, comment) => {
   }
 }
 
-const findComments = async() => {
+const findComments = async(postIds) => {
   try {
-    const [rows] = await promisePool.execute('SELECT ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_user.username as username, ms_user.avatar as avatar FROM ms_postcomment LEFT JOIN ms_user ON ms_postcomment.userId = ms_user.userId ORDER BY commentId');
-    return rows
+    const matches = [];
+    for (let i = 0; i < postIds.length; i++) {
+      const [rows] = await promisePool.execute(
+          'SELECT ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_user.username as username, ms_user.avatar as avatar FROM ms_postcomment LEFT JOIN ms_user ON ms_postcomment.userId = ms_user.userId WHERE ms_postcomment.postId = ? ORDER BY commentId',
+          [postIds[i]]);
+      if (rows[0] != null) {
+        matches.push(rows);
+      }
+    }
+    return matches
   }catch(e){
     console.error('findComments, error ', e.message);
   }

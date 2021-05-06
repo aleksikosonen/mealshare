@@ -125,51 +125,53 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
     }
 
     comments.forEach((comment) => {
+      for(let i = 0; i < comment.length; i++){
       //here we render the comments for the posts
-      if(comment.postId === post.postId){
-        const commentRender = document.createElement('div');
-        commentRender.id = 'commentRender';
-        const commentlist = document.querySelectorAll('#commentList');
-        commentlist[(commentlist.length - 1)].appendChild(commentRender);
+        if(comment[i].postId === post.postId){
+          const commentRender = document.createElement('div');
+          commentRender.id = 'commentRender';
+          const commentlist = document.querySelectorAll('#commentList');
+          commentlist[(commentlist.length - 1)].appendChild(commentRender);
 
-        const commenterInfo = document.createElement('div');
-        commenterInfo.id = 'commenterInfo';
-        commentRender.appendChild(commenterInfo);
+          const commenterInfo = document.createElement('div');
+          commenterInfo.id = 'commenterInfo';
+          commentRender.appendChild(commenterInfo);
 
-        const userAndComment = document.createElement('div');
-        userAndComment.id = 'userAndComment';
-        commentRender.appendChild(userAndComment);
-        commentRender.dataset.commentid = comment.commentId;
+          const userAndComment = document.createElement('div');
+          userAndComment.id = 'userAndComment';
+          commentRender.appendChild(userAndComment);
+          commentRender.dataset.commentid = comment[i].commentId;
 
         //here we render the comment delete buttons, if the logged user is admin or if the
         //comment in question is the logged in users comment
-        if(loggedUser[0][0].admin === 1 || loggedUser[0][0].userId === comment.userId){
-          const adminDeleteButton = document.createElement('button');
-          const deleteImage = document.createElement('img');
+          if(loggedUser[0][0].admin === 1 || loggedUser[0][0].userId === comment[i].userId){
+            const adminDeleteButton = document.createElement('button');
+            const deleteImage = document.createElement('img');
 
-          deleteImage.className = 'commentDeleteButton';
-          adminDeleteButton.className = 'commentDeleteContainer';
-          deleteImage.src = '../icons/delete.png';
-          commentRender.appendChild(adminDeleteButton);
-          adminDeleteButton.appendChild(deleteImage);
-        }
+            deleteImage.className = 'commentDeleteButton';
+            adminDeleteButton.className = 'commentDeleteContainer';
+            deleteImage.src = '../icons/delete.png';
+            commentRender.appendChild(adminDeleteButton);
+            adminDeleteButton.appendChild(deleteImage);
+          }
 
-        const commenterName = document.createElement('a');
-        commenterName.id = 'commenterName';
-        commenterName.innerHTML = comment.username;
+          const commenterName = document.createElement('a');
+          commenterName.id = 'commenterName';
+          commenterName.innerHTML = comment[i].username;
 
-        const commentAvatar = document.createElement('img');
-        commentAvatar.id = 'commentAvatar';
-        commentAvatar.src = comment.avatar || "icons/def-avatar.png";
-        commentAvatar.alt = 'avatar';
-        commenterInfo.appendChild(commentAvatar);
-        userAndComment.appendChild(commenterName);
+          const commentAvatar = document.createElement('img');
+          commentAvatar.id = 'commentAvatar';
+          commentAvatar.src = comment[i].avatar || "icons/def-avatar.png";
+          commentAvatar.alt = 'avatar';
+          commenterInfo.appendChild(commentAvatar);
+          userAndComment.appendChild(commenterName);
 
-        const commentCaption = document.createElement('p');
-        commentCaption.id = "postComment";
-        commentCaption.innerHTML= comment.comment;
-        userAndComment.appendChild(commentCaption);
+          const commentCaption = document.createElement('p');
+          commentCaption.id = "postComment";
+          commentCaption.innerHTML= comment[i].comment;
+          userAndComment.appendChild(commentCaption);
       }
+    }
     });
 
     const recipeDiv = document.querySelectorAll('#recipeDiv');
@@ -251,9 +253,11 @@ const getPosts = async () => {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(postIds),
     };
     const res = await fetch(url + `/post/comm`,fetchoptions);
     const comments = await res.json();
+
     //then the comments
     const wpOptions = {
       method: 'POST',
@@ -266,6 +270,7 @@ const getPosts = async () => {
     const wpResponse = await fetch(url + `/post/recipe/allworkphases`,wpOptions);
     const workphases = await wpResponse.json();
     //then the workphases
+
     const recipeOptions = {
       method: 'POST',
       headers: {
