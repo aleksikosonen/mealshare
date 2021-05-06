@@ -270,7 +270,7 @@ const findComments = async(postIds) => {
     const matches = [];
     for (let i = 0; i < postIds.length; i++) {
       const [rows] = await promisePool.execute(
-          'SELECT ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_user.username as username, ms_user.avatar as avatar FROM ms_postcomment LEFT JOIN ms_user ON ms_postcomment.userId = ms_user.userId WHERE ms_postcomment.postId = ? ORDER BY commentId',
+          'SELECT ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_postcomment.commentId, ms_user.username as username, ms_user.avatar as avatar FROM ms_postcomment LEFT JOIN ms_user ON ms_postcomment.userId = ms_user.userId WHERE ms_postcomment.postId = ? ORDER BY commentId',
           [postIds[i]]);
       if (rows[0] != null) {
         matches.push(rows);
