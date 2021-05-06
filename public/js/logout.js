@@ -32,7 +32,7 @@ logOut.addEventListener('click', async (evt) => {
     // remove token
     sessionStorage.removeItem('token');
     alert('You have logged out');
-    window.location.href = 'http://localhost:3000/index.html'
+    window.location.href = url, '/index.html'
   }
   catch (e) {
     console.log('logout error' + e.message);

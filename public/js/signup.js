@@ -7,7 +7,7 @@
  * */
 
 'use strict';
-const url = 'http://localhost:3000';
+const url = 'https://127.0.0.1/app';
 const addUserForm = document.getElementById('add-user-form');
 
 //check if passwords match
@@ -39,7 +39,7 @@ addUserForm.addEventListener('submit', async (evt) =>{
     alert(json.message);
   } else {
     sessionStorage.setItem('token', json.token);
-    window.location.href = 'http://localhost:3000/index.html';
+    window.location.href = url, '/index.html';
   }
 });
 password.onfocus = function() {

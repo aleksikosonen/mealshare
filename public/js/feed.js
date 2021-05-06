@@ -19,7 +19,7 @@
 'use strict';
 
 const showMoreBtn = document.getElementById('showMoreBtn');
-const url = 'http://localhost:3000';
+const url = 'https://127.0.0.1/app';
 //some global variables so we can get certain info from out of functions to other functions
 const loggedUser = [];
 const likedPosts = [];
@@ -391,7 +391,7 @@ feedContainer.addEventListener('click', async (e) => {
             }
           };
           await fetch(url + '/post/' + postId , fetchOptions);
-          window.location.href = 'http://localhost:3000/index.html';
+          window.location.href = url, '/index.html';
         }catch(er){
           console.error(e.message);
         }
@@ -411,7 +411,7 @@ feedContainer.addEventListener('click', async (e) => {
           }
         };
         await fetch(url + '/post/comment/' + commentId , fetchOptions);
-        window.location.href = 'http://localhost:3000/index.html';
+        window.location.href = url, '/index.html';
       }catch(er){
         console.error(e.message);
       }

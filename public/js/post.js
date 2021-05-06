@@ -12,7 +12,7 @@
 
 'use strict';
 
-const url = 'http://localhost:3000';
+const url = 'https://127.0.0.1/app';
 const addForm = document.querySelector('#add-post-form');
 const latestUpload = document.querySelector('#latestUpload');
 const captionText = document.querySelector('#captionText');
@@ -53,7 +53,7 @@ addForm.addEventListener('submit', async (evt) => {
 
   //No recipe re-directs to frontpage so user can see post
   noRecipe.addEventListener('click', () => {
-    window.location.href = 'http://localhost:3000/post.html'
+    window.location.href = url, '/post.html'
   });
 
   //If user wants to add recipe
@@ -118,7 +118,7 @@ addForm.addEventListener('submit', async (evt) => {
       if (data.workphases !== "") {
         await addWorkphases(data, post.postId);
       }
-      window.location.href = 'http://localhost:3000/'
+      window.location.href = url
     });
   });
 });

@@ -12,7 +12,7 @@
 
 'use strict';
 
-const url = 'http://localhost:3000';
+const url = 'https://127.0.0.1/app';
 
 const username = document.querySelector('#username');
 const bio = document.querySelector('#bio');
@@ -145,7 +145,7 @@ const getUserImages = (posts, loggedUser) => {
                         body: JSON.stringify(data),
                     };
                     await fetch(url + '/post/' + post.postId, options);
-                    window.location.href = 'http://localhost:3000/myprofile.html'
+                    window.location.href = url, '/myprofile.html'
                 }
                 catch (e) {
                     console.log(e.message);
@@ -164,7 +164,7 @@ const getUserImages = (posts, loggedUser) => {
                         },
                     };
                     await fetch(url + '/post/' + post.postId, options);
-                    window.location.href = 'http://localhost:3000/myprofile.html'
+                    window.location.href = url, '/myprofile.html'
                 }
                 catch (e) {
                     console.log(e.message);
@@ -297,7 +297,7 @@ settingsButton.addEventListener('click', async () => {
 
     //Reloads myprofile
     cancelButton.addEventListener('click', async () => {
-        window.location.href = 'http://localhost:3000/myprofile.html';
+        window.location.href = url, '/myprofile.html';
     })
 
     //Updates user to database
@@ -316,7 +316,7 @@ settingsButton.addEventListener('click', async () => {
         };
         const response = await fetch(url + '/user/update', fetchOptions);
         console.log(response)
-        window.location.href = 'http://localhost:3000/myprofile.html'
+        window.location.href = url, '/myprofile.html'
         } catch (e) {
             console.error(e.message);
         }
@@ -370,7 +370,7 @@ settingsButton.addEventListener('click', async () => {
                 body: data,
             };
             await fetch(url + '/user/update/avatar', fetchOptions);
-            window.location.href = 'http://localhost:3000/myprofile.html'
+            window.location.href = url, '/myprofile.html'
         })
     })
 
@@ -428,7 +428,7 @@ settingsButton.addEventListener('click', async () => {
                 if (json.error) {
                     alert(json.error);
                 }
-                window.location.href = 'http://localhost:3000/myprofile.html'
+                window.location.href = url, '/myprofile.html'
             } catch (e) {
                 console.error(e.message);
             }
@@ -491,7 +491,7 @@ settingsButton.addEventListener('click', async () => {
                 if (json.error) {
                     alert(json.error);
                 }
-                window.location.href = 'http://localhost:3000/myprofile.html'
+                window.location.href = ulr, '/myprofile.html'
             } catch (e) {
                 console.error(e.message);
             }
@@ -566,7 +566,7 @@ settingsButton.addEventListener('click', async () => {
                      body: JSON.stringify(data),
                  };
                     await fetch(url + '/user/changepassword', fetchOptions);
-                 window.location.href = 'http://localhost:3000/myprofile.html'
+                 window.location.href = url, '/myprofile.html'
              } catch (e) {
                  console.error(e.message);
              }
