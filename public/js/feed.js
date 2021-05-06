@@ -1,4 +1,5 @@
 'use strict';
+
 const showMoreBtn = document.getElementById('showMoreBtn');
 const url = 'http://localhost:3000';
 const likeButton = document.querySelectorAll('#likeBtn');
@@ -369,7 +370,6 @@ feedContainer.addEventListener('click', async (e) => {
       console.error(e.message);
     }
   }
-  console.log(e.target.matches('.alreadyLiked'), !e.target.matches('.notLiked'));
 
   if(e.target.matches('.notLiked')){
     e.preventDefault();
@@ -385,25 +385,27 @@ feedContainer.addEventListener('click', async (e) => {
 
       const likeImage = document.getElementById(`likeImg${postId}`);
       const likeButton = document.getElementById(`likeBtn${postId}`);
-      
-      window.setTimeout(1000);
-      //const likes = listOfLikes[listOfLikes.length - 1].filter(e => e.postId === postId);
-      //console.log(listOfLikes[listOfLikes.length - 1].postId);
+      const fetchOptions = {
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+        },
+      };
+      const resLike = await fetch(url + '/post/feed/like/' + postId, fetchOptions);
+
+      const likes = await resLike.json();
+      console.log(likes[0]);
       const likesAmount = document.getElementById(`likeAmount${postId}`);
       likeImage.src = '../icons/like-2.png';
       likeImage.className = 'alreadyLiked';
       likeButton.className = 'alreadyLiked';
-      //console.log(likes);
-      //likesAmount.innerHTML = `${likes[0].likes +1} likes this`;
+      console.log(likes.length)
+      likesAmount.innerHTML = `${likes[0].likes} likes this`;
     }
     catch (e) {
       console.error(e.message);
     }
-  } 
-
-  if(e.target.matches('.alreadyLiked')){
+  }else if(e.target.matches('.alreadyLiked')){
     e.preventDefault();
-    console.log(e.target.matches('.alreadyLiked'), !e.target.matches('.notLiked'));
     try {
       const options = {
         method:'DELETE',
@@ -412,12 +414,29 @@ feedContainer.addEventListener('click', async (e) => {
         },
       };
       const like = await fetch(url + '/post/feed/like/' + postId, options);
-      eventHappened = true;
+
+      const fetchOptions = {
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+        },
+      };
+      const resLike = await fetch(url + '/post/feed/like/' + postId, fetchOptions);
+
+      const likes = await resLike.json();
+      console.log(likes[0]);
+
       const likeImage = document.getElementById(`likeImg${postId}`);
       const likeButton = document.getElementById(`likeBtn${postId}`);
+      const likesAmount = document.getElementById(`likeAmount${postId}`);
       likeImage.src = '../icons/like-1.png';
       likeImage.className = 'notLiked';
       likeButton.className = 'notLiked';
+      if(likes[0].likes > 0){
+        likesAmount.innerHTML = `${likes[0].likes} likes this`;
+      }else{
+        likesAmount.innerHTML = 'Be the first to like this';
+      }
+
     }catch(e){
       console.error(e.message);
     }

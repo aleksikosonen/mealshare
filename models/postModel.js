@@ -331,11 +331,19 @@ const getAllIngredientsFeed = async () => {
 
 const deleteLike = async(postId, userId) => {
   try{
-    console.log('model ', postId, userId)
     const [rows] = await promisePool.execute('delete from ms_likes where postId = ? AND userId = ?;', [postId, userId]);
     return rows;
   }catch(e){
     console.error('postModel deleteLike: ', e.message);
+  }
+}
+
+const getSingleLike = async(postId) => {
+  try{
+    const [rows] = await promisePool.execute('select count(postId) as likes from ms_likes where postId = ?;', [postId]);
+    return rows;
+  }catch(e){
+
   }
 }
 
@@ -372,5 +380,6 @@ module.exports = {
   getCommentOwner,
   deleteComment,
   deleteLike,
+  getSingleLike
 };
 

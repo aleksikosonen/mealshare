@@ -32,7 +32,7 @@ router.post('/usermatches', postController.post_get_all_userRelations);
 
 router.post('/feed/like/:id', postController.feed_like);
 router.delete('/feed/like/:id', postController.delete_like);
-
+router.get('/feed/like/:id', postController.get_single_like);
 
 router.post('/com/:postId',
     body('comment').isLength({min: 1}).escape().blacklist(';'),

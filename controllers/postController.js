@@ -277,7 +277,16 @@ const delete_like = async (req, res) => {
   }catch(e){
     res.status(400).json({error: e.message});
   }
-}
+};
+
+const get_single_like = async (req, res) => {
+  try{
+    const getSingleLike = await postModel.getSingleLike(req.params.id);
+    res.json(getSingleLike);
+  }catch(e){
+    res.status(400).json({error: e.message});
+  }
+};
 
 module.exports = {
   post_create,
@@ -304,6 +313,7 @@ module.exports = {
   post_list_get_all_ingredients_feed,
   post_list_get_all_ingredients,
   comment_delete,
-  delete_like
+  delete_like,
+  get_single_like,
 };
 
