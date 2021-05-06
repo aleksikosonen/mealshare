@@ -1,3 +1,11 @@
+/**
+ * Js-file for signup function
+ *
+ * Validates password and user.
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 const url = 'http://localhost:3000';
 const addUserForm = document.getElementById('add-user-form');
