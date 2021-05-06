@@ -312,7 +312,6 @@ const getLikeUser = async (postId) => {
       console.error(e.message);
     }
 }
-
 const showComments = (i) =>{
   const commentlist = document.querySelectorAll('#commentList');
   const recipeDiv = document.querySelectorAll('#recipeDiv');
