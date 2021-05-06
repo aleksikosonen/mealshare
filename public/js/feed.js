@@ -24,7 +24,6 @@ const url = 'http://localhost:3000';
 const loggedUser = [];
 const likedPosts = [];
 const listOfLikes = [];
-
 let retrieved = 0;
 
 //function to find the logged user so we can render deletebuttons accordingly
@@ -38,7 +37,7 @@ const findLoggedUser = (async () => {
     const responseUser = await fetch(url + '/user', options);
     const users = await responseUser.json();
     loggedUser.push(users);
-
+    
     const fetchOptions = {
       headers: {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
@@ -75,7 +74,7 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
             <button id="likeBtn${post.postId}">
               <img id="likeImg${post.postId}" alt="heart">
             </button>
-            <p id="likeAmount${post.postId}"></p>
+            <p id="likeAmount${post.postId}" class="likeText"></p>
           </div>
           
           <div id="postCaptionTitle">
@@ -83,15 +82,16 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
           </div>
          
           <div class="buttonHolder">
-            <button id="commentButton" onclick="showComments('${(commentlist.length)}')"> Comments </button>
-            <button id="recipeButton" onclick="showRecipes('${(commentlist.length)}')"> Recipe </button>
+            <button id="commentButton" onclick="showComments('${(commentlist.length)}')">View comments </button>
+            <button id="recipeButton" onclick="showRecipes('${(commentlist.length)}')"> View recipe </button>
           </div>
           <form id="commentForm">
             <div id="commentFormInput">
-              <input class="light-border" type="text" placeholder="Comment" name="comment"/>
-              <button class="light-border" id="formButton" type="submit">Comment</button>
+              <input class="light-border" type="text" placeholder="Add new comment" name="comment"/>
+              <button class="light-border" id="formButton" type="submit">send</button>
             </div>
           </form>
+
           <ul id="commentList"></ul>
           <div id="recipeDiv">
             <p id="recipeIngredientsTopic"> Ingredients </p>
@@ -160,7 +160,7 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
           commentRender.appendChild(userAndComment);
           commentRender.dataset.commentid = comment[i].commentId;
 
-        //here we render the comment delete buttons, if the logged user is admin or if the
+        //here we render the comment delete buttons, if the logged user is admin or if the 
         //comment in question is the logged in users comment
           if(loggedUser[0][0].admin === 1 || loggedUser[0][0].userId === comment[i].userId){
             const adminDeleteButton = document.createElement('button');
@@ -196,7 +196,6 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
     recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
 
     //here we render the recipes for the posts
-
     recipeIngredients.forEach((ingredient) => {
       for(let i = 0; i < ingredient.length; i++){
         if(ingredient[i].postId === post.postId){
@@ -275,7 +274,6 @@ const getPosts = async () => {
     };
     const res = await fetch(url + `/post/comm`,fetchoptions);
     const comments = await res.json();
-
     //then the comments
     const wpOptions = {
       method: 'POST',
@@ -332,16 +330,38 @@ let comment = true;
 
 const showComments = (i) =>{
   const commentlist = document.querySelectorAll('#commentList');
-  const recipeDiv = document.querySelectorAll('#recipeDiv');
   commentlist[i].style.display = 'block';
+
+  const recipeDiv = document.querySelectorAll('#recipeDiv');
+  const commentFormList = document.querySelectorAll('#commentForm');
+  commentFormList[i].style.display = 'block';
   recipeDiv[i].style.display = 'none';
+
+  const commentButton = document.querySelectorAll('#commentButton');
+  commentButton[i].style.color = "white";
+  commentButton[i].style.background = "#F26966";
+
+  const recipeButton = document.querySelectorAll('#recipeButton');
+  recipeButton[i].style.background = "#F7F7F7";
+  recipeButton[i].style.color = "black";
+
 }
 
 const showRecipes = (i) => {
+  const commentFormList = document.querySelectorAll('#commentForm');
+  const commentButton = document.querySelectorAll('#commentButton');
+  const recipeButton = document.querySelectorAll('#recipeButton');
+
+  recipeButton[i].style.color = "white";
+  recipeButton[i].style.background = "#F26966";
+
   const commentlist = document.querySelectorAll('#commentList');
   const recipeDiv = document.querySelectorAll('#recipeDiv');
-  commentlist[i].style.display = 'none';
-  recipeDiv[i].style.display = 'block';
+    commentlist[i].style.display = 'none';
+    recipeDiv[i].style.display = 'block';
+    commentFormList[i].style.display = 'none';
+    commentButton[i].style.background = "#F7F7F7";
+    commentButton[i].style.color = "black";
 }
 
 //hamburger for the nav bar
@@ -412,6 +432,7 @@ feedContainer.addEventListener('click', async (e) => {
         body: JSON.stringify(data),
       };
       const response = await fetch(url + `/post/com/${postId}`, options);
+      alert('comment sent, refresh the page to render it')
     }catch(e){
       console.error(e.message);
     }
@@ -421,7 +442,6 @@ feedContainer.addEventListener('click', async (e) => {
     e.preventDefault();
     //the like button
     try {
-
       const options = {
         method:'POST',
         headers: {

@@ -1,3 +1,15 @@
+/**
+ * Js-file for my profile
+ *
+ * Displays all the users posts and gives option for deleting them or editing their caption
+ *
+ * Also shows users profilepicture, bio and username. Myprofile also has settings where user
+ * can edit credentials.
+ *
+ * @author Aleksi Kosonen, Niko Lindborg & Aleksi Kytö
+ *
+ **/
+
 'use strict';
 
 const url = 'http://localhost:3000';
@@ -12,6 +24,7 @@ const layer = document.querySelector('.layer');
 const profileInfo = document.querySelector('#profileInfo');
 const newPost = document.querySelector('#newPost');
 
+//Gets logged users info to page
 const getUserInfo = (users) => {
     //done with foreach if in some case would need to handle multiple users
     users.forEach((user) => {
@@ -23,6 +36,7 @@ const getUserInfo = (users) => {
     });
 }
 
+//Gets logged users images from database and displays them
 const getUserImages = (posts, loggedUser) => {
     const userPhotos = posts.filter(user => user.userId === loggedUser[0].userId);
     userPhotos.reverse();
@@ -51,6 +65,12 @@ const getUserImages = (posts, loggedUser) => {
         deleteButton.type = "click";
         deleteButton.id = "deletePost"
 
+        const likeIcon = document.createElement('img');
+        likeIcon.id = "likeIcon";
+        likeIcon.src = "icons/like-2.png"
+        likeIcon.style.height = "15px";
+        likeIcon.style.width = "15px";
+
         descriptionBackground.style.height='50px';
         descriptionBackground.style.width='100%';
 
@@ -68,7 +88,13 @@ const getUserImages = (posts, loggedUser) => {
             console.log(e.message);
         }
 
-        descriptionBackground.appendChild(likes);
+        const likeContainer = document.createElement('div');
+        likeContainer.id = "likeContainer";
+
+        likeContainer.appendChild(likeIcon);
+        likeContainer.appendChild(likes);
+
+        descriptionBackground.appendChild(likeContainer);
         descriptionBackground.appendChild(description);
         descriptionBackground.appendChild(editButton);
         descriptionBackground.appendChild(deleteButton);
@@ -76,9 +102,12 @@ const getUserImages = (posts, loggedUser) => {
 
         profilePhotoGrid.appendChild(descriptionBackground);
 
+        //Edit button opens possibility for user to edit the posts caption, but not
+        //recipe as it would be bad if user could edit recipe once somebody has reviewed it
         editButton.addEventListener('click',  async () => {
             settingsButton.remove();
             photoContainer.remove();
+            console.log(post.postId);
 
             const formContainer = document.createElement('div');
             formContainer.id = "formContainer";
@@ -102,6 +131,7 @@ const getUserImages = (posts, loggedUser) => {
             editPostForm.appendChild(caption);
             editPostForm.appendChild(doneButton);
 
+            //Submits the changes to database
             editPostForm.addEventListener('submit', async(evt) => {
                 evt.preventDefault()
                 const data = serializeJson(editPostForm);
@@ -123,6 +153,7 @@ const getUserImages = (posts, loggedUser) => {
             })
         })
 
+        //Deletebutton prompts user if user really wants to delete post
         deleteButton.addEventListener('click', async () => {
             if (confirm('Do you want to delete this post?')) {
                 try {
@@ -144,6 +175,7 @@ const getUserImages = (posts, loggedUser) => {
     });
 }
 
+//Main function for getting profile posts
 const getMyProfile = async () => {
     try {
         const options = {
@@ -165,6 +197,7 @@ const getMyProfile = async () => {
     }
 };
 
+//Get's users credentials from database
 const getUserCredentials = async (firstname, lastname, bio) => {
     try {
         const options = {
@@ -185,21 +218,8 @@ const getUserCredentials = async (firstname, lastname, bio) => {
     }
 };
 
-const getLoggedUser = async () => {
-    try {
-        const options = {
-            headers: {
-                'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-            },
-        };
-        const responseUser = await fetch(url + '/user', options);
-        const users = await responseUser.json();
-        return users[0].userId;
-    } catch (e) {
-        console.log(e.message);
-    }
-};
-
+//Settings is where user can change credentials, done with javascript so that a new form is always
+//made on the page and previous is removed. Cancel re-makes the previous form.
 settingsButton.addEventListener('click', async () => {
     photoContainer.remove();
     settingsButton.remove();
@@ -217,10 +237,10 @@ settingsButton.addEventListener('click', async () => {
 
     const updateUserCredentials = document.createElement('button');
     updateUserCredentials.type = "submit";
-    updateUserCredentials.textContent = "Update";
+    updateUserCredentials.textContent = "Update name and bio";
 
     const uploadAvatar = document.createElement('button');
-    uploadAvatar.textContent = "Upload profileimage";
+    uploadAvatar.textContent = "Change profileimage";
     uploadAvatar.className = "settingButton";
 
     const changePassword = document.createElement('button');
@@ -249,12 +269,17 @@ settingsButton.addEventListener('click', async () => {
     bioInput.name = "bio";
     bioInput.placeholder = "Biography";
 
+    //Gets credentials from database so they are already seen on settings page
     getUserCredentials(firstnameInput, lastnameInput, bioInput);
 
     const formContainer = document.createElement('div');
     formContainer.id = "formContainer";
 
+    const credentialContainer = document.createElement('div');
+    credentialContainer.id = "credentialContainer";
+
     layer.appendChild(formContainer);
+    layer.appendChild(credentialContainer);
 
     userUpdateForm.setAttribute("id", "userUpdateForm");
     formContainer.appendChild(userUpdateForm);
@@ -264,20 +289,22 @@ settingsButton.addEventListener('click', async () => {
     userUpdateForm.appendChild(bioInput);
     userUpdateForm.appendChild(updateUserCredentials);
 
-    formContainer.appendChild(uploadAvatar)
-    formContainer.appendChild(changeUsername);
-    formContainer.appendChild(changeEmail);
-    formContainer.appendChild(changePassword);
-    formContainer.appendChild(cancelButton);
+    credentialContainer.appendChild(uploadAvatar)
+    credentialContainer.appendChild(changeUsername);
+    credentialContainer.appendChild(changeEmail);
+    credentialContainer.appendChild(changePassword);
+    credentialContainer.appendChild(cancelButton);
 
+    //Reloads myprofile
     cancelButton.addEventListener('click', async () => {
         window.location.href = 'http://localhost:3000/myprofile.html';
     })
 
-
+    //Updates user to database
     userUpdateForm.addEventListener('submit', async (evt) => {
         evt.preventDefault();
         const data = serializeJson(userUpdateForm);
+        console.log(data.username);
         try {
         const fetchOptions = {
             method: 'PUT',
@@ -288,12 +315,14 @@ settingsButton.addEventListener('click', async () => {
             body: JSON.stringify(data),
         };
         const response = await fetch(url + '/user/update', fetchOptions);
+        console.log(response)
         window.location.href = 'http://localhost:3000/myprofile.html'
         } catch (e) {
             console.error(e.message);
         }
     })
 
+    //Creates the form for changing profile picture or "avatar" as it is in database
     uploadAvatar.addEventListener('click', async () => {
         changePassword.remove();
         changeUsername.remove();
@@ -312,7 +341,7 @@ settingsButton.addEventListener('click', async () => {
         avatarInput.placeholder="Choose file";
 
         const uploadAvatarButton = document.createElement('button');
-        uploadAvatarButton.textContent = "Upload profilepicture";
+        uploadAvatarButton.textContent = "Change profilepicture";
         uploadAvatarButton.type = "submit";
 
         const cancelPicture = document.createElement('button');
@@ -323,11 +352,13 @@ settingsButton.addEventListener('click', async () => {
         uploadAvatarForm.appendChild(uploadAvatarButton);
         uploadAvatarForm.appendChild(cancelPicture);
 
+        //Cancels and refreshes form
         cancelPicture.addEventListener('click', () => {
             uploadAvatarForm.remove();
             refreshForm();
         })
 
+        //Makes changes to database
         uploadAvatarForm.addEventListener('submit', async (evt) => {
             evt.preventDefault();
             const data = new FormData(uploadAvatarForm);
@@ -343,6 +374,7 @@ settingsButton.addEventListener('click', async () => {
         })
     })
 
+    //Creates the form for changing username
     changeUsername.addEventListener('click',  () => {
         changePassword.remove();
         changeUsername.remove();
@@ -375,6 +407,7 @@ settingsButton.addEventListener('click', async () => {
             refreshForm();
         })
 
+        //Saves changes to database
         changeUsernameForm.addEventListener('submit', async (evt) => {
             evt.preventDefault();
             const newUsername = serializeJson(changeUsernameForm);
@@ -389,7 +422,9 @@ settingsButton.addEventListener('click', async () => {
                     body: JSON.stringify(data),
                 };
                 const response = await fetch(url + '/user/update/username', fetchOptions);
-                const json = await response.json();
+                console.log('response', response);
+                    const json = await response.json();
+                    console.log('username change response ', json);
                 if (json.error) {
                     alert(json.error);
                 }
@@ -401,6 +436,7 @@ settingsButton.addEventListener('click', async () => {
 
     })
 
+    //Creates the form for changing email
     changeEmail.addEventListener('click', () => {
         changePassword.remove();
         changeUsername.remove();
@@ -434,6 +470,7 @@ settingsButton.addEventListener('click', async () => {
             refreshForm();
         })
 
+        //Saves changes to database
         changeEmailForm.addEventListener('submit', async (evt) => {
             evt.preventDefault();
             const newEmail = serializeJson(changeEmailForm);
@@ -448,7 +485,9 @@ settingsButton.addEventListener('click', async () => {
                     body: JSON.stringify(data),
                 };
                 const response = await fetch(url + '/user/update/email', fetchOptions);
+                console.log('response', response);
                 const json = await response.json();
+                console.log('username change response ', json);
                 if (json.error) {
                     alert(json.error);
                 }
@@ -459,6 +498,7 @@ settingsButton.addEventListener('click', async () => {
         })
     })
 
+    //Creates the form for changing password
     changePassword.addEventListener('click',  () => {
         changePassword.remove();
         changeUsername.remove();
@@ -485,7 +525,7 @@ settingsButton.addEventListener('click', async () => {
         const cancelPasswordUpdate = document.createElement('button');
         cancelPasswordUpdate.textContent = "Cancel";
 
-
+        //Validates passwords to eachother
         function validatePassword(){
             if(password.value !== verifyPassword.value) {
                 verifyPassword.setCustomValidity("Passwords Don't Match");
@@ -512,6 +552,7 @@ settingsButton.addEventListener('click', async () => {
             refreshForm();
         })
 
+        //Changes password to database
         changePasswordForm.addEventListener('submit',  async(evt) => {
             evt.preventDefault();
             const data = serializeJson(changePasswordForm);
@@ -531,6 +572,8 @@ settingsButton.addEventListener('click', async () => {
              }
         });
     });
+
+    //Re-makes the first setting form when user presses cancel
     const refreshForm = () => {
         formContainer.appendChild(userUpdateForm);
 
@@ -539,26 +582,18 @@ settingsButton.addEventListener('click', async () => {
         userUpdateForm.appendChild(bioInput);
         userUpdateForm.appendChild(updateUserCredentials);
 
-        formContainer.appendChild(uploadAvatar)
-        formContainer.appendChild(changeUsername);
-        formContainer.appendChild(changeEmail);
-        formContainer.appendChild(changePassword);
-        formContainer.appendChild(cancelButton);
+        credentialContainer.appendChild(uploadAvatar)
+        credentialContainer.appendChild(changeUsername);
+        credentialContainer.appendChild(changeEmail);
+        credentialContainer.appendChild(changePassword);
+        credentialContainer.appendChild(cancelButton);
     }
 });
 
+//Main function
 getMyProfile();
 
-// to hide login && signup
-// for some reason cant use logout.js with these files,,, url doesnt work
-/*if (sessionStorage.getItem('token')) {
-    //logIn.style.display = 'none';
-    //signUp.style.display = 'none';
-    logOut.style.display = 'flex';
-}else{
-    logOut.style.display = 'none';
-}*/
-
+//Function for hamburger, which changes the classname so different css-styles are implemented
 const hamburger = document.querySelector('.hamburger');
 hamburger.addEventListener('click', () => {
     const x = document.getElementById("topNav");

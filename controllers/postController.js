@@ -45,7 +45,7 @@ const feed_like = async (req, res) => {
 
 const post_list_get_postedBy = async (req, res) => {
   try{
-    //functiion for getting the person who posted the post
+    //function for getting the person who posted the post
     const posts = await postModel.getPostedBy();
     return res.json(posts);
   }catch(e){
@@ -348,3 +348,4 @@ module.exports = {
   delete_like,
   get_single_like,
 };
+

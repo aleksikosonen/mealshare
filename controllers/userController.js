@@ -12,6 +12,7 @@ const bcrypt = require('bcryptjs');
 
 const get_user = async(req, res) => {
     try{
+        //here we get the user for validation
         const id = req.user.userId;
         const user = await userModel.getUser(id);
         return res.status(200).json(user);
@@ -23,8 +24,9 @@ const get_user = async(req, res) => {
 
 const user_list_get = async (req, res) => {
     try{
+        //getting a list of users for datalist
         const users = await userModel.getAllUsers();
-    res.json(users);
+        res.json(users);
     }catch(e){
         res.status(400).message({error: e.message});
     }
@@ -52,15 +54,6 @@ const create_user = async(req, res, next) => {
     }
 };
 
-const get_all_usernames = async(req, res) => {
-    try{
-        const usernames = await userModel.getAllUsernames();
-        res.json(usernames);
-    }catch(e){
-        res.status(400).json({error: e.message});
-    }
-
-}
 
 const update_user = async (req, res) => {
     const errors = validationResult(req);
@@ -126,6 +119,7 @@ const add_avatar = async (req, res) => {
 
 const get_users_likes = async (req, res) => {
     try{
+        //function for getting the likes of a single user
         const listOfLikes = await userModel.getUsersLikes(req.user.userId);
         res.json(listOfLikes);
     }catch(e){
@@ -137,7 +131,6 @@ module.exports = {
     get_user,
     user_list_get,
     create_user,
-    get_all_usernames,
     update_user,
     update_password,
     update_username,

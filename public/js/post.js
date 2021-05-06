@@ -1,3 +1,15 @@
+/**
+ * Js-file for posting feature
+ *
+ * There is a form where user can upload file and caption
+ * and after that either add a recipe or post.
+ *
+ * Ingredients and workphases can be added to post
+ *
+ * @author Aleksi Kosonen, Niko Lindborg & Aleksi Kytö
+ *
+ **/
+
 'use strict';
 
 const url = 'http://localhost:3000';
@@ -7,6 +19,7 @@ const captionText = document.querySelector('#captionText');
 const postedBy = document.querySelector('#postedBy');
 const fromWrapper = document.querySelector('.form-wrapper');
 
+//Listener for the form where the post is created
 addForm.addEventListener('submit', async (evt) => {
   evt.preventDefault();
   const fd = new FormData(addForm);
@@ -20,6 +33,7 @@ addForm.addEventListener('submit', async (evt) => {
   const postResponse = await fetch(url + '/post', fetchOptions);
   const post = await postResponse.json();
 
+  //Removes the inital form so user can decide wether an recipe would be added to post
   addForm.remove();
 
   const addRecipe = document.createElement('button');
@@ -37,10 +51,12 @@ addForm.addEventListener('submit', async (evt) => {
   fromWrapper.appendChild(addRecipe);
   fromWrapper.appendChild(noRecipe);
 
+  //No recipe re-directs to frontpage so user can see post
   noRecipe.addEventListener('click', () => {
     window.location.href = 'http://localhost:3000/post.html'
   });
 
+  //If user wants to add recipe
   addRecipe.addEventListener('click', (evt) => {
     evt.preventDefault();
     addRecipe.remove();
@@ -67,12 +83,13 @@ addForm.addEventListener('submit', async (evt) => {
     const recipeIngredients = document.createElement('p');
     recipeIngredients.innerHTML = "";
 
+    //Adds ingredient to post and displays it
     ingredientForm.addEventListener('submit', async (evt) => {
       evt.preventDefault();
       const data = serializeJson(ingredientForm);
       await addIngredient(data, post.postId);
       clearInputs(ingredientForm);
-      await getRecipeIngredient(post.postId, recipeIngredients);
+      await getRecipeIngredient(post.postId);
     });
 
     const doneButton = document.createElement('button');
@@ -94,6 +111,7 @@ addForm.addEventListener('submit', async (evt) => {
     workphaseForm.appendChild(workphaseInput);
     workphaseForm.appendChild(donePost);
 
+    //Adds workphase to post if the input field is not empty
     workphaseForm.addEventListener('submit', async (evt) => {
       evt.preventDefault();
       const data = serializeJson(workphaseForm);
@@ -101,11 +119,11 @@ addForm.addEventListener('submit', async (evt) => {
         await addWorkphases(data, post.postId);
       }
       window.location.href = 'http://localhost:3000/'
-
     });
   });
 });
 
+//Function for rendering added ingredient
 const createIngredientInputRow = (ingredientForm) => {
   const ingredient = document.createElement('input');
   ingredient.name = 'ingredient';
@@ -127,10 +145,12 @@ const createIngredientInputRow = (ingredientForm) => {
   ingredientForm.appendChild(unit);
 }
 
+//Resets input form
 const clearInputs = (form) => {
   form.reset();
 };
 
+//Adds ingredient to database
 const addIngredient = async (data, post) =>{
   try {
     const fetchOptions = {
@@ -148,6 +168,7 @@ const addIngredient = async (data, post) =>{
   }
 };
 
+//Adds workphase to database
 const addWorkphases = async (data, post) =>{
   try {
     const fetchOptions = {
@@ -165,6 +186,7 @@ const addWorkphases = async (data, post) =>{
   }
 };
 
+//Updates the image on the "latest post"
 const updateImage = (posts) => {
   const index = posts.length - 1;
   latestUpload.src = posts[index].file; //hardcoded to show latest upload
@@ -172,6 +194,7 @@ const updateImage = (posts) => {
   postedBy.innerHTML = posts[index].userId;
 }
 
+//Displays latest post
 const getLatestPost = async () => {
   try {
     const options = {
@@ -189,11 +212,13 @@ const getLatestPost = async () => {
   }
 };
 
+//Gets lasts posts poster
 const getPostInfo = (posts) => {
   const index = posts.length - 1;
   postedBy.innerHTML = posts[index].Poster;
 }
 
+//Function for receiving possible users
 const getUsers = async () => {
   try {
     const options = {
@@ -210,18 +235,8 @@ const getUsers = async () => {
   }
 };
 
-const renderWorkphases = async (id, workphaseText) => {
-  const fetchOptions = {
-    headers: {
-      'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-    }
-  };
-  const response = await fetch(url + '/post/recipe/workphases/' + id, fetchOptions);
-  const json = await response.json();
-  workphaseText.innerHTML += json.phases + '</br>';
-};
-
-const getRecipeIngredient = async (id, recipeText) => {
+//Gets ingredients to right html-elements
+const getRecipeIngredient = async (id) => {
   const fetchOptions = {
     headers: {
       'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
@@ -245,6 +260,7 @@ const getRecipeIngredient = async (id, recipeText) => {
   const deleteIngredientBtn = document.createElement('btn');
   deleteIngredientBtn.id = "deleteIngredientBtn";
 
+  //Deletes the ingredient from database
   deleteIngredientBtn.addEventListener('click', async() => {
     const fetchOptions = {
       method: 'DELETE',
@@ -262,23 +278,3 @@ const getRecipeIngredient = async (id, recipeText) => {
 };
 
 getLatestPost();
-
-// to hide login && signup
-// for some reason cant use logout.js with these files,,, url doesnt work
-
-/*if (sessionStorage.getItem('token')) {
-  logOut.style.display = 'flex';
-}else{
-  logOut.style.display = 'none';
-}*/
-/*
-const hamburger = document.querySelector('.hamburger');
-hamburger.addEventListener('click', () => {
-  const x = document.getElementById("topNav");
-  console.log('clicked');
-  if (x.className === "topNav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topNav";
-  }
-});*/
