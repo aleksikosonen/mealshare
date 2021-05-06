@@ -1,3 +1,10 @@
+/**
+ * Js-file for post-related models
+ *
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 const { promise } = require('../database/db');
 const pool = require('../database/db');

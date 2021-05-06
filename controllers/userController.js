@@ -1,3 +1,9 @@
+/**
+ * Js-file for user-related controllers
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 
 const userModel = require('../models/userModel');

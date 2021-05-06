@@ -1,3 +1,15 @@
+/**
+ * Js-file for log out function
+ *
+ * Log user out and remove token.
+ * also hide / show selected elements depending on
+ * is user logged in or our
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
+'use strict';
+
 const logOut = document.querySelector('#logOut');
 const showMore = document.querySelector('#showMoreBtn');
 const landContainer = document.querySelector('#landContainer');

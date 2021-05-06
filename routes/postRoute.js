@@ -1,3 +1,10 @@
+/**
+ * Js-file for post-related routes.
+ *
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 const express = require('express');
 const multer = require('multer');
 const postController = require('../controllers/postController');

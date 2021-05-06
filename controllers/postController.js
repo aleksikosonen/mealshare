@@ -1,3 +1,10 @@
+/**
+ * Js-file for post-related controllers
+ *
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 
 const postModel = require('../models/postModel');

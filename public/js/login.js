@@ -1,3 +1,15 @@
+/**
+ * Js-file for log in function
+ *
+ * Check if user enter right username and password
+ * and set token for user.
+ *
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
+'use strict';
+
 const loginForm = document.querySelector('#login-form');
 
 //login if user credentials are correct. also set token to user

@@ -1,3 +1,10 @@
+/**
+ * Js-file for user-related routes.
+ *
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 
 const express = require('express');

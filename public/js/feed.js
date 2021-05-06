@@ -1,3 +1,21 @@
+/**
+* Js-file for loading feed
+*
+* Finds recent posts and data related to them in groups of 6
+* get more by clicking show more button.
+*
+ * Reacts to user clicking on like button
+ * adds likes to database
+ *
+* also takes care of comments inputted by users
+ * and adds them to database
+*
+ * shows either comments / recipe to user
+ * switch view by clicking buttons
+ *
+* @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+* */
+
 'use strict';
 
 const showMoreBtn = document.getElementById('showMoreBtn');

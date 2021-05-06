@@ -1,3 +1,12 @@
+/**
+ * Js-file for authenticating user login
+ *
+ * Checks if user entered correct credentials
+ * and generates signed son web token with the contents of user object
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 
 const jwt = require('jsonwebtoken');

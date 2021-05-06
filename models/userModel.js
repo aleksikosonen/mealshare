@@ -1,3 +1,10 @@
+/**
+ * Js-file for user-related models
+ *
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 
 const pool = require('../database/db');

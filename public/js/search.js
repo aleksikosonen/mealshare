@@ -1,3 +1,16 @@
+/**
+ * Js-file for search function
+ *
+ * Adds existing users / hashtags to datalist, which shows up
+ * when user clicks on input and shows users related to input.
+ *
+ * Adds posts to feed based on user search, if found any.
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
+'use strict';
+
 const searchBar = document.querySelector('#searchBar');
 const datalist = document.querySelector('#matches');
 let users = [];

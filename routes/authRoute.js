@@ -1,3 +1,10 @@
+/**
+ * Js-file for login / logout / register routes.
+ *
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 const express = require('express');
 const multer = require('multer');

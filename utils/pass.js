@@ -1,3 +1,10 @@
+/**
+ * Js-file for local / jwt strategy to login
+ *
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
