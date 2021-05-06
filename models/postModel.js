@@ -249,7 +249,7 @@ const createTags = async (postId, tag) => {
 
 const getTagRelatedPosts = async (input) => {
   try {
-    const [rows] = await promisePool.execute('SELECT ms_post.postId, ms_post.file, ms_post.caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar, ms_tag_post_relations.postId, ms_tag_post_relations.tagId, ms_hashtags.tagId, ms_hashtags.tag FROM ms_post INNER JOIN ms_user ON ms_post.userId = ms_user.userId INNER JOIN ms_tag_post_relations on ms_post.postId = ms_tag_post_relations.postId INNER JOIN ms_hashtags on ms_tag_post_relations.tagId = ms_hashtags.tagId WHERE ms_hashtags.tag = ? ORDER BY ms_post.postId', [input]);
+    const [rows] = await promisePool.execute('SELECT ms_post.postId, ms_post.file, ms_post.caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar, ms_tag_post_relations.postId, ms_tag_post_relations.tagId, ms_hashtags.tagId, ms_hashtags.tag FROM ms_post INNER JOIN ms_user ON ms_post.userId = ms_user.userId INNER JOIN ms_tag_post_relations on ms_post.postId = ms_tag_post_relations.postId INNER JOIN ms_hashtags on ms_tag_post_relations.tagId = ms_hashtags.tagId WHERE ms_hashtags.tag = ?  ORDER BY postId DESC', [input]);
     return rows;
   } catch (e) {
     console.error('postModel getTagRelatedPosts:', e.message);
@@ -316,7 +316,7 @@ const getLikes = async (id) => {
 
 const getUserRelatedPosts = async (input) => {
   try {
-    const [rows] = await promisePool.execute('SELECT ms_post.postId, ms_post.file, ms_post.caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar FROM ms_post INNER JOIN ms_user ON ms_post.userId = ms_user.userId WHERE ms_user.username = ? ORDER BY ms_post.postId', [input]);
+    const [rows] = await promisePool.execute('SELECT ms_post.postId, ms_post.file, ms_post.caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar FROM ms_post INNER JOIN ms_user ON ms_post.userId = ms_user.userId WHERE ms_user.username = ? ORDER BY ms_post.postId DESC', [input]);
     return rows;
   } catch (e) {
     console.error('postModel getUserRelatedPosts:', e.message);
