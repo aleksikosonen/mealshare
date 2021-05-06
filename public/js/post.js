@@ -246,7 +246,6 @@ const getRecipeIngredient = async (id, recipeText) => {
 
   const deleteIngredientBtn = document.createElement('btn');
   deleteIngredientBtn.id = "deleteIngredientBtn";
-  deleteIngredientBtn.innerHTML = "Delete";
 
   deleteIngredientBtn.addEventListener('click', async() => {
     console.log('nappi', json.addOrder);

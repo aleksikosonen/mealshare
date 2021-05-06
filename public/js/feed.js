@@ -44,7 +44,7 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
       <li class="post" data-postid=${post.postId}>
         <article id="topCard">
           <h2 id="${post.postId}">
-            <img src="${post.avatar}" alt="" id="avatar">
+            <img src="${post.avatar || "icons/def-avatar.png"}" alt="" id="avatar">
             <a>${post.username}</a>
           </h2>
           <figure id="postImage">
@@ -152,7 +152,7 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
 
         const commentAvatar = document.createElement('img');
         commentAvatar.id = 'commentAvatar';
-        commentAvatar.src = comment.avatar;
+        commentAvatar.src = comment.avatar || "icons/def-avatar.png";
         commentAvatar.alt = 'avatar';
         commenterInfo.appendChild(commentAvatar);
         userAndComment.appendChild(commenterName);
@@ -364,8 +364,7 @@ feedContainer.addEventListener('click', async (e) => {
         },
         body: JSON.stringify(data),
       };
-      const response = await fetch(url + `/post/com/${postIid}`, options);
-      const json = await response.json();
+      const response = await fetch(url + `/post/com/${postId}`, options);
     }catch(e){
       console.error(e.message);
     }

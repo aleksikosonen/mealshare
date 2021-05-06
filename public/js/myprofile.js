@@ -50,7 +50,6 @@ const getUserImages = (posts, loggedUser) => {
         const deleteButton = document.createElement('button');
         deleteButton.type = "click";
         deleteButton.id = "deletePost"
-        //deleteButton.innerHTML = "Delete post";
 
         descriptionBackground.style.height='50px';
         descriptionBackground.style.width='100%';
@@ -61,9 +60,9 @@ const getUserImages = (posts, loggedUser) => {
                     'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
                 },
             };
-            const response = await fetch(url + '/post/likes/' + post.postId, options);
+            const response = await fetch(url + '/post/feed/like/' + post.postId, options);
             const likesAmount = await response.json();
-            likes.innerHTML = likesAmount.likes;
+            likes.innerHTML = likesAmount[0].likes;
         }
         catch (e) {
             console.log(e.message);

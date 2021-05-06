@@ -51,6 +51,22 @@ body {
 
 #ingredientWrapper {
     margin: 4px;
+    display: flex;
+    justify-content: center;
+}
+
+#deleteIngredientBtn {
+    background: url(../icons/delete.png) no-repeat center;
+    background-size: contain;
+    border: none;
+    align-items: center;
+    border-radius: 0;
+    height: 20px;
+    width: 20px;
+}
+
+#deleteIngredientBtn:hover {
+    transform: scale(1.1);
 }
 
 #add-post-form {
