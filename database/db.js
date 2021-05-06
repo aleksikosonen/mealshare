@@ -1,3 +1,10 @@
+/**
+ * Js-file for accessing phpMyAdmin
+ *
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 
 

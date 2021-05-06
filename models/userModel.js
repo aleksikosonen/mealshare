@@ -1,3 +1,10 @@
+/**
+ * Js-file for user-related models
+ *
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 
 const pool = require('../database/db');
@@ -51,7 +58,6 @@ const updateUser = async (id, req) => {
         const [rows] = await promisePool.execute(
             'UPDATE ms_user SET fname = ?, lname = ?, bio = ? WHERE userId = ?;',
             [req.body.fname, req.body.lname, req.body.bio, id]);
-        console.log('userModel update:', rows);
         return rows.affectedRows === 1;
     } catch (e) {
         return false;
@@ -63,8 +69,6 @@ const updateUsername = async (id, req) => {
         const [rows] = await promisePool.execute(
             'UPDATE ms_user SET username = ? WHERE userId = ?;',
             [req.newUsername, id]);
-        console.log('userModel update username:', rows);
-        console.log('userModel affected rows:', rows.affectedRows);
         return rows.affectedRows === 1;
     } catch (e) {
         return false;
@@ -76,8 +80,6 @@ const updateEmail = async (id, req) => {
         const [rows] = await promisePool.execute(
             'UPDATE ms_user SET email = ? WHERE userId = ?;',
             [req.newEmail, id]);
-        console.log('userModel update email:', rows);
-        console.log('userModel affected rows:', rows.affectedRows);
         return rows.affectedRows === 1;
     } catch (e) {
         return false;
@@ -89,7 +91,6 @@ const updatePassword = async (req, id) => {
         const [rows] = await promisePool.execute(
             'UPDATE ms_user SET password = ? WHERE userId = ?;',
             [req.password, id]);
-        console.log('userModel update:', rows);
         return rows.affectedRows === 1;
     } catch (e) {
         return false;

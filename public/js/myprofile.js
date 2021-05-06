@@ -597,7 +597,6 @@ getMyProfile();
 const hamburger = document.querySelector('.hamburger');
 hamburger.addEventListener('click', () => {
     const x = document.getElementById("topNav");
-    console.log('clicked');
     if (x.className === "topNav") {
         x.className += " responsive";
     } else {

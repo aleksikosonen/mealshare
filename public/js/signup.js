@@ -1,3 +1,11 @@
+/**
+ * Js-file for signup function
+ *
+ * Validates password and user.
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 const url = 'http://localhost:3000';
 const addUserForm = document.getElementById('add-user-form');
@@ -26,7 +34,6 @@ addUserForm.addEventListener('submit', async (evt) =>{
   };
   const response = await fetch(url + '/auth/register', fetchOptions);
   const json = await response.json();
-  console.log('sign-up response ', json);
   
   if(!json.user) {
     alert(json.message);

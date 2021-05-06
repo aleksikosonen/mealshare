@@ -1,3 +1,16 @@
+/**
+ * Js-file for search function
+ *
+ * Adds existing users / hashtags to datalist, which shows up
+ * when user clicks on input and shows users related to input.
+ *
+ * Adds posts to feed based on user search, if found any.
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
+'use strict';
+
 const searchBar = document.querySelector('#searchBar');
 const datalist = document.querySelector('#matches');
 let users = [];
@@ -6,10 +19,11 @@ let userMatches = [];
 let tagMatches = [];
 let userInput = "";
 
-// if user focuses out on search - datalist wont work anymore
 
+// listen to input, if user presses any key, show options related to input
 searchBar.addEventListener('keyup', (evt) => {
   if(evt.target.value.length >= 1){
+    //add all found users to datalist
     users.forEach((user)=>{
       if(!userMatches.includes(user.username)){
         userMatches.push(user.username);
@@ -18,6 +32,7 @@ searchBar.addEventListener('keyup', (evt) => {
         datalist.appendChild(optionElement);
       }
     });
+    //add all found tags to datalist
     tags.forEach((tag)=>{
       if(!tagMatches.includes(tag.tag)){
         tagMatches.push(tag.tag);
@@ -33,18 +48,21 @@ searchBar.addEventListener('keyup', (evt) => {
   }
 });
 
+//on click get posts related to input in feed
 document.querySelector('#searchBtn').addEventListener('click', (evt) => {
   evt.preventDefault();
   userInput = searchBar.value;
   if(tagMatches.includes(userInput)){
     getTagRelatedPosts();
+    showMoreBtn.style.display = 'none';
   }
   if(userMatches.includes(userInput)){
     getUserRelatedPosts();
+    showMoreBtn.style.display = 'none';
   }
 })
 
-//for datalist
+//load all users for datalist to help users find others.
 const loadUsers = async () => {
   try {
     const options = {
@@ -61,7 +79,7 @@ const loadUsers = async () => {
   }
 };
 
-//for datalist
+//load all hashtags for datalist to help users find others.
 const loadHashtags = async () => {
   try {
     const options = {
@@ -81,6 +99,7 @@ const loadHashtags = async () => {
 loadUsers();
 loadHashtags();
 
+//get all posts found by inputted tag
 const getTagRelatedPosts = async () => {
   const data = {userInput : userInput};
   try {
@@ -94,9 +113,63 @@ const getTagRelatedPosts = async () => {
     };
     const response = await fetch(url + '/post/tagmatches/', options);
     const tagRelatedPosts = await response.json();
+
+    //if found any posts clear feed from posts and add selected posts there
+    //using postId to find right comments, recipes etc..
     if(tagRelatedPosts.length >= 1){
       feedContainer.innerHTML = "";
-      loadData(tagRelatedPosts);
+
+      const postIds = [];
+
+      tagRelatedPosts.forEach(post => {
+        postIds.push(post.postId);
+      });
+
+      const fetchoptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+      };
+      const res = await fetch(url + `/post/comm`,fetchoptions);
+      const comments = await res.json();
+
+      const wpOptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postIds),
+      };
+      const wpResponse = await fetch(url + `/post/recipe/allworkphases`,wpOptions);
+      const workphases = await wpResponse.json();
+
+      const recipeOptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postIds),
+      };
+      const recipeResponse = await fetch(url + `/post/recipe/allingredientsfeed/`,recipeOptions);
+      const recipeIngredients = await recipeResponse.json();
+
+      const likeOptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(tagRelatedPosts),
+      };
+      const likesResponse = await fetch(url + '/post/likes', likeOptions);
+      const likesAmount = await likesResponse.json();
+      listOfLikes.push(likesAmount);
+
+      loadData(tagRelatedPosts, comments, workphases, recipeIngredients, likesAmount);
     }else{
       alert(`Didn't find any posts`);
     }
@@ -106,6 +179,7 @@ const getTagRelatedPosts = async () => {
   }
 };
 
+//get all posts found by inputted username
 const getUserRelatedPosts = async () => {
   const data = {userInput : userInput};
   try {
@@ -119,9 +193,63 @@ const getUserRelatedPosts = async () => {
     };
     const response = await fetch(url + '/post/usermatches/', options);
     const userRelatedPosts = await response.json();
+
+    //if found any posts clear feed from posts and add selected posts there
+    //using postId to find right comments, recipes etc..
     if(userRelatedPosts.length >= 1){
       feedContainer.innerHTML = "";
-      loadData(userRelatedPosts);
+
+      const postIds = [];
+
+      userRelatedPosts.forEach(post => {
+        postIds.push(post.postId);
+      });
+
+      const fetchoptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+      };
+      const res = await fetch(url + `/post/comm`,fetchoptions);
+      const comments = await res.json();
+
+      const wpOptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postIds),
+      };
+      const wpResponse = await fetch(url + `/post/recipe/allworkphases`,wpOptions);
+      const workphases = await wpResponse.json();
+
+      const recipeOptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postIds),
+      };
+      const recipeResponse = await fetch(url + `/post/recipe/allingredientsfeed/`,recipeOptions);
+      const recipeIngredients = await recipeResponse.json();
+
+      const likeOptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userRelatedPosts),
+      };
+      const likesResponse = await fetch(url + '/post/likes', likeOptions);
+      const likesAmount = await likesResponse.json();
+      listOfLikes.push(likesAmount);
+
+      loadData(userRelatedPosts, comments, workphases, recipeIngredients, likesAmount);
     }else{
       alert(`Didn't find any posts`);
     }
@@ -131,13 +259,13 @@ const getUserRelatedPosts = async () => {
   }
 };
 
-// if user focuses out on - search datalist wont work anymore
+//hide / show datalist if user either clicks on it or out of it
 searchBar.addEventListener('focus', () =>{
-  datalist.style.display = 'block';
+  datalist.style.visibility = 'visible';
 });
 
 searchBar.addEventListener('focusout', () =>{
-  datalist.style.display = 'none';
+  datalist.style.visibility = 'hidden';
 });
 
 

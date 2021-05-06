@@ -1,3 +1,10 @@
+/**
+ * Js-file for local / jwt strategy to login
+ *
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
@@ -38,7 +45,6 @@ passport.use(new JWTStrategy({
         delete user.password;
         return done(null, user);
       } catch (err) {
-        console.log('not success passport.use')
         return done(err);
       }
     },

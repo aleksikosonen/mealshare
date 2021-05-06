@@ -1,3 +1,10 @@
+/**
+ * Js-file for post-related controllers
+ *
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 
 const postModel = require('../models/postModel');
@@ -96,7 +103,7 @@ const post_delete_ingredient = async (req, res) => {
    }
   }catch(e){
     return res.status(400).json({error: e.message});
-  } 
+  }
 };
 
 const post_list_get_workphases = async (req, res) => {
@@ -111,6 +118,7 @@ const post_list_get_workphases = async (req, res) => {
 
 const post_list_get_all_workphases = async (req, res) => {
   try{
+    //function for getting all workphases to feed
     const allWorkphases = await postModel.getAllWorkphases(req.body);
     return res.json(allWorkphases);
   }catch(e){
@@ -120,7 +128,7 @@ const post_list_get_all_workphases = async (req, res) => {
 
 const post_list_get_all_ingredients_feed = async (req, res) => {
   try{
-    const ingredients = await postModel.getAllIngredientsFeed();
+    const ingredients = await postModel.getAllIngredientsFeed(req.body);
     return res.json(ingredients);
   }catch(e) {
     return res.status(400).json({error: e.message});
@@ -258,7 +266,7 @@ const post_get_all_tagRelations = async (req,res) => {
 
 const post_get_all_userRelations = async (req,res) => {
   try{
-    //function for gettting user relations
+    //function for getting user relations
     const userRelations = await postModel.getUserRelatedPosts(req.body.userInput);
     return res.json(userRelations);
   }catch(e){
@@ -268,7 +276,7 @@ const post_get_all_userRelations = async (req,res) => {
 
 const make_post = async (req, res, next) => {
   try {
-    //function for uploading images 
+    //function for uploading images
     const post = await makePost(req.file.path, req.file.filename);
     if (post) {
       next();

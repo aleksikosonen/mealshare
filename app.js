@@ -1,3 +1,11 @@
+/**
+ * Js-file for assigning routes
+ *
+ *authenticate for user / some post routes
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 
 const express = require('express');

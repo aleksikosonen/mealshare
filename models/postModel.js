@@ -1,3 +1,10 @@
+/**
+ * Js-file for post-related models
+ *
+ *
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
+
 'use strict';
 const { promise } = require('../database/db');
 const pool = require('../database/db');
@@ -150,8 +157,8 @@ const getAllWorkphases = async (postIds) => {
     const matches = [];
     for(let i = 0; i < postIds.length; i++){
       const [rows] = await promisePool.execute('SELECT * FROM ms_workphases WHERE postId = ?;', [postIds[i]]);
-      if(typeof(rows[0]) !== 'undefined'){
-        matches.push(rows[0]);
+      if(rows[0] != null){
+        matches.push(rows);
       }
     }
     return matches
@@ -238,7 +245,6 @@ const createTags = async (postId, tag) => {
       tags.push(rows);
       if(tags[i].length === 0){
         const [rows] = await promisePool.execute('INSERT INTO ms_hashtags (tag) VALUES (?);',[tag[i]]);
-        console.log('first if ', tags[i][i])
         //insert the new tags into the database
         tags.push(rows);
       }
@@ -263,7 +269,7 @@ const createTags = async (postId, tag) => {
 const getTagRelatedPosts = async (input) => {
   try {
     //finding posts based on tags with search
-    const [rows] = await promisePool.execute('SELECT ms_post.postId, ms_post.file, ms_post.caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar, ms_tag_post_relations.postId, ms_tag_post_relations.tagId, ms_hashtags.tagId, ms_hashtags.tag FROM ms_post INNER JOIN ms_user ON ms_post.userId = ms_user.userId INNER JOIN ms_tag_post_relations on ms_post.postId = ms_tag_post_relations.postId INNER JOIN ms_hashtags on ms_tag_post_relations.tagId = ms_hashtags.tagId WHERE ms_hashtags.tag = ? ORDER BY ms_post.postId', [input]);
+    const [rows] = await promisePool.execute('SELECT ms_post.postId, ms_post.file, ms_post.caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar, ms_tag_post_relations.postId, ms_tag_post_relations.tagId, ms_hashtags.tagId, ms_hashtags.tag FROM ms_post INNER JOIN ms_user ON ms_post.userId = ms_user.userId INNER JOIN ms_tag_post_relations on ms_post.postId = ms_tag_post_relations.postId INNER JOIN ms_hashtags on ms_tag_post_relations.tagId = ms_hashtags.tagId WHERE ms_hashtags.tag = ?  ORDER BY ms_post.postId DESC', [input]);
     return rows;
   } catch (e) {
     console.error('postModel getTagRelatedPosts:', e.message);
@@ -280,11 +286,19 @@ const addComment = async (postId, userId, comment) => {
   }
 }
 
-const findComments = async() => {
+const findComments = async(postIds) => {
   try {
     //finding comments from database for index rendering
-    const [rows] = await promisePool.execute('SELECT ms_postcomment.commentId, ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_user.username as username, ms_user.avatar as avatar FROM ms_postcomment LEFT JOIN ms_user ON ms_postcomment.userId = ms_user.userId ORDER BY commentId');
-    return rows
+    const matches = [];
+    for (let i = 0; i < postIds.length; i++) {
+      const [rows] = await promisePool.execute(
+          'SELECT ms_postcomment.userId, ms_postcomment.comment, ms_postcomment.postId, ms_postcomment.commentId, ms_user.username as username, ms_user.avatar as avatar FROM ms_postcomment LEFT JOIN ms_user ON ms_postcomment.userId = ms_user.userId WHERE ms_postcomment.postId = ? ORDER BY commentId',
+          [postIds[i]]);
+      if (rows[0] != null) {
+        matches.push(rows);
+      }
+    }
+    return matches
   }catch(e){
     console.error('findComments, error ', e.message);
   }
@@ -328,7 +342,7 @@ const getLikes = async (id) => {
 const getUserRelatedPosts = async (input) => {
   try {
     //getting posts for search
-    const [rows] = await promisePool.execute('SELECT ms_post.postId, ms_post.file, ms_post.caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar FROM ms_post INNER JOIN ms_user ON ms_post.userId = ms_user.userId WHERE ms_user.username = ? ORDER BY ms_post.postId', [input]);
+    const [rows] = await promisePool.execute('SELECT ms_post.postId, ms_post.file, ms_post.caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar FROM ms_post INNER JOIN ms_user ON ms_post.userId = ms_user.userId WHERE ms_user.username = ? ORDER BY ms_post.postId DESC', [input]);
     return rows;
   } catch (e) {
     console.error('postModel getUserRelatedPosts:', e.message);
@@ -356,11 +370,17 @@ const deleteComment = async (id) => {
   }
 };
 
-const getAllIngredientsFeed = async () => {
+const getAllIngredientsFeed = async (postIds) => {
   try {
     //function for getting ingredients for the feed
-    const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount, ms_post_ingredients.postId , ms_post_ingredients.addOrder from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId ORDER by ms_post_ingredients.addOrder;');
-    return rows;
+    const matches = [];
+    for(let i = 0; i < postIds.length; i++){
+    const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount, ms_post_ingredients.postId , ms_post_ingredients.addOrder from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId WHERE ms_post_ingredients.postId = ? ORDER by ms_post_ingredients.addOrder;', [postIds[i]]);
+      if(rows[0] != null){
+        matches.push(rows);
+      }
+  }
+  return matches
   } catch (e) {
     console.error('postModel getPost :', e.message);
   }

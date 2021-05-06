@@ -1,3 +1,21 @@
+/**
+* Js-file for loading feed
+*
+* Finds recent posts and data related to them in groups of 6
+* get more by clicking show more button.
+*
+ * Reacts to user clicking on like button
+ * adds likes to database
+ *
+* also takes care of comments inputted by users
+ * and adds them to database
+*
+ * shows either comments / recipe to user
+ * switch view by clicking buttons
+ *
+* @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+* */
+
 'use strict';
 
 const showMoreBtn = document.getElementById('showMoreBtn');
@@ -125,102 +143,107 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
     }
 
     comments.forEach((comment) => {
+      for(let i = 0; i < comment.length; i++){
       //here we render the comments for the posts
-      if(comment.postId === post.postId){
-        const commentRender = document.createElement('div');
-        commentRender.id = 'commentRender';
-        const commentlist = document.querySelectorAll('#commentList');
-        commentlist[(commentlist.length - 1)].appendChild(commentRender);
+        if(comment[i].postId === post.postId){
+          const commentRender = document.createElement('div');
+          commentRender.id = 'commentRender';
+          const commentlist = document.querySelectorAll('#commentList');
+          commentlist[(commentlist.length - 1)].appendChild(commentRender);
 
-        const commenterInfo = document.createElement('div');
-        commenterInfo.id = 'commenterInfo';
-        commentRender.appendChild(commenterInfo);
+          const commenterInfo = document.createElement('div');
+          commenterInfo.id = 'commenterInfo';
+          commentRender.appendChild(commenterInfo);
 
-        const userAndComment = document.createElement('div');
-        userAndComment.id = 'userAndComment';
-        commentRender.appendChild(userAndComment);
-        commentRender.dataset.commentid = comment.commentId;
+          const userAndComment = document.createElement('div');
+          userAndComment.id = 'userAndComment';
+          commentRender.appendChild(userAndComment);
+          commentRender.dataset.commentid = comment[i].commentId;
 
         //here we render the comment delete buttons, if the logged user is admin or if the 
         //comment in question is the logged in users comment
-        if(loggedUser[0][0].admin === 1 || loggedUser[0][0].userId === comment.userId){
-          const adminDeleteButton = document.createElement('button');
-          const deleteImage = document.createElement('img');
+          if(loggedUser[0][0].admin === 1 || loggedUser[0][0].userId === comment[i].userId){
+            const adminDeleteButton = document.createElement('button');
+            const deleteImage = document.createElement('img');
 
-          deleteImage.className = 'commentDeleteButton';
-          adminDeleteButton.className = 'commentDeleteContainer';
-          deleteImage.src = '../icons/delete.png';
-          commentRender.appendChild(adminDeleteButton);
-          adminDeleteButton.appendChild(deleteImage);
-        }
+            deleteImage.className = 'commentDeleteButton';
+            adminDeleteButton.className = 'commentDeleteContainer';
+            deleteImage.src = '../icons/delete.png';
+            commentRender.appendChild(adminDeleteButton);
+            adminDeleteButton.appendChild(deleteImage);
+          }
 
-        const commenterName = document.createElement('a');
-        commenterName.id = 'commenterName';
-        commenterName.innerHTML = comment.username;
+          const commenterName = document.createElement('a');
+          commenterName.id = 'commenterName';
+          commenterName.innerHTML = comment[i].username;
 
-        const commentAvatar = document.createElement('img');
-        commentAvatar.id = 'commentAvatar';
-        commentAvatar.src = comment.avatar || "icons/def-avatar.png";
-        commentAvatar.alt = 'avatar';
-        commenterInfo.appendChild(commentAvatar);
-        userAndComment.appendChild(commenterName);
+          const commentAvatar = document.createElement('img');
+          commentAvatar.id = 'commentAvatar';
+          commentAvatar.src = comment[i].avatar || "icons/def-avatar.png";
+          commentAvatar.alt = 'avatar';
+          commenterInfo.appendChild(commentAvatar);
+          userAndComment.appendChild(commenterName);
 
-        const commentCaption = document.createElement('p');
-        commentCaption.id = "postComment";
-        commentCaption.innerHTML= comment.comment;
-        userAndComment.appendChild(commentCaption);
+          const commentCaption = document.createElement('p');
+          commentCaption.id = "postComment";
+          commentCaption.innerHTML= comment[i].comment;
+          userAndComment.appendChild(commentCaption);
       }
+    }
     });
 
     const recipeDiv = document.querySelectorAll('#recipeDiv');
     recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
+
     //here we render the recipes for the posts
     recipeIngredients.forEach((ingredient) => {
-      if(ingredient.postId === post.postId){
-        const recipeDiv = document.querySelectorAll('#recipeDiv');
+      for(let i = 0; i < ingredient.length; i++){
+        if(ingredient[i].postId === post.postId){
+          const recipeDiv = document.querySelectorAll('#recipeDiv');
 
-        const ingredientsDiv = document.createElement('div');
-        ingredientsDiv.id = 'ingredientsDiv';
-        recipeDiv[(recipeDiv.length - 1)].appendChild(ingredientsDiv);
+          const ingredientsDiv = document.createElement('div');
+          ingredientsDiv.id = 'ingredientsDiv';
+          recipeDiv[(recipeDiv.length - 1)].appendChild(ingredientsDiv);
 
-        const ingredientText = document.createElement('p');
-        ingredientText.id = 'ingredientText';
-        ingredientText.innerHTML = ingredient.ingredient;
+          const ingredientText = document.createElement('p');
+          ingredientText.id = 'ingredientText';
+          ingredientText.innerHTML = ingredient[i].ingredient;
 
-        const ingredientAmount = document.createElement('p');
-        ingredientAmount.id = 'ingredientAmount';
-        ingredientAmount.innerHTML = ingredient.amount;
+          const ingredientAmount = document.createElement('p');
+          ingredientAmount.id = 'ingredientAmount';
+          ingredientAmount.innerHTML = ingredient[i].amount;
 
-        const ingredientUnit = document.createElement('p');
-        ingredientUnit.id = 'ingredientUnit';
-        ingredientUnit.innerHTML = ingredient.unit;
+          const ingredientUnit = document.createElement('p');
+          ingredientUnit.id = 'ingredientUnit';
+          ingredientUnit.innerHTML = ingredient[i].unit;
 
-        ingredientsDiv.appendChild(ingredientText);
-        ingredientsDiv.appendChild(ingredientAmount);
-        ingredientsDiv.appendChild(ingredientUnit);
-        recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
+          ingredientsDiv.appendChild(ingredientText);
+          ingredientsDiv.appendChild(ingredientAmount);
+          ingredientsDiv.appendChild(ingredientUnit);
+          recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
+        }
       }
     });
     //and here we render the workphases related to the recipes
     workphases.forEach((workphase) => {
-      if(workphase.postId === post.postId){
-          const recipeDiv = document.querySelectorAll('#recipeDiv');
+      if(workphase[0].postId === post.postId){
+        const recipeDiv = document.querySelectorAll('#recipeDiv');
 
-          const workphaseTopic = document.createElement('p');
-          workphaseTopic.id = 'recipeWorkPhaseTopic';
-          workphaseTopic.innerHTML = 'Work Phases'
+        const workphaseTopic = document.createElement('p');
+        workphaseTopic.id = 'recipeWorkPhaseTopic';
+        workphaseTopic.innerHTML = 'Work Phases'
 
-          const workphaseText = document.createElement('p');
-          workphaseText.id = 'recipeWorkPhases';
-          workphaseText.innerHTML = workphase.phases;
+        const workphaseText = document.createElement('p');
+        workphaseText.id = 'recipeWorkPhases';
+        workphaseText.innerHTML = workphase[0].phases;
 
-          recipeDiv[(recipeDiv.length - 1)].appendChild(workphaseTopic);
-          recipeDiv[(recipeDiv.length - 1)].appendChild(workphaseText);
-          recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
-        }
-      });
+        recipeDiv[(recipeDiv.length - 1)].appendChild(workphaseTopic);
+        recipeDiv[(recipeDiv.length - 1)].appendChild(workphaseText);
+        recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
+      }
     });
-  };
+  });
+};
 
   //large function where we get all the infos needed for the post
 const getPosts = async () => {
@@ -233,6 +256,13 @@ const getPosts = async () => {
     };
     const response = await fetch(url + '/post/feed/' + retrieved, options);
     const posts = await response.json();
+
+    const postIds = [];
+
+    posts.forEach(post => {
+      postIds.push(post.postId);
+    });
+
     //first we get the posts
     const fetchoptions = {
       method: 'POST',
@@ -240,14 +270,11 @@ const getPosts = async () => {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(postIds),
     };
     const res = await fetch(url + `/post/comm`,fetchoptions);
     const comments = await res.json();
-    const postIds = [];
-    posts.forEach(post => {
-      postIds.push(post.postId);
-    });
-
+    //then the comments
     const wpOptions = {
       method: 'POST',
       headers: {
@@ -256,17 +283,17 @@ const getPosts = async () => {
       },
       body: JSON.stringify(postIds),
     };
-    const wpResponse = await fetch(url + '/post/recipe/allworkphases', wpOptions);
+    const wpResponse = await fetch(url + `/post/recipe/allworkphases`,wpOptions);
     const workphases = await wpResponse.json();
-
-    console.log('feedjs ' + workphases);
     //then the workphases
+
     const recipeOptions = {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(postIds),
     };
     const recipeResponse = await fetch(url + `/post/recipe/allingredientsfeed/`,recipeOptions);
     const recipeIngredients = await recipeResponse.json();
@@ -282,7 +309,6 @@ const getPosts = async () => {
     };
     const likesResponse = await fetch(url + '/post/likes', likeOptions);
     const likesAmount = await likesResponse.json();
-    console.log(likesAmount);
     listOfLikes.push(likesAmount);
     //then the likes
     loadData(posts, comments, workphases, recipeIngredients, likesAmount);
@@ -342,7 +368,6 @@ const showRecipes = (i) => {
 const hamburger = document.querySelector('.hamburger');
 hamburger.addEventListener('click', () => {
   const x = document.getElementById("topNav");
-  console.log('clicked');
   if (x.className === "topNav") {
     x.className += " responsive";
   } else {
@@ -356,9 +381,8 @@ feedContainer.addEventListener('click', async (e) => {
 
   if(loggedUser[0][0].admin === 1){
     if (e.target.matches('.deleteButton') || e.target.matches('.deleteContainer')){
-      //the admin deletebutton 
+      //the admin deletebutton
       if(confirm('Do you want to delete this post?')){
-        console.log(id);
         try{
           const fetchOptions = {
             method: 'DELETE',
@@ -396,9 +420,8 @@ feedContainer.addEventListener('click', async (e) => {
 
   if(e.target.matches('#formButton')){
     //commenting form button
-    e.preventDefault(); 
+    e.preventDefault();
     const data = serializeJson(e.target.closest('#commentForm'));
-    console.log(data);
     try{
       const options = {
         method: 'POST',
@@ -437,13 +460,11 @@ feedContainer.addEventListener('click', async (e) => {
       const resLike = await fetch(url + '/post/feed/like/' + postId, fetchOptions);
 
       const likes = await resLike.json();
-      console.log(likes[0]);
       const likesAmount = document.getElementById(`likeAmount${postId}`);
       //once user has liked, re render the likes and change buttons class
       likeImage.src = '../icons/like-2.png';
       likeImage.className = 'alreadyLiked';
       likeButton.className = 'alreadyLiked';
-      console.log(likes.length)
       likesAmount.innerHTML = `${likes[0].likes} likes this`;
     }
     catch (e) {
@@ -469,7 +490,6 @@ feedContainer.addEventListener('click', async (e) => {
       const resLike = await fetch(url + '/post/feed/like/' + postId, fetchOptions);
 
       const likes = await resLike.json();
-      console.log(likes[0]);
 
       const likeImage = document.getElementById(`likeImg${postId}`);
       const likeButton = document.getElementById(`likeBtn${postId}`);
