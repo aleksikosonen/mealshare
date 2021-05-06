@@ -19,7 +19,6 @@ addForm.addEventListener('submit', async (evt) => {
   };
   const postResponse = await fetch(url + '/post', fetchOptions);
   const post = await postResponse.json();
-  console.log('postaus', post.postId);
 
   addForm.remove();
 
@@ -230,7 +229,6 @@ const getRecipeIngredient = async (id, recipeText) => {
   };
   const response = await fetch(url + '/post/recipe/ingredients/' + id, fetchOptions);
   const json = await response.json();
-  console.log('respo', json);
 
   const ingredientWrapper = document.createElement('div');
   ingredientWrapper.id = "ingredientWrapper";
@@ -249,7 +247,6 @@ const getRecipeIngredient = async (id, recipeText) => {
   deleteIngredientBtn.innerHTML = "Delete";
 
   deleteIngredientBtn.addEventListener('click', async() => {
-    console.log('nappi', json.addOrder);
     const fetchOptions = {
       method: 'DELETE',
       headers: {

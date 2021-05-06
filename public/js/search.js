@@ -95,9 +95,61 @@ const getTagRelatedPosts = async () => {
     };
     const response = await fetch(url + '/post/tagmatches/', options);
     const tagRelatedPosts = await response.json();
+
     if(tagRelatedPosts.length >= 1){
       feedContainer.innerHTML = "";
-      loadData(tagRelatedPosts);
+
+      const postIds = [];
+
+      tagRelatedPosts.forEach(post => {
+        postIds.push(post.postId);
+      });
+
+      const fetchoptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+      };
+      const res = await fetch(url + `/post/comm`,fetchoptions);
+      const comments = await res.json();
+
+      const wpOptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postIds),
+      };
+      const wpResponse = await fetch(url + `/post/recipe/allworkphases`,wpOptions);
+      const workphases = await wpResponse.json();
+
+      const recipeOptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postIds),
+      };
+      const recipeResponse = await fetch(url + `/post/recipe/allingredientsfeed/`,recipeOptions);
+      const recipeIngredients = await recipeResponse.json();
+
+      const likeOptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(tagRelatedPosts),
+      };
+      const likesResponse = await fetch(url + '/post/likes', likeOptions);
+      const likesAmount = await likesResponse.json();
+      listOfLikes.push(likesAmount);
+
+      loadData(tagRelatedPosts, comments, workphases, recipeIngredients, likesAmount);
     }else{
       alert(`Didn't find any posts`);
     }
@@ -120,9 +172,61 @@ const getUserRelatedPosts = async () => {
     };
     const response = await fetch(url + '/post/usermatches/', options);
     const userRelatedPosts = await response.json();
+
     if(userRelatedPosts.length >= 1){
       feedContainer.innerHTML = "";
-      loadData(userRelatedPosts);
+
+      const postIds = [];
+
+      userRelatedPosts.forEach(post => {
+        postIds.push(post.postId);
+      });
+
+      const fetchoptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+      };
+      const res = await fetch(url + `/post/comm`,fetchoptions);
+      const comments = await res.json();
+
+      const wpOptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postIds),
+      };
+      const wpResponse = await fetch(url + `/post/recipe/allworkphases`,wpOptions);
+      const workphases = await wpResponse.json();
+
+      const recipeOptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postIds),
+      };
+      const recipeResponse = await fetch(url + `/post/recipe/allingredientsfeed/`,recipeOptions);
+      const recipeIngredients = await recipeResponse.json();
+
+      const likeOptions = {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userRelatedPosts),
+      };
+      const likesResponse = await fetch(url + '/post/likes', likeOptions);
+      const likesAmount = await likesResponse.json();
+      listOfLikes.push(likesAmount);
+
+      loadData(userRelatedPosts, comments, workphases, recipeIngredients, likesAmount);
     }else{
       alert(`Didn't find any posts`);
     }

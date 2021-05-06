@@ -63,7 +63,6 @@ const update_user = async (req, res) => {
     }
     try{
         const updateOk = await userModel.updateUser(req.user.userId, req);
-        console.log(`updated... ${updateOk}`);
         res.send(`updated... ${updateOk}`);
     }catch(e){
         res.tatus(400).json({error: e.message});
@@ -76,9 +75,7 @@ const update_username = async (req, res, next) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({errors: errors.array()});
     }
-    console.log('controller req', req.body);
     const updateOk = await userModel.updateUsername(req.user.userId, req.body);
-    console.log(`updated... ${updateOk}`);
     if (!updateOk) {
         res.status(400).json({error: 'Username already in use'}).end()
     } else {
@@ -91,9 +88,7 @@ const update_email = async (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({errors: errors.array()});
     }
-    console.log('controller req', req.body);
     const updateOk = await userModel.updateEmail(req.user.userId, req.body);
-    console.log(`updated... ${updateOk}`);
     if (!updateOk) {
         res.status(400).json({error: 'Email already in use'}).end()
     } else {
@@ -106,7 +101,6 @@ const update_password = async (req, res) => {
         const user = {};
         const salt = bcrypt.genSaltSync(12);
         user.password = bcrypt.hashSync(req.body.password, salt);
-        console.log(user)
         const updateOk = await userModel.updatePassword(user, req.user.userId);
         res.send(`updated... ${updateOk}`);
     }catch(e){

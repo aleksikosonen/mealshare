@@ -80,7 +80,6 @@ const getUserImages = (posts, loggedUser) => {
         editButton.addEventListener('click',  async () => {
             settingsButton.remove();
             photoContainer.remove();
-            console.log(post.postId);
 
             const formContainer = document.createElement('div');
             formContainer.id = "formContainer";
@@ -196,7 +195,6 @@ const getLoggedUser = async () => {
         };
         const responseUser = await fetch(url + '/user', options);
         const users = await responseUser.json();
-        console.log('userit', users[0].userId);
         return users[0].userId;
     } catch (e) {
         console.log(e.message);
@@ -281,7 +279,6 @@ settingsButton.addEventListener('click', async () => {
     userUpdateForm.addEventListener('submit', async (evt) => {
         evt.preventDefault();
         const data = serializeJson(userUpdateForm);
-        console.log(data.username);
         try {
         const fetchOptions = {
             method: 'PUT',
@@ -292,7 +289,6 @@ settingsButton.addEventListener('click', async () => {
             body: JSON.stringify(data),
         };
         const response = await fetch(url + '/user/update', fetchOptions);
-        console.log(response)
         window.location.href = 'http://localhost:3000/myprofile.html'
         } catch (e) {
             console.error(e.message);
@@ -394,9 +390,7 @@ settingsButton.addEventListener('click', async () => {
                     body: JSON.stringify(data),
                 };
                 const response = await fetch(url + '/user/update/username', fetchOptions);
-                console.log('response', response);
-                    const json = await response.json();
-                    console.log('username change response ', json);
+                const json = await response.json();
                 if (json.error) {
                     alert(json.error);
                 }
@@ -455,9 +449,7 @@ settingsButton.addEventListener('click', async () => {
                     body: JSON.stringify(data),
                 };
                 const response = await fetch(url + '/user/update/email', fetchOptions);
-                console.log('response', response);
                 const json = await response.json();
-                console.log('username change response ', json);
                 if (json.error) {
                     alert(json.error);
                 }
@@ -571,7 +563,6 @@ getMyProfile();
 const hamburger = document.querySelector('.hamburger');
 hamburger.addEventListener('click', () => {
     const x = document.getElementById("topNav");
-    console.log('clicked');
     if (x.className === "topNav") {
         x.className += " responsive";
     } else {

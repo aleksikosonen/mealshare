@@ -38,7 +38,6 @@ passport.use(new JWTStrategy({
         delete user.password;
         return done(null, user);
       } catch (err) {
-        console.log('not success passport.use')
         return done(err);
       }
     },

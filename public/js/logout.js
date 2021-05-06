@@ -17,8 +17,6 @@ logOut.addEventListener('click', async (evt) => {
     const response = await fetch(url + '/auth/logout', options);
     const json = await response.json();
 
-    console.log('logout json response', json);
-
     // remove token
     sessionStorage.removeItem('token');
     alert('You have logged out');

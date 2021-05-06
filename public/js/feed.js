@@ -29,7 +29,7 @@ const findLoggedUser = (async () => {
     const likes = await resLikes.json()
     likedPosts.push(likes);
   } catch (e) {
-      console.error(e.message);
+    console.error(e.message);
   }
 });
 
@@ -73,7 +73,6 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
               <button class="light-border" id="formButton" type="submit">Comment</button>
             </div>
           </form>
-
           <ul id="commentList"></ul>
           <div id="recipeDiv">
             <p id="recipeIngredientsTopic"> Ingredients </p>
@@ -121,7 +120,6 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
 
     comments.forEach((comment) => {
       if(comment.postId === post.postId){
-
         const commentRender = document.createElement('div');
         commentRender.id = 'commentRender';
         const commentlist = document.querySelectorAll('#commentList');
@@ -165,52 +163,57 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
       }
     });
 
+    const recipeDiv = document.querySelectorAll('#recipeDiv');
+    recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
+
     recipeIngredients.forEach((ingredient) => {
-      if(ingredient.postId === post.postId){
-        const recipeDiv = document.querySelectorAll('#recipeDiv');
+      for(let i = 0; i < ingredient.length; i++){
+        if(ingredient[i].postId === post.postId){
+          const recipeDiv = document.querySelectorAll('#recipeDiv');
 
-        const ingredientsDiv = document.createElement('div');
-        ingredientsDiv.id = 'ingredientsDiv';
-        recipeDiv[(recipeDiv.length - 1)].appendChild(ingredientsDiv);
+          const ingredientsDiv = document.createElement('div');
+          ingredientsDiv.id = 'ingredientsDiv';
+          recipeDiv[(recipeDiv.length - 1)].appendChild(ingredientsDiv);
 
-        const ingredientText = document.createElement('p');
-        ingredientText.id = 'ingredientText';
-        ingredientText.innerHTML = ingredient.ingredient;
+          const ingredientText = document.createElement('p');
+          ingredientText.id = 'ingredientText';
+          ingredientText.innerHTML = ingredient[i].ingredient;
 
-        const ingredientAmount = document.createElement('p');
-        ingredientAmount.id = 'ingredientAmount';
-        ingredientAmount.innerHTML = ingredient.amount;
+          const ingredientAmount = document.createElement('p');
+          ingredientAmount.id = 'ingredientAmount';
+          ingredientAmount.innerHTML = ingredient[i].amount;
 
-        const ingredientUnit = document.createElement('p');
-        ingredientUnit.id = 'ingredientUnit';
-        ingredientUnit.innerHTML = ingredient.unit;
+          const ingredientUnit = document.createElement('p');
+          ingredientUnit.id = 'ingredientUnit';
+          ingredientUnit.innerHTML = ingredient[i].unit;
 
-        ingredientsDiv.appendChild(ingredientText);
-        ingredientsDiv.appendChild(ingredientAmount);
-        ingredientsDiv.appendChild(ingredientUnit);
-        recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
+          ingredientsDiv.appendChild(ingredientText);
+          ingredientsDiv.appendChild(ingredientAmount);
+          ingredientsDiv.appendChild(ingredientUnit);
+          recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
+        }
       }
     });
 
     workphases.forEach((workphase) => {
-      if(workphase.postId === post.postId){
-          const recipeDiv = document.querySelectorAll('#recipeDiv');
+      if(workphase[0].postId === post.postId){
+        const recipeDiv = document.querySelectorAll('#recipeDiv');
 
-          const workphaseTopic = document.createElement('p');
-          workphaseTopic.id = 'recipeWorkPhaseTopic';
-          workphaseTopic.innerHTML = 'Work Phases'
+        const workphaseTopic = document.createElement('p');
+        workphaseTopic.id = 'recipeWorkPhaseTopic';
+        workphaseTopic.innerHTML = 'Work Phases'
 
-          const workphaseText = document.createElement('p');
-          workphaseText.id = 'recipeWorkPhases';
-          workphaseText.innerHTML = workphase.phases;
+        const workphaseText = document.createElement('p');
+        workphaseText.id = 'recipeWorkPhases';
+        workphaseText.innerHTML = workphase[0].phases;
 
-          recipeDiv[(recipeDiv.length - 1)].appendChild(workphaseTopic);
-          recipeDiv[(recipeDiv.length - 1)].appendChild(workphaseText);
-          recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
-        }
-      });
+        recipeDiv[(recipeDiv.length - 1)].appendChild(workphaseTopic);
+        recipeDiv[(recipeDiv.length - 1)].appendChild(workphaseText);
+        recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
+      }
     });
-  };
+  });
+};
 
 const getPosts = async () => {
   try {
@@ -223,6 +226,12 @@ const getPosts = async () => {
     const response = await fetch(url + '/post/feed/' + retrieved, options);
     const posts = await response.json();
 
+    const postIds = [];
+
+    posts.forEach(post => {
+      postIds.push(post.postId);
+    });
+
     const fetchoptions = {
       method: 'POST',
       headers: {
@@ -233,28 +242,27 @@ const getPosts = async () => {
     const res = await fetch(url + `/post/comm`,fetchoptions);
     const comments = await res.json();
 
-    //get workphases
     const wpOptions = {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(postIds),
     };
     const wpResponse = await fetch(url + `/post/recipe/allworkphases`,wpOptions);
     const workphases = await wpResponse.json();
 
-    //get recipeIngredients
     const recipeOptions = {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(postIds),
     };
     const recipeResponse = await fetch(url + `/post/recipe/allingredientsfeed/`,recipeOptions);
     const recipeIngredients = await recipeResponse.json();
-
 
     const likeOptions = {
       method: 'POST',
@@ -282,54 +290,26 @@ showMoreBtn.addEventListener('click',()=>{
   getPosts();
 });
 
-const likePost = async (postId, userId) => {
-  try {
-    const options = {
-      method:'POST',
-      headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-    };
-    await fetch(url + '/post/feed/like/' + postId + '/' + userId, options);
-  }
-  catch (e) {
-    console.error(e.message);
-  }
-};
 
-const getLikeUser = async (postId) => {
-  try {
-    const options = {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-      },
-    };
-    const responseUser = await fetch(url + '/user', options);
-    const users = await responseUser.json();
-    await likePost(postId, users[0].userId);
-  } catch (e) {
-      console.error(e.message);
-    }
-}
+let comment = true;
+
 const showComments = (i) =>{
   const commentlist = document.querySelectorAll('#commentList');
   const recipeDiv = document.querySelectorAll('#recipeDiv');
-    commentlist[i].style.display = 'block';
-    recipeDiv[i].style.display = 'none';
+  commentlist[i].style.display = 'block';
+  recipeDiv[i].style.display = 'none';
 }
 
 const showRecipes = (i) => {
   const commentlist = document.querySelectorAll('#commentList');
   const recipeDiv = document.querySelectorAll('#recipeDiv');
-    commentlist[i].style.display = 'none';
-    recipeDiv[i].style.display = 'block';
+  commentlist[i].style.display = 'none';
+  recipeDiv[i].style.display = 'block';
 }
 
 const hamburger = document.querySelector('.hamburger');
 hamburger.addEventListener('click', () => {
   const x = document.getElementById("topNav");
-  console.log('clicked');
   if (x.className === "topNav") {
     x.className += " responsive";
   } else {
@@ -345,7 +325,6 @@ feedContainer.addEventListener('click', async (e) => {
     if (e.target.matches('.deleteButton') || e.target.matches('.deleteContainer')){
       //the admin deletebutton
       if(confirm('Do you want to delete this post?')){
-        console.log(id);
         try{
           const fetchOptions = {
             method: 'DELETE',
@@ -394,7 +373,7 @@ feedContainer.addEventListener('click', async (e) => {
         },
         body: JSON.stringify(data),
       };
-      const response = await fetch(url + `/post/com/${postIid}`, options);
+      const response = await fetch(url + `/post/com/${postId}`, options);
       const json = await response.json();
     }catch(e){
       console.error(e.message);
@@ -423,12 +402,10 @@ feedContainer.addEventListener('click', async (e) => {
       const resLike = await fetch(url + '/post/feed/like/' + postId, fetchOptions);
 
       const likes = await resLike.json();
-      console.log(likes[0]);
       const likesAmount = document.getElementById(`likeAmount${postId}`);
       likeImage.src = '../icons/like-2.png';
       likeImage.className = 'alreadyLiked';
       likeButton.className = 'alreadyLiked';
-      console.log(likes.length)
       likesAmount.innerHTML = `${likes[0].likes} likes this`;
     }
     catch (e) {
@@ -453,7 +430,6 @@ feedContainer.addEventListener('click', async (e) => {
       const resLike = await fetch(url + '/post/feed/like/' + postId, fetchOptions);
 
       const likes = await resLike.json();
-      console.log(likes[0]);
 
       const likeImage = document.getElementById(`likeImg${postId}`);
       const likeButton = document.getElementById(`likeBtn${postId}`);

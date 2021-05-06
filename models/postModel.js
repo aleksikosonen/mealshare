@@ -133,10 +133,16 @@ const getWorkphase = async (id) => {
   }
 }
 
-const getAllWorkphases = async () => {
+const getAllWorkphases = async (postIds) => {
   try {
-    const [rows] = await promisePool.execute('SELECT * FROM ms_workphases;');
-    return rows;
+    const matches = [];
+    for(let i = 0; i < postIds.length; i++){
+      const [rows] = await promisePool.execute('SELECT * FROM ms_workphases WHERE postId = ?;', [postIds[i]]);
+      if(rows[0] != null){
+        matches.push(rows);
+      }
+    }
+    return matches
   } catch (e) {
     console.error('postModel getAllWorkphases :', e.message);
   }
@@ -295,7 +301,6 @@ const getLikes = async (id) => {
 const getUserRelatedPosts = async (input) => {
   try {
     const [rows] = await promisePool.execute('SELECT ms_post.postId, ms_post.file, ms_post.caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar FROM ms_post INNER JOIN ms_user ON ms_post.userId = ms_user.userId WHERE ms_user.username = ? ORDER BY ms_post.postId', [input]);
-    console.log(rows);
     return rows;
   } catch (e) {
     console.error('postModel getUserRelatedPosts:', e.message);
@@ -321,10 +326,16 @@ const deleteComment = async (id) => {
   }
 };
 
-const getAllIngredientsFeed = async () => {
+const getAllIngredientsFeed = async (postIds) => {
   try {
-    const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount, ms_post_ingredients.postId , ms_post_ingredients.addOrder from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId ORDER by ms_post_ingredients.addOrder;');
-    return rows;
+    const matches = [];
+    for(let i = 0; i < postIds.length; i++){
+    const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount, ms_post_ingredients.postId , ms_post_ingredients.addOrder from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId WHERE ms_post_ingredients.postId = ? ORDER by ms_post_ingredients.addOrder;', [postIds[i]]);
+      if(rows[0] != null){
+        matches.push(rows);
+      }
+  }
+  return matches
   } catch (e) {
     console.error('postModel getPost :', e.message);
   }

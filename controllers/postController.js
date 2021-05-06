@@ -102,7 +102,7 @@ const post_list_get_workphases = async (req, res) => {
 
 const post_list_get_all_workphases = async (req, res) => {
   try{
-    const allWorkphases = await postModel.getAllWorkphases();
+    const allWorkphases = await postModel.getAllWorkphases(req.body);
     return res.json(allWorkphases);
   }catch(e){
     return res.status(400).json({error: e.message});
@@ -111,7 +111,7 @@ const post_list_get_all_workphases = async (req, res) => {
 
 const post_list_get_all_ingredients_feed = async (req, res) => {
   try{
-    const ingredients = await postModel.getAllIngredientsFeed();
+    const ingredients = await postModel.getAllIngredientsFeed(req.body);
     return res.json(ingredients);
   }catch(e) {
     return res.status(400).json({error: e.message});
@@ -270,7 +270,6 @@ const comment_delete = async (req, res) => {
 
 const delete_like = async (req, res) => {
   try{
-    console.log(req.params.id, req.user.userId)
     const deleteLikes = await postModel.deleteLike(req.params.id, req.user.userId);
     res.json(deleteLikes);
   }catch(e){
