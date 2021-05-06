@@ -103,6 +103,9 @@ const loadData = (posts, comments, workphases, recipeIngredients) => {
       }
     });
 
+    const recipeDiv = document.querySelectorAll('#recipeDiv');
+    recipeDiv[(recipeDiv.length - 1)].style.display = 'none';
+
     recipeIngredients.forEach((ingredient) => {
       if(ingredient.postId === post.postId){
         const recipeDiv = document.querySelectorAll('#recipeDiv');
@@ -207,6 +210,7 @@ const getPosts = async () => {
     const res = await fetch(url + `/post/comm`,fetchoptions);
     const comments = await res.json();
 
+    //get workphases
     const wpOptions = {
       method: 'POST',
       headers: {
@@ -217,6 +221,7 @@ const getPosts = async () => {
     const wpResponse = await fetch(url + `/post/recipe/allworkphases`,wpOptions);
     const workphases = await wpResponse.json();
 
+    //get recipeIngredients
     const recipeOptions = {
       method: 'POST',
       headers: {

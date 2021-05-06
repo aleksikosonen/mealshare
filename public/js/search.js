@@ -38,9 +38,11 @@ document.querySelector('#searchBtn').addEventListener('click', (evt) => {
   userInput = searchBar.value;
   if(tagMatches.includes(userInput)){
     getTagRelatedPosts();
+    showMoreBtn.style.display = 'none';
   }
   if(userMatches.includes(userInput)){
     getUserRelatedPosts();
+    showMoreBtn.style.display = 'none';
   }
 })
 
@@ -132,11 +134,11 @@ const getUserRelatedPosts = async () => {
 
 // if user focuses out on - search datalist wont work anymore
 searchBar.addEventListener('focus', () =>{
-  datalist.style.display = 'block';
+  datalist.style.visibility = 'visible';
 });
 
 searchBar.addEventListener('focusout', () =>{
-  datalist.style.display = 'none';
+  datalist.style.visibility = 'hidden';
 });
 
 
