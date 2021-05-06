@@ -5,7 +5,7 @@ const feedContainer = document.querySelector('#feedContainer')
 const topnav = document.querySelector('.topNav');
 const hexas = document.querySelector('#hexas');
 
-//logout
+//logout when clicked logout button
 logOut.addEventListener('click', async (evt) => {
   evt.preventDefault();
   try {
@@ -27,8 +27,7 @@ logOut.addEventListener('click', async (evt) => {
   }
 });
 
-//if logged in hide log in and signup
-
+//if logged in/out hide/show selected items
 if (sessionStorage.getItem('token')) {
   logOut.style.display = 'flex';
   landContainer.style.display = 'none';

@@ -259,7 +259,7 @@ const post_get_all_tagRelations = async (req,res) => {
 
 const post_get_all_userRelations = async (req,res) => {
   try{
-    //function for gettting user relations
+    //function for getting user relations
     const userRelations = await postModel.getUserRelatedPosts(req.body.userInput);
     return res.json(userRelations);
   }catch(e){

@@ -1,5 +1,6 @@
 const loginForm = document.querySelector('#login-form');
 
+//login if user credentials are correct. also set token to user
 loginForm.addEventListener('submit', async (evt) => {
   evt.preventDefault();
   const data = serializeJson(loginForm);
@@ -17,7 +18,6 @@ loginForm.addEventListener('submit', async (evt) => {
     alert(json.message);
   } else {
     sessionStorage.setItem('token', json.token);
-    //landContainer.style.display = 'none';
     window.location.href = 'http://localhost:3000/index.html'
   }
 });
