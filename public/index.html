@@ -11,22 +11,21 @@
 <body>
 <div class="layer" id="layer">
 
-    <nav class="topNav" id="topNav">
+    <nav class="topNav">
+        <menu class="topNav" id="topNav">
             <li id="logo"><a href="index.html"><img src="images/mealshare_logo_red.png" alt="PageId" style="width: 50px"></a></li>
             <li id="myProfileHref" class="hideHamb"><a href="myprofile.html">MY PROFILE</a></li>
             <li id="shareHref" class="hideHamb"><a href="post.html">NEW POST</a></li>
             <li class="hideHamb">
                 <div class="search-container" id="search">
                     <input list ="matches" type="search" name="searchBar" id="searchBar" placeholder="Search for a user or #tag" autocomplete="off">
-                    <button type="submit"><i id="searchBtn">
-                        <img src="images/search.png">
-                    </i></button>
+                    <button type="submit" id="searchBtn"></button>
                     <datalist id="matches"></datalist>
                 </div>
             </li>
             <li><a href="/index.html" id="logOut" class="logout">LOG OUT</a></li>
-            <button class="hamburger"></button>
-
+            <li><button class="hamburger"></button></li>
+        </menu>
         <ul id="matchList"></ul>
 
     </nav>
@@ -46,7 +45,7 @@
             </form>
         </div>
 
-    <img src="images/mealshare_hexas.png" alt="foodCatchPhrase" id="hexas" height="400px" width="400px">
+    <img src="images/mealshare_hexas.png" alt="foodCatchPhrase" id="hexas">
 
 </div>
 <script src="js/serialize.js"></script>
