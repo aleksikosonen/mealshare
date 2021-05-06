@@ -11,8 +11,10 @@
 <body>
 <div class="layer" id="layer">
 
-    <nav class="topNav" id="topNav">
-        <li id="logo"><a href="index.html"><img src="images/mealshare_logo_red.png" alt="PageId" style="width: 50px"></a></li>
+    <nav class="topNav">
+        <menu class="topNav" id="topNav">
+            <li id="logo"><a href="index.html"><img src="images/mealshare_logo_red.png" alt="PageId" style="width: 50px"></a></li>
+        </menu>
     </nav>
 
     <div class="form-wrapper">
@@ -20,14 +22,14 @@
         <form enctype="multipart/form-data"
               id="add-post-form">
             <input class="post-form-item" type="text" name="caption" placeholder="caption" required>
-            <input class="post-form-item" type="file" name="post" accept="image/*" placeholder="Choose file">
+            <input class="post-form-item" type="file" name="post" accept="image/*">
             <button class="post-form-item" type="submit">Upload</button>
         </form>
     </div>
 
     <div id="latestPost">
         <p>Latest post in Mealshare</p>
-        <img src="" alt="" id="latestUpload">
+        <img src="images/mealshare_logo_red.png" alt="latestUpload" id="latestUpload">
         <p id="captionText"></p>
         <p id="postedBy"></p>
     </div>

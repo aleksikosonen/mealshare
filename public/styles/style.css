@@ -8,6 +8,10 @@ html{
     height: 100%;
 }
 
+textarea:focus, input:focus, button:focus{
+    outline: none;
+}
+
 body {
     min-height: 100%;
     background: url('../images/food_background.jpeg ')no-repeat center center fixed;
@@ -15,14 +19,6 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-
-    //background-position: center;
-    //background-repeat: no-repeat;
-    //background-attachment: fixed;
-    //box-sizing: border-box;
-    //display: flex;
-    //justify-content: center;
-    //align-items: center;
 }
 
 #logIn{
@@ -146,6 +142,8 @@ body {
 }
 
 #hexas {
+    height: 400px;
+    width: 400px;
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -289,6 +287,61 @@ body {
     min-height: 40px;
 }
 
+.buttonHolder button {
+    background: #F7F7F7;
+    color: black;
+    border-radius: 10px;
+    min-height: 30px;
+    width: 100px;
+    border: 1px black solid;
+    box-sizing: border-box;
+}
+
+.buttonHolder button:hover {
+    background: #F26966;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+#commentForm button {
+    background: #F7F7F7;
+    color: black;
+    border-radius: 10px;
+    height: 30px;
+    width: 100px;
+    border: 1px black solid;
+    box-sizing: border-box;
+}
+
+#commentForm button:hover {
+    background: #F26966;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+#commentForm input {
+    background: #F7F7F7;
+    color: black;
+    min-height: 30px;
+    width: 155px;
+    border: 1px black solid;
+    box-sizing: border-box;
+}
+
+
+
+#postLikesAmount p {
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+}
+
+#postCaption {
+    padding-left: 12px;
+}
+
 #commentList {
     width: 100%;
     padding: 8px;
@@ -369,18 +422,34 @@ body {
     margin:5px 0 0 5px;
 }
 
-#likeBtn{
-    background-color: Transparent;
-    background-repeat:no-repeat;
+.notLiked {
+    background: no-repeat;
+    background-size: contain;
+    width: 15px;
+    height: 15px;
     border: none;
-    cursor:pointer;
-    overflow: hidden;
-    font-size: 20px;
-}#likeBtn:hover{
-     transform: scale(1.1);
- }#likeBtn:active{
-    transform: scale(0.8);
-   }
+    margin: 1px 5px 1px 1px;
+}
+
+.notLiked:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+.alreadyLiked {
+    background: no-repeat;
+    background-size: contain;
+    width: 15px;
+    height: 15px;
+    border: none;
+    margin: 1px 5px 1px 1px;
+}
+
+.alreadyLiked:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
 
   .buttonHolder{
       width:100%;
@@ -442,6 +511,7 @@ datalist {
     min-height: 30px; 
     text-align: right;
 }
+
 .deleteContainer{
     float: right;
     max-width: 35px;
@@ -453,47 +523,45 @@ datalist {
 }
 
 .commentDeleteButton{
-    border-radius: 15%;
-    max-width: 30px;
-    max-height: 30px;
-    min-width: 30px;
-    min-height: 30px; 
-    text-align: right;
-}
-.commentDeleteContainer{
-    float: right;
-    max-width: 35px;
-    max-height: 35px;
-    min-width: 35px;
-    min-height: 35px;
-    margin-top: 5px;
-    justify-content: flex-end;
+    background: white;
 }
 
-.alreadyLiked{
-    max-width: 35px;
-    max-height: 35px;
-    min-width: 35px;
-    min-height: 35px;
+#topCard a {
+    width: 80%;
+    text-align: left;
 }
-.alreadyLiked img{
-    max-width: 30px;
-    max-height: 30px;
-    min-width: 30px;
-    min-height: 30px;
+
+#topCard h2 {
+    justify-content: space-between;
 }
-.notLiked{
-    max-width: 35px;
-    max-height: 35px;
-    min-width: 35px;
-    min-height: 35px;
+
+.deleteContainer {
+    margin: 5px;
+    background-size: contain;
+    border: none;
+    height: 20px;
+    width: 20px;
+    background: white;
 }
-.notLiked img{
-    max-width: 30px;
-    max-height: 30px;
-    min-width: 30px;
-    min-height: 30px;
+
+.deleteContainer:hover {
+    transform: scale(1.1);
+    cursor: pointer;
 }
+
+.commentDeleteContainer {
+    margin: 15px;
+    background-size: contain;
+    border: none;
+    height: 20px;
+    width: 20px;
+}
+
+.commentDeleteContainer:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
 @media only screen and (max-width: 2300px) {
 
     #hexas {

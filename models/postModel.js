@@ -5,6 +5,7 @@ const promisePool = pool.promise();
 const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
 const uploadPost = async (req) => {
+  //function for uploading images with multer
   try {
     const [rows] = await promisePool.execute('INSERT INTO ms_post (userId, file, caption, hashtags, vst, vet) VALUES (?, ?, ?, ?, ?, ?);',
         [null, req.file.filename, null, null, date, null]);
@@ -16,6 +17,7 @@ const uploadPost = async (req) => {
 };
 
 const uploadPostImage = async (req) => {
+  //function for uploading posts into the database
   try {
     const [rows] = await promisePool.execute('INSERT INTO ms_post (userId, file, caption, vst) VALUES (?, ?, ?, ?);',
         [req.user.userId, req.file.filename, req.body.caption, date]);
@@ -27,6 +29,7 @@ const uploadPostImage = async (req) => {
 };
 
 const getPost = async (id) => {
+  //function for getting a single post
   try {
     const [rows] = await promisePool.execute('SELECT * FROM ms_post WHERE postId = ?;', [id]);
     return rows[0];
@@ -36,6 +39,7 @@ const getPost = async (id) => {
 };
 
 const getRecipe = async (id) => {
+  //function for getting a recipe
   try {
     const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount, ms_post_ingredients.addOrder from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId where ms_post_ingredients.postId = ? ORDER by ms_post_ingredients.addOrder desc limit 1;', [id]);
     return rows[0];
@@ -45,6 +49,7 @@ const getRecipe = async (id) => {
 };
 
 const getAllIngredients = async (id) => {
+  //function for getting 1 recipes all ingredients
   try {
     const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount, ms_post_ingredients.addOrder from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId where ms_post_ingredients.postId = ? ORDER by ms_post_ingredients.addOrder;', [id]);
     return rows;
@@ -54,6 +59,7 @@ const getAllIngredients = async (id) => {
 };
 
 const getIngredientOwner = async(id) => {
+  //function for finding the owner of a single ingredient
   try{
     const[rows] = await promisePool.execute('SELECT ms_post.userId FROM ms_post INNER JOIN ms_post_ingredients ON ms_post.postId = ms_post_ingredients.postId where ms_post_ingredients.addOrder = ?;',[id]);
     return rows[0];
@@ -63,6 +69,7 @@ const getIngredientOwner = async(id) => {
 };
 
 const deleteIngredient = async (id) => {
+  //function for deleting an ingredient
   try {
     const [rows] = await promisePool.execute('delete from ms_post_ingredients where addOrder = ? order by addOrder desc limit 1;', [id]);
     return rows[0];
@@ -159,9 +166,10 @@ const uploadPostIngredients = async (req, id) => {
   }
 };
 
-const getAllPosts = async () => {
+const getAllPosts = async (id) => {
   try {
-    const [rows] = await promisePool.execute('SELECT * from ms_post ORDER BY postId;');
+    //function for getting users posts own posts
+    const [rows] = await promisePool.execute('SELECT * from ms_post where userId = ? ORDER BY postId;', [id]);
     return rows;
   } catch (e) {
     console.error('postModel:', e.message);

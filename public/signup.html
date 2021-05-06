@@ -8,37 +8,38 @@
 </head>
 <body>
 <div class="container">
-    <div class="form-wrapper">
-        <h3 class="paragraph">Sign up</h3>
-        <p class="paragraph">Create new account!</p>
-        <form class="light-border" id="add-user-form">
-            <input class="light-border"
-                   type="text"
-                   name="fname"
-                   pattern=".{3,}"
-                   placeholder="Firstname"
-                   required>
-            <input class="light-border"
-                   type="text"
-                   name="lname"
-                   pattern=".{3,}"
-                   placeholder="Lastname"
-                   required>
-            <input class="light-border" type="email" name="email" placeholder="Email" required>
-            <input class="light-border"
-                   type="text"
-                   name="username"
-                   pattern="[A-Za-z0-9]+"
-                   placeholder="Username"
-                   required>
-            <input class="light-border" type="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Password" id="password"  required>
-            <div id='PopUp'>
-                <p id='PopUpText'>Must contain lowercase,uppercase,<br>number and minimum of 8 characters</p>
-            </div>
-            <input class="light-border" type="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                   placeholder="Verify password" id="verify_password" required>
-            <button class="light-border" type="submit">Register</button>
-        </form>
+
+       <div class="form-wrapper">
+              <h3 class="paragraph">Sign up</h3>
+              <p class="paragraph">Create new account!</p>
+              <form class="light-border" id="add-user-form">
+                     <input class="light-border"
+                            type="text"
+                            name="fname"
+                            pattern=".{3,}"
+                            placeholder="Firstname"
+                            required>
+                     <input class="light-border"
+                            type="text"
+                            name="lname"
+                            pattern=".{3,}"
+                            placeholder="Lastname"
+                            required>
+                     <input class="light-border" type="email" name="email" placeholder="Email" required>
+                     <input class="light-border"
+                            type="text"
+                            name="username"
+                            pattern="[A-Za-z0-9]+"
+                            placeholder="Username"
+                            required>
+                     <input class="light-border" type="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"  placeholder="Password" id="password"  required>
+                     <div id='PopUp'>
+                            <p id='PopUpText'>Must contain lowercase,uppercase,<br>number and minimum of 8 characters</p>
+                     </div>
+                     <input class="light-border" type="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                            placeholder="Verify password" id="verify_password" required>
+                     <button class="light-border" type="submit">Register</button>
+              </form>
     </div>
 
 </div>
