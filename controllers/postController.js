@@ -4,67 +4,118 @@ const postModel = require('../models/postModel');
 const {validationResult} = require('express-validator');
 const { hash } = require('bcryptjs');
 const {makePost} = require('../utils/resize');
+const { json } = require('express');
 
 const post_list_get = async (req, res) => {
-  const posts = await postModel.getAllPosts();
-  return res.json(posts);
+  try{
+    const posts = await postModel.getAllPosts();
+    return res.json(posts);
+  }catch(e){
+    return res.status(400).json({error: e.message});
+  }
+
 };
 
 const feed_list_get = async (req, res) => {
-  const posts = await postModel.getFeedPosts(req);
-  return res.json(posts);
+  try{
+    const posts = await postModel.getFeedPosts(req);
+    return res.json(posts);
+  }catch(e){
+    return res.status(400).json({error: e.message});
+  }
 };
 
 const feed_like = async (req, res) => {
-  console.log('like', req.params.id, req.user.userId);
-  const like = await postModel.likePost(req.params.id, req.user.userId);
-  return res.json(like);
-}
+  try{
+    const like = await postModel.likePost(req.params.id, req.user.userId);
+    return res.json(like);
+  }catch(e){
+    return res.status(400).json({error: e.message});
+  }
+};
 
 const post_list_get_postedBy = async (req, res) => {
-  const posts = await postModel.getPostedBy();
-  return res.json(posts);
+  try{
+    const posts = await postModel.getPostedBy();
+    return res.json(posts);
+  }catch(e){
+    return res.status(400).json({error: e.message});
+  }
 };
 
 const post_add_comment = async (req, res) => {
-  console.log('add comment ', req.body.comment, req.user.userId);
-  const comments = await postModel.addComment(req.params.postId, req.user.userId, req.body.comment);
-  return res.json(comments);
+  try{
+    const comments = await postModel.addComment(req.params.postId, req.user.userId, req.body.comment);
+    return res.json(comments);
+  }catch(e){
+    return res.status(400).json({error: e.message});
+  }
 };
 
 const post_find_comments = async(req, res) => {
-  const comments = await postModel.findComments(req.body);
-  return res.json(comments);
-}
+  try{
+    const comments = await postModel.findComments(req.body);
+    return res.json(comments);
+  }catch(e){
+    return res.status(400).json({error: e.message});
+  }
+};
 
 const post_list_get_ingredients = async (req, res) => {
-  const ingredients = await postModel.getRecipe(req.params.id);
-  return res.json(ingredients);
+  try{
+    const ingredients = await postModel.getRecipe(req.params.id);
+    return res.json(ingredients);
+  }catch(e){
+    return res.status(400).json({error: e.message});
+  }
 };
 
 const post_list_get_all_ingredients = async (req, res) => {
-  const ingredients = await postModel.getAllIngredients(req.params.id);
-  return res.json(ingredients);
+  try{
+    const ingredients = await postModel.getAllIngredients(req.params.id);
+    return res.json(ingredients);
+  }catch(e){
+    return res.status(400).json({error: e.message});
+  }
 };
 
-const post_delete_last_ingredient = async (req, res) => {
-  const ingredients = await postModel.deleteIngredient(req.params.id);
-  return res.json(ingredients);
+const post_delete_ingredient = async (req, res) => {
+  try{
+    const owner = await postModel.getIngredientOwner(req.params.id);
+    if(req.user.userId = owner.userId){
+      const ingredients = await postModel.deleteIngredient(req.params.id);
+      return res.json(ingredients);
+   }
+  }catch(e){
+    return res.status(400).json({error: e.message});
+  }
 };
 
 const post_list_get_workphases = async (req, res) => {
-  const workphases = await postModel.getWorkphase(req.params.id);
-  return res.json(workphases);
+  try{
+    const workphases = await postModel.getWorkphase(req.params.id);
+    return res.json(workphases);
+  }catch(e){
+    return res.status(400).json({error: e.message});
+  }
 };
 
 const post_list_get_all_workphases = async (req, res) => {
-  const allWorkphases = await postModel.getAllWorkphases();
-  return res.json(allWorkphases);
+  try{
+    const allWorkphases = await postModel.getAllWorkphases();
+    return res.json(allWorkphases);
+  }catch(e){
+    return res.status(400).json({error: e.message});
+  }
 };
 
 const post_list_get_all_ingredients_feed = async (req, res) => {
-  const ingredients = await postModel.getAllIngredientsFeed();
-  return res.json(ingredients);
+  try{
+    const ingredients = await postModel.getAllIngredientsFeed();
+    return res.json(ingredients);
+  }catch(e) {
+    return res.status(400).json({error: e.message});
+  }
 };
 
 //Made for later adding more details to post
@@ -84,7 +135,7 @@ const post_create = async (req, res) => {
 
 const filterItems = (arr, query) => {
   return arr.filter(el => el.toLowerCase().indexOf(query.toLowerCase()) !== -1)
-}
+};
 
 const post_create_image =  async (req, res) => {
   const errors = validationResult(req);
@@ -96,11 +147,7 @@ const post_create_image =  async (req, res) => {
   try {
     const id = await postModel.uploadPostImage(req);
     const post = await postModel.getPost(id);
-
-    console.log('image', post);
-
     if(!(Object.entries(hashtags).length === 0)){
-      console.log('sending hashtags ', id," ", hashtags);
       const tags = await postModel.createTags(id, hashtags);
     }
     res.send(post);
@@ -141,7 +188,6 @@ const post_add_workphases = async (req, res) => {
 const post_delete = async (req, res) => {
   try{
     const owner = await postModel.getPost(req.params.id);
-    console.log('post_delete ', owner, " trying to delete")
     if (req.user.userId === owner.userId || req.user.admin === 1){
       const deleteOk = await postModel.deletePost(req.params.id);
       res.json(deleteOk);
@@ -164,23 +210,39 @@ const post_update = async (req, res) => {
 };
 
 const post_get_likes = async (req, res) => {
-  const likes = await postModel.getLikes(req.params.id);
-  res.json(likes);
+  try{
+    const likes = await postModel.getLikes(req.body);
+    res.json(likes);
+  }catch(e){
+    res.status(400).json({error: e.message});
+  }
 };
 
 const post_get_all_tags = async (req, res) => {
-  const tags = await postModel.getAllTags();
-  return res.json(tags);
-}
+  try{
+    const tags = await postModel.getAllTags();
+    return res.json(tags);
+  }catch(e){
+    res.status(400).json({error: e.message});
+  }
+};
 
 const post_get_all_tagRelations = async (req,res) => {
-  const tagRelations = await postModel.getTagRelatedPosts(req.body.userInput);
-  return res.json(tagRelations)
-}
+  try{
+    const tagRelations = await postModel.getTagRelatedPosts(req.body.userInput);
+    return res.json(tagRelations)
+  }catch(e){
+    res.status(400).json({error: e.message});
+  }
+};
 
 const post_get_all_userRelations = async (req,res) => {
-  const userRelations = await postModel.getUserRelatedPosts(req.body.userInput);
-  return res.json(userRelations);
+  try{
+    const userRelations = await postModel.getUserRelatedPosts(req.body.userInput);
+    return res.json(userRelations);
+  }catch(e){
+    res.status(400).json({error: e.message});
+  }
 }
 
 const make_post = async (req, res, next) => {
@@ -194,6 +256,36 @@ const make_post = async (req, res, next) => {
   }
 };
 
+const comment_delete = async (req, res) => {
+  try{
+    const ownerId = await postModel.getCommentOwner(req.params.id);
+    if(req.user.admin === 1 || req.user.userId === ownerId[0].userId){
+      const deleteOk = postModel.deleteComment(req.params.id);
+      res.json(deleteOk);
+    }
+  }catch(e){
+    res.status(400).json({error: e.message});
+  }
+};
+
+const delete_like = async (req, res) => {
+  try{
+    console.log(req.params.id, req.user.userId)
+    const deleteLikes = await postModel.deleteLike(req.params.id, req.user.userId);
+    res.json(deleteLikes);
+  }catch(e){
+    res.status(400).json({error: e.message});
+  }
+};
+
+const get_single_like = async (req, res) => {
+  try{
+    const getSingleLike = await postModel.getSingleLike(req.params.id);
+    res.json(getSingleLike);
+  }catch(e){
+    res.status(400).json({error: e.message});
+  }
+};
 
 module.exports = {
   post_create,
@@ -215,9 +307,11 @@ module.exports = {
   make_post,
   post_add_workphases,
   post_list_get_workphases,
+  post_delete_ingredient,
   post_list_get_all_workphases,
   post_list_get_all_ingredients_feed,
-  post_delete_last_ingredient,
   post_list_get_all_ingredients,
+  comment_delete,
+  delete_like,
+  get_single_like,
 };
-

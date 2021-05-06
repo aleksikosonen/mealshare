@@ -93,12 +93,23 @@ body {
     border-radius: 50%;
 }
 
+#photoContainer #deletePost {
+    background: url(../icons/delete.png) no-repeat center;
+    background-size: contain;
+    border: none;
+    align-items: center;
+    border-radius: 0;
+}
+
+#photoContainer #deletePost:hover {
+    transform: scale(1.05);
+}
+
 #photoContainer {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     background: white;
-    //align-items: center;
 }
 
 .profilePhotoGrid {
@@ -268,14 +279,6 @@ a {
 
     .profilePhotoGrid {
         width: 50%;
-    }
-
-    #myProfileHref {
-        display: none;
-    }
-
-    #shareHref {
-        display: none;
     }
 }
 

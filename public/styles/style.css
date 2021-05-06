@@ -434,7 +434,66 @@ datalist {
     font-family: sans-serif;
     font-size: 0.8rem;
 }
+.deleteButton{
+    border-radius: 15%;
+    max-width: 30px;
+    max-height: 30px;
+    min-width: 30px;
+    min-height: 30px; 
+    text-align: right;
+}
+.deleteContainer{
+    float: right;
+    max-width: 35px;
+    max-height: 35px;
+    min-width: 35px;
+    min-height: 35px;
+    margin-top: 5px;
+    justify-content: flex-end;
+}
 
+.commentDeleteButton{
+    border-radius: 15%;
+    max-width: 30px;
+    max-height: 30px;
+    min-width: 30px;
+    min-height: 30px; 
+    text-align: right;
+}
+.commentDeleteContainer{
+    float: right;
+    max-width: 35px;
+    max-height: 35px;
+    min-width: 35px;
+    min-height: 35px;
+    margin-top: 5px;
+    justify-content: flex-end;
+}
+
+.alreadyLiked{
+    max-width: 35px;
+    max-height: 35px;
+    min-width: 35px;
+    min-height: 35px;
+}
+.alreadyLiked img{
+    max-width: 30px;
+    max-height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+}
+.notLiked{
+    max-width: 35px;
+    max-height: 35px;
+    min-width: 35px;
+    min-height: 35px;
+}
+.notLiked img{
+    max-width: 30px;
+    max-height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+}
 @media only screen and (max-width: 2300px) {
 
     #hexas {

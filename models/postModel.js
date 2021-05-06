@@ -53,6 +53,15 @@ const getAllIngredients = async (id) => {
   }
 };
 
+const getIngredientOwner = async(id) => {
+  try{
+    const[rows] = await promisePool.execute('SELECT ms_post.userId FROM ms_post INNER JOIN ms_post_ingredients ON ms_post.postId = ms_post_ingredients.postId where ms_post_ingredients.addOrder = ?;',[id]);
+    return rows[0];
+  }catch(e){
+    console.error('postmodel ingredientOwner :', e.message)
+  }
+};
+
 const deleteIngredient = async (id) => {
   try {
     const [rows] = await promisePool.execute('delete from ms_post_ingredients where addOrder = ? order by addOrder desc limit 1;', [id]);
@@ -94,7 +103,6 @@ const uploadIngredient = async (req) => {
     const [rows] = await promisePool.execute('INSERT IGNORE INTO ms_ingredient_object (ingredient) VALUES (?);',
         [req.body.ingredient]);
     if (rows.insertId === 0) {
-      console.log('ingredient already exists');
       const [ingId] = await promisePool.execute('SELECT ingredientId from ms_ingredient_object where ingredient = ?',[req.body.ingredient])
       return ingId[0].ingredientId;
     }
@@ -163,18 +171,7 @@ const getFeedPosts = async (req) => {
   }
 };
 
-const getAllRecipes = async () => {
-  try {
-    const [rows] = await promisePool.execute('SELECT * from ms_recipe ORDER BY recipeId');
-    return rows;
-  } catch (e) {
-    console.error('postModel:', e.message);
-    console.error('postModel getAllPosts:', e.message);
-  }
-};
-
 const likePost = async (postId, user) => {
-  console.log('likepost ', user);
   try {
     const [rows] = await promisePool.execute('INSERT INTO ms_likes (postId, userId, vst) VALUES (?, ?, ?);',
         [postId, user, date]);
@@ -227,10 +224,8 @@ const createTags = async (postId, tag) => {
     }
 
     for(let i = 0; i < tag.length; i++){
-      console.log('insert id, ', ids)
       const [rows] = await promisePool.execute('INSERT INTO ms_tag_post_relations (postId, tagId) values (?, ?)', [postId, ids[i][i].tagId]);
       final.push(rows);
-      console.log('rows ', final[i])
       return [final, tags];
     }
   }catch(e) {
@@ -241,7 +236,6 @@ const createTags = async (postId, tag) => {
 const getTagRelatedPosts = async (input) => {
   try {
     const [rows] = await promisePool.execute('SELECT ms_post.postId, ms_post.file, ms_post.caption, ms_user.userId, ms_user.username as username, ms_user.avatar as avatar, ms_tag_post_relations.postId, ms_tag_post_relations.tagId, ms_hashtags.tagId, ms_hashtags.tag FROM ms_post INNER JOIN ms_user ON ms_post.userId = ms_user.userId INNER JOIN ms_tag_post_relations on ms_post.postId = ms_tag_post_relations.postId INNER JOIN ms_hashtags on ms_tag_post_relations.tagId = ms_hashtags.tagId WHERE ms_hashtags.tag = ? ORDER BY ms_post.postId', [input]);
-    console.log(rows);
     return rows;
   } catch (e) {
     console.error('postModel getTagRelatedPosts:', e.message);
@@ -249,7 +243,6 @@ const getTagRelatedPosts = async (input) => {
 };
 
 const addComment = async (postId, userId, comment) => {
-  // console.log(postId, " ",userId, " ", comment)
   try{
     const [rows] = await promisePool.execute('INSERT INTO ms_postcomment (userId, postId, comment, vst) values (?, ?, ?, ?);', [userId, postId, comment, date]);
     return rows;
@@ -287,8 +280,12 @@ const updatePost = async (id, caption) => {
 
 const getLikes = async (id) => {
   try {
-    const [rows] = await promisePool.execute('SELECT count(postId) as likes FROM ms_likes WHERE postId = ?;', [id]);
-    return rows[0];
+    const likes = [];
+    for(let i = 0; i < id.length; i++) {
+      const [rows] = await promisePool.execute('SELECT postId, count(postId) as likes  FROM ms_likes WHERE postId = ?;', [id[i].postId]);
+      likes.push(rows[0])
+    };
+    return likes;
   } catch (e) {
     console.error('postModel getLikes :', e.message);
   }
@@ -305,6 +302,25 @@ const getUserRelatedPosts = async (input) => {
   }
 };
 
+
+const getCommentOwner = async (id) => {
+  try{
+    const [rows] = await promisePool.execute('SELECT userId from ms_postcomment where commentId = ?;', [id])
+    return rows;
+  }catch(e) {
+    console.error('postModel getCommentOwner ', e.message)
+  }
+};
+
+const deleteComment = async (id) => {
+  try {
+    const [rows] = await promisePool.execute ('DELETE from ms_postcomment where commentId = ?;', [id]);
+    return rows;
+  }catch(e){
+    console.error('postModel deleteComment ', e.message)
+  }
+};
+
 const getAllIngredientsFeed = async () => {
   try {
     const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount, ms_post_ingredients.postId , ms_post_ingredients.addOrder from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId ORDER by ms_post_ingredients.addOrder;');
@@ -313,6 +329,24 @@ const getAllIngredientsFeed = async () => {
     console.error('postModel getPost :', e.message);
   }
 };
+
+const deleteLike = async(postId, userId) => {
+  try{
+    const [rows] = await promisePool.execute('delete from ms_likes where postId = ? AND userId = ?;', [postId, userId]);
+    return rows;
+  }catch(e){
+    console.error('postModel deleteLike: ', e.message);
+  }
+}
+
+const getSingleLike = async(postId) => {
+  try{
+    const [rows] = await promisePool.execute('select count(postId) as likes from ms_likes where postId = ?;', [postId]);
+    return rows;
+  }catch(e){
+
+  }
+}
 
 module.exports = {
   uploadPost,
@@ -324,7 +358,6 @@ module.exports = {
   createTags,
   getRecipe,
   uploadIngredient,
-  getAllRecipes,
   getIngredient,
   getIngredients,
   getAllTags,
@@ -344,4 +377,10 @@ module.exports = {
   getAllIngredientsFeed,
   deleteIngredient,
   getAllIngredients,
+  getIngredientOwner,
+  getCommentOwner,
+  deleteComment,
+  deleteLike,
+  getSingleLike
 };
+

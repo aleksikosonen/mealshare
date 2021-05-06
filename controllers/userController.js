@@ -124,6 +124,15 @@ const add_avatar = async (req, res) => {
     }
 }
 
+const get_users_likes = async (req, res) => {
+    try{
+        const listOfLikes = await userModel.getUsersLikes(req.user.userId);
+        res.json(listOfLikes);
+    }catch(e){
+        res.status(400).json({error: e.message})
+    }
+};
+
 module.exports = {
     get_user,
     user_list_get,
@@ -134,4 +143,5 @@ module.exports = {
     update_username,
     update_email,
     add_avatar,
+    get_users_likes
 };
