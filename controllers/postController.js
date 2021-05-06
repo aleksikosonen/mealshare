@@ -271,7 +271,6 @@ const comment_delete = async (req, res) => {
 
 const delete_like = async (req, res) => {
   try{
-    console.log(req.params.id, req.user.userId)
     const deleteLikes = await postModel.deleteLike(req.params.id, req.user.userId);
     res.json(deleteLikes);
   }catch(e){
