@@ -8,16 +8,17 @@ const { json } = require('express');
 
 const post_list_get = async (req, res) => {
   try{
-    const posts = await postModel.getAllPosts();
+    //function for getting users posts own posts
+    const posts = await postModel.getAllPosts(req.user.userId);
     return res.json(posts);
   }catch(e){
     return res.status(400).json({error: e.message});
   }
-  
 };
 
 const feed_list_get = async (req, res) => {
   try{
+    //getting the posts for the front page feed
     const posts = await postModel.getFeedPosts(req);
     return res.json(posts);
   }catch(e){
@@ -27,6 +28,7 @@ const feed_list_get = async (req, res) => {
 
 const feed_like = async (req, res) => {
   try{
+    //function for adding likes to posts
     const like = await postModel.likePost(req.params.id, req.user.userId);
     return res.json(like);
   }catch(e){
@@ -36,6 +38,7 @@ const feed_like = async (req, res) => {
 
 const post_list_get_postedBy = async (req, res) => {
   try{
+    //functiion for getting the person who posted the post
     const posts = await postModel.getPostedBy();
     return res.json(posts);
   }catch(e){
@@ -45,6 +48,7 @@ const post_list_get_postedBy = async (req, res) => {
 
 const post_add_comment = async (req, res) => {
   try{
+    //function for adding a comment
     const comments = await postModel.addComment(req.params.postId, req.user.userId, req.body.comment);
     return res.json(comments);
   }catch(e){
@@ -54,6 +58,7 @@ const post_add_comment = async (req, res) => {
 
 const post_find_comments = async(req, res) => {
   try{
+    //function for finding comments
     const comments = await postModel.findComments(req.body);
     return res.json(comments);
   }catch(e){
@@ -63,6 +68,7 @@ const post_find_comments = async(req, res) => {
 
 const post_list_get_ingredients = async (req, res) => {
   try{
+    //function for getting ingredients
     const ingredients = await postModel.getRecipe(req.params.id);
     return res.json(ingredients);
   }catch(e){
@@ -72,6 +78,7 @@ const post_list_get_ingredients = async (req, res) => {
 
 const post_list_get_all_ingredients = async (req, res) => {
   try{
+    //function for getting ingredients
     const ingredients = await postModel.getAllIngredients(req.params.id);
     return res.json(ingredients);
   }catch(e){
@@ -81,6 +88,7 @@ const post_list_get_all_ingredients = async (req, res) => {
 
 const post_delete_ingredient = async (req, res) => {
   try{
+    //function for deleting an ingredient
     const owner = await postModel.getIngredientOwner(req.params.id);
     if(req.user.userId = owner.userId){
       const ingredients = await postModel.deleteIngredient(req.params.id);
@@ -93,6 +101,7 @@ const post_delete_ingredient = async (req, res) => {
 
 const post_list_get_workphases = async (req, res) => {
   try{
+    //function for getting workphases
     const workphases = await postModel.getWorkphase(req.params.id);
     return res.json(workphases);
   }catch(e){
@@ -102,6 +111,7 @@ const post_list_get_workphases = async (req, res) => {
 
 const post_list_get_all_workphases = async (req, res) => {
   try{
+    //function for getting all workphases
     const allWorkphases = await postModel.getAllWorkphases();
     return res.json(allWorkphases);
   }catch(e){
@@ -134,10 +144,12 @@ const post_create = async (req, res) => {
 };
 
 const filterItems = (arr, query) => {
+  //function used in the next functions hashtag digging
   return arr.filter(el => el.toLowerCase().indexOf(query.toLowerCase()) !== -1)
 };
 
 const post_create_image =  async (req, res) => {
+  //function for creating post
   const errors = validationResult(req);
   const stringed = req.body.caption.split(/(\s+)/);
   const hashtags = filterItems(stringed, '#');
@@ -148,6 +160,7 @@ const post_create_image =  async (req, res) => {
     const id = await postModel.uploadPostImage(req);
     const post = await postModel.getPost(id);
     if(!(Object.entries(hashtags).length === 0)){
+      //if the caption has hashtags, create new hashtags to database
       const tags = await postModel.createTags(id, hashtags);
     }
     res.send(post);
@@ -157,6 +170,7 @@ const post_create_image =  async (req, res) => {
 };
 
 const post_add_ingredient = async (req, res) => {
+  //function for adding an ingredient
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({errors: errors.array()});
@@ -172,6 +186,7 @@ const post_add_ingredient = async (req, res) => {
 };
 
 const post_add_workphases = async (req, res) => {
+  //function for adding a workphase
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({errors: errors.array()});
@@ -186,9 +201,11 @@ const post_add_workphases = async (req, res) => {
 };
 
 const post_delete = async (req, res) => {
+  //function for deleting a post
   try{
     const owner = await postModel.getPost(req.params.id);
     if (req.user.userId === owner.userId || req.user.admin === 1){
+      //check if its the users own post, or if the user is an admin
       const deleteOk = await postModel.deletePost(req.params.id);
       res.json(deleteOk);
     }
@@ -198,6 +215,7 @@ const post_delete = async (req, res) => {
 };
 
 const post_update = async (req, res) => {
+  //function for updating the posts caption
   try{
     const owner = await postModel.getPost(req.params.id);
     if(req.user.userId === owner.userId){
@@ -210,6 +228,7 @@ const post_update = async (req, res) => {
 };
 
 const post_get_likes = async (req, res) => {
+  //function for getting likes
   try{
     const likes = await postModel.getLikes(req.body);
     res.json(likes);
@@ -219,6 +238,7 @@ const post_get_likes = async (req, res) => {
 };
 
 const post_get_all_tags = async (req, res) => {
+  //function for getting all tags
   try{
     const tags = await postModel.getAllTags();
     return res.json(tags);
@@ -229,6 +249,7 @@ const post_get_all_tags = async (req, res) => {
 
 const post_get_all_tagRelations = async (req,res) => {
   try{
+    //function for getting tag relations
     const tagRelations = await postModel.getTagRelatedPosts(req.body.userInput);
     return res.json(tagRelations)
   }catch(e){
@@ -238,6 +259,7 @@ const post_get_all_tagRelations = async (req,res) => {
 
 const post_get_all_userRelations = async (req,res) => {
   try{
+    //function for gettting user relations
     const userRelations = await postModel.getUserRelatedPosts(req.body.userInput);
     return res.json(userRelations);
   }catch(e){
@@ -247,7 +269,7 @@ const post_get_all_userRelations = async (req,res) => {
 
 const make_post = async (req, res, next) => {
   try {
-
+    //function for uploading images 
     const post = await makePost(req.file.path, req.file.filename);
     if (post) {
       next();
@@ -259,8 +281,10 @@ const make_post = async (req, res, next) => {
 
 const comment_delete = async (req, res) => {
   try{
+    //function for deleting comments
     const ownerId = await postModel.getCommentOwner(req.params.id);
     if(req.user.admin === 1 || req.user.userId === ownerId[0].userId){
+      //check if the user is admin or the owner of the post
       const deleteOk = postModel.deleteComment(req.params.id);
       res.json(deleteOk);
     }
@@ -271,7 +295,7 @@ const comment_delete = async (req, res) => {
 
 const delete_like = async (req, res) => {
   try{
-    console.log(req.params.id, req.user.userId)
+    //function for deleting users own likes
     const deleteLikes = await postModel.deleteLike(req.params.id, req.user.userId);
     res.json(deleteLikes);
   }catch(e){
@@ -281,6 +305,7 @@ const delete_like = async (req, res) => {
 
 const get_single_like = async (req, res) => {
   try{
+    //function for getting a single posts likes
     const getSingleLike = await postModel.getSingleLike(req.params.id);
     res.json(getSingleLike);
   }catch(e){
