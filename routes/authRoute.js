@@ -21,6 +21,7 @@ router.post('/login', authController.login);
 router.get('/logout', authController.logout);
 const logger = (req, res, next) =>{
     console.log('regist ', req.body)
+    next();
 }
 //Register
 router.post('/register',
