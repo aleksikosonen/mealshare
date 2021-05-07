@@ -15,7 +15,7 @@ git checkout testlocalhost
 ```
 3. Create your database 
 ```
-Use the 'mealsharesql'-file to create your database
+Use the 'mealshare-sql.sql'-file to create your database
 ```
 4. Create .env file
 ```
