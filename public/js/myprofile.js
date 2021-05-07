@@ -12,7 +12,7 @@
 
 'use strict';
 
-const url = 'https://127.0.0.1/app';
+const url = 'https://10.114.32.16/app';
 
 const username = document.querySelector('#username');
 const bio = document.querySelector('#bio');

@@ -12,7 +12,7 @@
 
 'use strict';
 
-const url = 'https://127.0.0.1/app';
+const url = 'https://10.114.32.16/app';
 const addForm = document.querySelector('#add-post-form');
 const latestUpload = document.querySelector('#latestUpload');
 const captionText = document.querySelector('#captionText');

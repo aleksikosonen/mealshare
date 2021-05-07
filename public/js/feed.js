@@ -19,7 +19,7 @@
 'use strict';
 
 const showMoreBtn = document.getElementById('showMoreBtn');
-const url = 'https://127.0.0.1/app';
+const url = 'https://10.114.32.16/app';
 //some global variables so we can get certain info from out of functions to other functions
 const loggedUser = [];
 const likedPosts = [];
