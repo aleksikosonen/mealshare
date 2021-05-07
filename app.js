@@ -17,9 +17,6 @@ const postRoute = require('./routes/postRoute');
 const passport = require('./utils/pass');
 app.enable('trust proxy');
 
-app.use(express.static('public'));
-app.use(express.static('uploads'));
-app.use('/thumbnails', express.static('thumbnails')); // Define thumbnails folder
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
@@ -35,6 +32,9 @@ app.use ((req, res, next) => {
     }
   });
 
+app.use(express.static('public'));
+app.use(express.static('uploads'));
+app.use('/thumbnails', express.static('thumbnails')); // Define thumbnails folder
 app.use('/auth', authRoute);
 app.use('/user', passport.authenticate('jwt', {session:false}),  userRoute);
 app.use('/post', passport.authenticate('jwt', {session:false}), postRoute);
