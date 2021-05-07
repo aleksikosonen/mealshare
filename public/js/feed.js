@@ -120,11 +120,11 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
     const userLikes = [];
     likedPosts[0].forEach(e => userLikes.push(e.postId));
     if(userLikes.includes(post.postId)){
-      likeImage.src = '../icons/like-2.png';
+      likeImage.src = '/icons/like-2.png';
       likeImage.className = 'alreadyLiked';
       likeButton.className = 'alreadyLiked';
     }else{
-      likeImage.src ='../icons/like-1.png';
+      likeImage.src ='/icons/like-1.png';
       likeImage.className = 'notLiked';
       likeButton.className = 'notLiked';
     }
@@ -137,7 +137,7 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
 
       deleteImage.className = 'deleteButton';
       adminDeleteButton.className = 'deleteContainer';
-      deleteImage.src = '../icons/delete.png';
+      deleteImage.src = '/icons/delete.png';
       topCard.appendChild(adminDeleteButton);
       adminDeleteButton.appendChild(deleteImage);
     }
@@ -168,7 +168,7 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
 
             deleteImage.className = 'commentDeleteButton';
             adminDeleteButton.className = 'commentDeleteContainer';
-            deleteImage.src = '../icons/delete.png';
+            deleteImage.src = '/icons/delete.png';
             commentRender.appendChild(adminDeleteButton);
             adminDeleteButton.appendChild(deleteImage);
           }
@@ -462,7 +462,7 @@ feedContainer.addEventListener('click', async (e) => {
       const likes = await resLike.json();
       const likesAmount = document.getElementById(`likeAmount${postId}`);
       //once user has liked, re render the likes and change buttons class
-      likeImage.src = '../icons/like-2.png';
+      likeImage.src = '/icons/like-2.png';
       likeImage.className = 'alreadyLiked';
       likeButton.className = 'alreadyLiked';
       likesAmount.innerHTML = `${likes[0].likes} likes this`;
@@ -495,7 +495,7 @@ feedContainer.addEventListener('click', async (e) => {
       const likeButton = document.getElementById(`likeBtn${postId}`);
       const likesAmount = document.getElementById(`likeAmount${postId}`);
       //once the user has removed the likes, re-render and change the button class
-      likeImage.src = '../icons/like-1.png';
+      likeImage.src = '/icons/like-1.png';
       likeImage.className = 'notLiked';
       likeButton.className = 'notLiked';
       if(likes[0].likes > 0){
