@@ -391,7 +391,7 @@ feedContainer.addEventListener('click', async (e) => {
             }
           };
           await fetch(url + '/post/' + postId , fetchOptions);
-          window.location.href = url, '/index.html';
+          window.location.href = `${url}/index.html`;
         }catch(er){
           console.error(e.message);
         }
@@ -411,7 +411,7 @@ feedContainer.addEventListener('click', async (e) => {
           }
         };
         await fetch(url + '/post/comment/' + commentId , fetchOptions);
-        window.location.href = url, '/index.html';
+        window.location.href = `${url}/index.html`;
       }catch(er){
         console.error(e.message);
       }

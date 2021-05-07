@@ -39,7 +39,7 @@ addUserForm.addEventListener('submit', async (evt) =>{
     alert(json.message);
   } else {
     sessionStorage.setItem('token', json.token);
-    window.location.href = url, '/index.html';
+    window.location.href = `${url}/index.html`;
   }
 });
 password.onfocus = function() {

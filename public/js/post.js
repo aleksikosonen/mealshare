@@ -53,7 +53,7 @@ addForm.addEventListener('submit', async (evt) => {
 
   //No recipe re-directs to frontpage so user can see post
   noRecipe.addEventListener('click', () => {
-    window.location.href = url, '/post.html'
+    window.location.href = `${url}/post.html`
   });
 
   //If user wants to add recipe
@@ -118,7 +118,7 @@ addForm.addEventListener('submit', async (evt) => {
       if (data.workphases !== "") {
         await addWorkphases(data, post.postId);
       }
-      window.location.href = url + '/';
+      window.location.href = `${url}/`;
     });
   });
 });
