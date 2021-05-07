@@ -1,7 +1,40 @@
-# mealshare
+# Mealshare
 Team project for Metropolia UAD Web technologies course.
 
 Authors Aleksi Kytö, Niko Lindborg and Aleksi Kosonen. 
+
+# Installation 
+
+1. Clone repo
+```
+https://github.com/aleksikosonen/mealshare.git
+```
+2. Switch branch (this branch will not be ready for assingment deadline, but will be added asap)
+```
+git checkout testlocalhost
+```
+3. Create your database 
+```
+Use the 'mealsharesql'-file to create your database
+```
+4. Create .env file
+```
+DB_HOST= <your database host>
+DB_USER= <your dbuser>
+DB_PASS= <your dbpassword>
+DB_NAME= <your dbname>
+```
+5. Install NPM packages
+```
+npm install
+```
+
+6. Run the app!
+```
+nodemon app.js
+```
+
+# About Mealshare
 
 Mealshare is a webpage for viewing and uploading food related media and recipes. 
 
