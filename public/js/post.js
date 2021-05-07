@@ -118,7 +118,7 @@ addForm.addEventListener('submit', async (evt) => {
       if (data.workphases !== "") {
         await addWorkphases(data, post.postId);
       }
-      window.location.href = url
+      window.location.href = url + '/';
     });
   });
 });
