@@ -491,7 +491,7 @@ settingsButton.addEventListener('click', async () => {
                 if (json.error) {
                     alert(json.error);
                 }
-                window.location.href = ulr, '/myprofile.html'
+                window.location.href = url, '/myprofile.html'
             } catch (e) {
                 console.error(e.message);
             }
