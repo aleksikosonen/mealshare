@@ -34,7 +34,6 @@ const user_list_get = async (req, res) => {
 
 const create_user = async(req, res, next) => {
     //checking if the request has any validation errors
-    console.log('create_user usercontroller, ', req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()){
         return res.status(400).json({errors: errors.array()});
