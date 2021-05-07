@@ -19,13 +19,9 @@ router.post('/login', authController.login);
 
 //Logout
 router.get('/logout', authController.logout);
-const logger = (req, res, next) =>{
-    console.log('regist ', req.body)
-    next();
-}
+
 //Register
 router.post('/register',
-    logger,
     body('username').isLength({min: 3}).escape().blacklist(';'),
     body('password').matches('(?=.*[A-Z]).{8,}'),
     body('email').isEmail(),
