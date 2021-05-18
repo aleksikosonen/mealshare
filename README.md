@@ -9,7 +9,7 @@ Authors Aleksi Kytö, Niko Lindborg and Aleksi Kosonen.
 ```
 https://github.com/aleksikosonen/mealshare.git
 ```
-2. Switch branch (this branch will not be ready for assingment deadline, but will be added asap)
+2. Switch branch
 ```
 git checkout testlocalhost
 ```
