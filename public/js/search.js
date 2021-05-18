@@ -267,11 +267,3 @@ searchBar.addEventListener('focus', () =>{
 searchBar.addEventListener('focusout', () =>{
   datalist.style.visibility = 'hidden';
 });
-
-
-
-
-
-
-
-

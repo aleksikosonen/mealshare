@@ -14,33 +14,33 @@ const userController = require('../controllers/userController');
 const { body } = require('express-validator');
 
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' ||
-        file.mimetype === 'image/png') {
-      cb(null, true);
-    } else {
-      cb(null, false);
-    }
-  };
-  
-  const testFile = (req, res, next) => {
-    if (req.file) {
-      next();
-    } else {
-      res.status(400).json({errors: 'The file was not an image'});
-    }
-  };
-  
-  const upload = multer({dest: 'uploads/', fileFilter});
+  if (file.mimetype === 'image/jpeg' ||
+      file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const testFile = (req, res, next) => {
+  if (req.file) {
+    next();
+  } else {
+    res.status(400).json({errors: 'The file was not an image'});
+  }
+};
+
+const upload = multer({dest: 'uploads/', fileFilter});
 
 
 router.route('/')
-    .get(userController.get_user);
+.get(userController.get_user);
 
 router.route('/username')
-    .post(userController.user_list_get);
+.post(userController.user_list_get);
 
 router.route('/likes')
-  .get(userController.get_users_likes);
+.get(userController.get_users_likes);
 
 //Update user
 router.put('/update',

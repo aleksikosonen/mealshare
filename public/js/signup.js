@@ -7,13 +7,13 @@
  * */
 
 'use strict';
-const url = 'https://10.114.32.16/app';
+const url = 'http://localhost:3000';
 const addUserForm = document.getElementById('add-user-form');
 
 //check if passwords match
 const password = document.getElementById("password")
     , verify_password = document.getElementById("verify_password");
-  
+
 function validatePassword(){
   if(password.value !== verify_password.value) {
     verify_password.setCustomValidity("Passwords Don't Match");
@@ -34,12 +34,12 @@ addUserForm.addEventListener('submit', async (evt) =>{
   };
   const response = await fetch(url + '/auth/register', fetchOptions);
   const json = await response.json();
-  
+
   if(!json.user) {
     alert(json.message);
   } else {
     sessionStorage.setItem('token', json.token);
-    window.location.href = url, '/index.html';
+    window.location.href = 'http://localhost:3000/index.html';
   }
 });
 password.onfocus = function() {

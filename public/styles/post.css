@@ -39,7 +39,7 @@ body {
     display: flex;
     flex-direction: column;
     border: solid white 3px;
-    //background: rgb(58, 63, 72);
+//background: rgb(58, 63, 72);
     background: #4E596A;
     padding: 25px;
 }

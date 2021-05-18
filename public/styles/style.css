@@ -460,45 +460,45 @@ body {
 }
 
 
-  .buttonHolder{
-      width:100%;
-      height:auto;
-      display:flex;
-      justify-content: center;
-  }
+.buttonHolder{
+    width:100%;
+    height:auto;
+    display:flex;
+    justify-content: center;
+}
 
-  #recipeDiv{
-      margin: 0;
-      width:100%;
-      height: auto;
-      align-items: center;
-      display: flex;
-  }
+#recipeDiv{
+    margin: 0;
+    width:100%;
+    height: auto;
+    align-items: center;
+    display: flex;
+}
 
-  #ingredientsDiv {
-      width: 100%;
-      height: auto;
-      display: flex;
-      justify-content: center;
-  }
+#ingredientsDiv {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
 
-  #ingredientAmount {
-      margin: 0 10px;
-  }
+#ingredientAmount {
+    margin: 0 10px;
+}
 
-  #recipeIngredientsTopic{
-      padding: 20px;
-      font-weight: bold;
-      flex:1;
-  }
+#recipeIngredientsTopic{
+    padding: 20px;
+    font-weight: bold;
+    flex:1;
+}
 
-  #recipeWorkPhaseTopic{
-      padding: 20px;
-      font-weight: bold;
-  }
-  #recipeWorkPhases{
+#recipeWorkPhaseTopic{
+    padding: 20px;
+    font-weight: bold;
+}
+#recipeWorkPhases{
 
-  }
+}
 datalist {
     position: absolute;
     background-color: lightgrey;
@@ -510,7 +510,7 @@ datalist {
     max-width: 30px;
     max-height: 30px;
     min-width: 30px;
-    min-height: 30px; 
+    min-height: 30px;
     text-align: right;
 }
 
@@ -654,4 +654,3 @@ datalist {
     }
 
 }
-

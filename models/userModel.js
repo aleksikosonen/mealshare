@@ -34,7 +34,7 @@ const insertUser = async (req) => {
     try{
         const [rows] = await promisePool.execute(
             'INSERT INTO ms_user (username, lname, email, fname, password, avatar, bio, admin, vst, vet) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
-        [req.username, req.lname, req.email, req.fname, req.password, null, null, false, date ,null]);
+            [req.username, req.lname, req.email, req.fname, req.password, null, null, false, date ,null]);
         return rows.insertId;
     } catch(e){
         console.error('userModel from insertUser: ', e);

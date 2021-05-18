@@ -100,7 +100,7 @@ const post_delete_ingredient = async (req, res) => {
     if(req.user.userId = owner.userId){
       const ingredients = await postModel.deleteIngredient(req.params.id);
       return res.json(ingredients);
-   }
+    }
   }catch(e){
     return res.status(400).json({error: e.message});
   }
@@ -280,7 +280,7 @@ const make_post = async (req, res, next) => {
     const post = await makePost(req.file.path, req.file.filename);
     if (post) {
       next();
-    } 
+    }
   } catch (e) {
     res.status(400).json({error: e.message});
   }
@@ -348,4 +348,3 @@ module.exports = {
   delete_like,
   get_single_like,
 };
-

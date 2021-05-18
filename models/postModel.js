@@ -375,12 +375,12 @@ const getAllIngredientsFeed = async (postIds) => {
     //function for getting ingredients for the feed
     const matches = [];
     for(let i = 0; i < postIds.length; i++){
-    const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount, ms_post_ingredients.postId , ms_post_ingredients.addOrder from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId WHERE ms_post_ingredients.postId = ? ORDER by ms_post_ingredients.addOrder;', [postIds[i]]);
+      const [rows] = await promisePool.execute('select ms_ingredient_object.ingredient, ms_ingredient_object.ingredientId, ms_post_ingredients.unit, ms_post_ingredients.amount, ms_post_ingredients.postId , ms_post_ingredients.addOrder from ms_ingredient_object LEFT JOIN ms_post_ingredients ON ms_ingredient_object.ingredientId = ms_post_ingredients.ingredientId WHERE ms_post_ingredients.postId = ? ORDER by ms_post_ingredients.addOrder;', [postIds[i]]);
       if(rows[0] != null){
         matches.push(rows);
       }
-  }
-  return matches
+    }
+    return matches
   } catch (e) {
     console.error('postModel getPost :', e.message);
   }
@@ -441,4 +441,3 @@ module.exports = {
   deleteLike,
   getSingleLike
 };
-

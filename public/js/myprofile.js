@@ -12,7 +12,7 @@
 
 'use strict';
 
-const url = 'https://10.114.32.16/app';
+const url = 'http://localhost:3000';
 
 const username = document.querySelector('#username');
 const bio = document.querySelector('#bio');
@@ -145,7 +145,7 @@ const getUserImages = (posts, loggedUser) => {
                         body: JSON.stringify(data),
                     };
                     await fetch(url + '/post/' + post.postId, options);
-                    window.location.href = url, '/myprofile.html'
+                    window.location.href = 'http://localhost:3000/myprofile.html'
                 }
                 catch (e) {
                     console.log(e.message);
@@ -164,7 +164,7 @@ const getUserImages = (posts, loggedUser) => {
                         },
                     };
                     await fetch(url + '/post/' + post.postId, options);
-                    window.location.href = url, '/myprofile.html'
+                    window.location.href = 'http://localhost:3000/myprofile.html'
                 }
                 catch (e) {
                     console.log(e.message);
@@ -297,7 +297,7 @@ settingsButton.addEventListener('click', async () => {
 
     //Reloads myprofile
     cancelButton.addEventListener('click', async () => {
-        window.location.href = url, '/myprofile.html';
+        window.location.href = 'http://localhost:3000/myprofile.html';
     })
 
     //Updates user to database
@@ -306,17 +306,17 @@ settingsButton.addEventListener('click', async () => {
         const data = serializeJson(userUpdateForm);
         console.log(data.username);
         try {
-        const fetchOptions = {
-            method: 'PUT',
-            headers:{
-                'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        };
-        const response = await fetch(url + '/user/update', fetchOptions);
-        console.log(response)
-        window.location.href = url, '/myprofile.html'
+            const fetchOptions = {
+                method: 'PUT',
+                headers:{
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            };
+            const response = await fetch(url + '/user/update', fetchOptions);
+            console.log(response)
+            window.location.href = 'http://localhost:3000/myprofile.html'
         } catch (e) {
             console.error(e.message);
         }
@@ -370,7 +370,7 @@ settingsButton.addEventListener('click', async () => {
                 body: data,
             };
             await fetch(url + '/user/update/avatar', fetchOptions);
-            window.location.href = url, '/myprofile.html'
+            window.location.href = 'http://localhost:3000/myprofile.html'
         })
     })
 
@@ -423,12 +423,12 @@ settingsButton.addEventListener('click', async () => {
                 };
                 const response = await fetch(url + '/user/update/username', fetchOptions);
                 console.log('response', response);
-                    const json = await response.json();
-                    console.log('username change response ', json);
+                const json = await response.json();
+                console.log('username change response ', json);
                 if (json.error) {
                     alert(json.error);
                 }
-                window.location.href = url, '/myprofile.html'
+                window.location.href = 'http://localhost:3000/myprofile.html'
             } catch (e) {
                 console.error(e.message);
             }
@@ -491,7 +491,7 @@ settingsButton.addEventListener('click', async () => {
                 if (json.error) {
                     alert(json.error);
                 }
-                window.location.href = url, '/myprofile.html'
+                window.location.href = 'http://localhost:3000/myprofile.html'
             } catch (e) {
                 console.error(e.message);
             }
@@ -556,20 +556,20 @@ settingsButton.addEventListener('click', async () => {
         changePasswordForm.addEventListener('submit',  async(evt) => {
             evt.preventDefault();
             const data = serializeJson(changePasswordForm);
-             try {
-                 const fetchOptions = {
-                     method: 'POST',
-                     headers: {
-                         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
-                         'Content-Type': 'application/json'
-                     },
-                     body: JSON.stringify(data),
-                 };
-                    await fetch(url + '/user/changepassword', fetchOptions);
-                 window.location.href = url, '/myprofile.html'
-             } catch (e) {
-                 console.error(e.message);
-             }
+            try {
+                const fetchOptions = {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data),
+                };
+                await fetch(url + '/user/changepassword', fetchOptions);
+                window.location.href = 'http://localhost:3000/myprofile.html'
+            } catch (e) {
+                console.error(e.message);
+            }
         });
     });
 

@@ -19,7 +19,7 @@ const get_user = async(req, res) => {
     }catch(e){
         res.status(400).message({error: e.message});
     }
-    
+
 }
 
 const user_list_get = async (req, res) => {
@@ -38,7 +38,6 @@ const create_user = async(req, res, next) => {
     if (!errors.isEmpty()){
         return res.status(400).json({errors: errors.array()});
     }
-    
     const user = {};
     user.username = req.body.username;
     user.email = req.body.email;
@@ -67,7 +66,7 @@ const update_user = async (req, res) => {
     }catch(e){
         res.tatus(400).json({error: e.message});
     }
-    
+
 };
 
 const update_username = async (req, res, next) => {
@@ -106,7 +105,7 @@ const update_password = async (req, res) => {
     }catch(e){
         return res.status(400).json({error: e.message});
     }
-    
+
 };
 
 const add_avatar = async (req, res) => {

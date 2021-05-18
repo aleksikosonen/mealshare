@@ -1,25 +1,25 @@
 /**
-* Js-file for loading feed
-*
-* Finds recent posts and data related to them in groups of 6
-* get more by clicking show more button.
-*
+ * Js-file for loading feed
+ *
+ * Finds recent posts and data related to them in groups of 6
+ * get more by clicking show more button.
+ *
  * Reacts to user clicking on like button
  * adds likes to database
  *
-* also takes care of comments inputted by users
+ * also takes care of comments inputted by users
  * and adds them to database
-*
+ *
  * shows either comments / recipe to user
  * switch view by clicking buttons
  *
-* @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
-* */
+ * @Author Aleksi Kytö, Niko Lindborg, Aleksi Kosonen
+ * */
 
 'use strict';
 
 const showMoreBtn = document.getElementById('showMoreBtn');
-const url = 'https://10.114.32.16/app';
+const url = 'http://localhost:3000';
 //some global variables so we can get certain info from out of functions to other functions
 const loggedUser = [];
 const likedPosts = [];
@@ -37,7 +37,7 @@ const findLoggedUser = (async () => {
     const responseUser = await fetch(url + '/user', options);
     const users = await responseUser.json();
     loggedUser.push(users);
-    
+
     const fetchOptions = {
       headers: {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
@@ -47,7 +47,7 @@ const findLoggedUser = (async () => {
     const likes = await resLikes.json()
     likedPosts.push(likes);
   } catch (e) {
-      console.error(e.message);
+    console.error(e.message);
   }
 });
 
@@ -91,7 +91,6 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
               <button class="light-border" id="formButton" type="submit">send</button>
             </div>
           </form>
-
           <ul id="commentList"></ul>
           <div id="recipeDiv">
             <p id="recipeIngredientsTopic"> Ingredients </p>
@@ -144,7 +143,7 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
 
     comments.forEach((comment) => {
       for(let i = 0; i < comment.length; i++){
-      //here we render the comments for the posts
+        //here we render the comments for the posts
         if(comment[i].postId === post.postId){
           const commentRender = document.createElement('div');
           commentRender.id = 'commentRender';
@@ -160,8 +159,8 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
           commentRender.appendChild(userAndComment);
           commentRender.dataset.commentid = comment[i].commentId;
 
-        //here we render the comment delete buttons, if the logged user is admin or if the 
-        //comment in question is the logged in users comment
+          //here we render the comment delete buttons, if the logged user is admin or if the
+          //comment in question is the logged in users comment
           if(loggedUser[0][0].admin === 1 || loggedUser[0][0].userId === comment[i].userId){
             const adminDeleteButton = document.createElement('button');
             const deleteImage = document.createElement('img');
@@ -188,8 +187,8 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
           commentCaption.id = "postComment";
           commentCaption.innerHTML= comment[i].comment;
           userAndComment.appendChild(commentCaption);
+        }
       }
-    }
     });
 
     const recipeDiv = document.querySelectorAll('#recipeDiv');
@@ -245,7 +244,7 @@ const loadData = (posts, comments, workphases, recipeIngredients, likeList) => {
   });
 };
 
-  //large function where we get all the infos needed for the post
+//large function where we get all the infos needed for the post
 const getPosts = async () => {
   try {
     const options = {
@@ -298,7 +297,7 @@ const getPosts = async () => {
     const recipeResponse = await fetch(url + `/post/recipe/allingredientsfeed/`,recipeOptions);
     const recipeIngredients = await recipeResponse.json();
     //then the recipe ingredients
-    
+
     const likeOptions = {
       method: 'POST',
       headers: {
@@ -357,11 +356,11 @@ const showRecipes = (i) => {
 
   const commentlist = document.querySelectorAll('#commentList');
   const recipeDiv = document.querySelectorAll('#recipeDiv');
-    commentlist[i].style.display = 'none';
-    recipeDiv[i].style.display = 'block';
-    commentFormList[i].style.display = 'none';
-    commentButton[i].style.background = "#F7F7F7";
-    commentButton[i].style.color = "black";
+  commentlist[i].style.display = 'none';
+  recipeDiv[i].style.display = 'block';
+  commentFormList[i].style.display = 'none';
+  commentButton[i].style.background = "#F7F7F7";
+  commentButton[i].style.color = "black";
 }
 
 //hamburger for the nav bar
@@ -391,7 +390,7 @@ feedContainer.addEventListener('click', async (e) => {
             }
           };
           await fetch(url + '/post/' + postId , fetchOptions);
-          window.location.href = url, '/index.html';
+          window.location.href = 'http://localhost:3000/index.html';
         }catch(er){
           console.error(e.message);
         }
@@ -411,7 +410,7 @@ feedContainer.addEventListener('click', async (e) => {
           }
         };
         await fetch(url + '/post/comment/' + commentId , fetchOptions);
-        window.location.href = url, '/index.html';
+        window.location.href = 'http://localhost:3000/index.html';
       }catch(er){
         console.error(e.message);
       }
